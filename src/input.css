@@ -30,8 +30,8 @@ main {
     position: absolute;
     top: -40px;
     left: 30px;
-    height: 335px;
-    width: 240px;
+    /* height: 335px;
+    width: 240px; */
     z-index: -2;
 }
 
@@ -39,8 +39,8 @@ main {
     position: absolute;
     top: -80px;
     left: 60px;
-    height: 335px;
-    width: 240px;
+    /* height: 335px;
+    width: 240px; */
     z-index: -3;
 }
 
@@ -48,8 +48,8 @@ main {
     position: absolute;
     top: -120px;
     left: 90px;
-    height: 335px;
-    width: 240px;
+    /* height: 335px;
+    width: 240px; */
     z-index: -4;
 }
 
