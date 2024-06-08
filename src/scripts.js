@@ -105,11 +105,11 @@ async function multiplePull(rarity, pageElement, startNum, endNum, scryfallLink)
     //  Make card element
     var cardElement = document.createElement("div");
     var positionClass = "position-" + i;
-    cardElement.classList.add("card-default", positionClass);
+    cardElement.classList.add("card-default", "w-96", "sm:w-60", positionClass);
 
     // Make image element, append to card
     var cardImage = document.createElement("img");
-    cardImage.classList.add("w-60", "rounded-lg");
+    cardImage.classList.add("w-full", "rounded-lg");
     cardImage.src = imagePrimary;
 
     //  Append the card element, attach image to the last one
