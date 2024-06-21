@@ -8,6 +8,14 @@ uncommonSum = 0;
 myPrices = [];
 
 function hitMe() {
+  // Reset the slider
+  const slider = document.querySelector("#sound-slider");
+  slider.value = 10;
+
+  //  update hitCount to track multiple triggers
+  // var hitCount = document.getElementById("hit-counter");
+  // hitCount.innerText += "0";
+
   commonPull_1();
 
   // Pull several Commons, is:first-printing
@@ -172,8 +180,8 @@ async function commonPull_1() {
   myPrices.push(commonPrice_1);
 
   //  Replace Img Source
-  imagePrimary = common_1.image_uris.normal;
-  document.getElementById("common-image-1").src = imagePrimary;
+  commonImage_1 = common_1.image_uris.normal;
+  document.getElementById("common-image-1").src = commonImage_1;
 
   //  Insert Price Element for Common-1
   //  const commonPriceElement_1 = document.getElementById("common-price-1");
@@ -200,9 +208,9 @@ async function multiplePull(rarity, pageElement, startNum, endNum, scryfallLink)
 
     //  Replace Img Source, check for DFC
     if (cardName.includes("//")) {
-      imagePrimary = card.card_faces[0].image_uris.normal;
+      uncommonImage = card.card_faces[0].image_uris.normal;
     } else {
-      imagePrimary = card.image_uris.normal;
+      uncommonImage = card.image_uris.normal;
     }
 
     //  Make card element
@@ -213,7 +221,7 @@ async function multiplePull(rarity, pageElement, startNum, endNum, scryfallLink)
     // Make image element, append to card
     var cardImage = document.createElement("img");
     cardImage.classList.add("w-full", "rounded-lg");
-    cardImage.src = imagePrimary;
+    cardImage.src = uncommonImage;
 
     //  Append the card element, attach image to the last one
     cardSet.appendChild(cardElement);
@@ -259,14 +267,14 @@ async function uncommonPull() {
 
     //  Replace Img Source, check for DFC
     if (uncommonName.includes("//")) {
-      imagePrimary = uncommonCard.card_faces[0].image_uris.normal;
+      uncommonImage = uncommonCard.card_faces[0].image_uris.normal;
     } else {
-      imagePrimary = uncommonCard.image_uris.normal;
+      uncommonImage = uncommonCard.image_uris.normal;
     }
 
     var uncommonImageId = "uncommon-image-" + j;
     uncommonImageElement = document.getElementById(uncommonImageId);
-    uncommonImageElement.src = imagePrimary;
+    uncommonImageElement.src = uncommonImage;
 
     //  Make card element
     // var uncommonElement = document.createElement("div");
