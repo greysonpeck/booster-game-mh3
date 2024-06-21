@@ -16,61 +16,103 @@
       <div id="boosters-bought">--</div>
     </div>
 
-    <main class="flex flex-wrap gap-16 mx-auto justify-center">
-      <!-- Common set -->
-      <div class="common-all">
-        <div class="card-common-1 text-center">
-          <img id="common-image-1" class="rounded-xl w-96 sm:w-60" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
-          <div class="slot-label">Slots #1-6 - Common</div>
-          <div id="common-sum" class=""></div>
+    <main class="mx-auto justify-center">
+      <div class="row-two flex flex-wrap gap-16 mx-auto mb-16 justify-center">
+        <!-- Common set -->
+        <div class="common-all">
+          <div class="card-common-1 text-center">
+            <img id="common-image-1" class="rounded-xl w-96 sm:w-60" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
+            <div class="slot-label">Slots #1-6 - Common</div>
+            <div id="common-sum" class=""></div>
+          </div>
+          <div id="common-set" class="relative">
+            <div class="card text-center position-2 w-96 sm:w-60">
+              <img class="rounded-xl w-full" width="" height="" src="./img/card_default.jpeg" alt="some" />
+              <div class="slot-label">Slot #2 - Common</div>
+            </div>
+            <div class="card text-center position-3 w-96 sm:w-60">
+              <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
+              <div class="slot-label">Slot #3 - Common</div>
+            </div>
+            <div class="card text-center position-4 w-96 sm:w-60">
+              <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
+              <div class="slot-label">Slot #4 - Common</div>
+            </div>
+            <div class="card text-center position-5 w-96 sm:w-60">
+              <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
+              <div class="slot-label">Slot #5 - Common</div>
+            </div>
+            <div class="card text-center position-6 w-96 sm:w-60">
+              <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
+              <div class="slot-label">Slot #6 - Common</div>
+            </div>
+          </div>
         </div>
-        <div id="common-set" class="relative">
+
+        <!-- Uncommon set -->
+        <div id="uncommon-set" class="flex shrink-0 flex-col text-center">
+          <div class="card text-center w-96 sm:w-60">
+            <img id="uncommon-image-1" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
+            <div class="slot-label">Slot #7-9 - Uncommon</div>
+            <div id="uncommon-sum"></div>
+          </div>
           <div class="card text-center position-2 w-96 sm:w-60">
-            <img class="rounded-xl w-full" width="" height="" src="./img/card_default.jpeg" alt="some" />
-            <div class="slot-label">Slot #2 - Common</div>
+            <img id="uncommon-image-2" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
+            <div class="slot-label">Slot #2 - Uncommon</div>
           </div>
           <div class="card text-center position-3 w-96 sm:w-60">
-            <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
-            <div class="slot-label">Slot #3 - Common</div>
-          </div>
-          <div class="card text-center position-4 w-96 sm:w-60">
-            <img class="rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
-            <div class="slot-label">Slot #4 - Common</div>
+            <img id="uncommon-image-3" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
+            <div class="slot-label">Slot #3 - Uncommon</div>
           </div>
         </div>
+
+        <!-- Rare slot -->
+        <div class="card-rare text-center w-60 shrink-0">
+          <img id="rare-image" class="h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+          <div class="slot-label">Slot #10 - Rare</div>
+          <div id="rare-price" class=""></div>
+          <div id="rare-roll" class=""></div>
+        </div>
+
+        <!-- New-to-Modern slot -->
+        <div class="card-new-modern text-center w-60 shrink-0">
+          <img id="new-modern-image" class="h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+          <div class="slot-label">Slot #11 - New-to-Modern</div>
+          <div id="new-modern-price" class=""></div>
+          <div id="new-modern-roll" class=""></div>
+        </div>
       </div>
 
-      <!-- Uncommon set -->
-      <div id="uncommon-set" class="flex shrink-0 flex-col text-center">
-        <div class="card text-center w-96 sm:w-60">
-          <img id="uncommon-image-1" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
-          <div class="slot-label">Slot #7-9 - Uncommon</div>
-          <div id="uncommon-sum"></div>
+      <div class="row-two flex flex-wrap gap-16 mx-auto mb-16 justify-center">
+        <!-- Land Common slot -->
+        <div class="card-landcommon text-center w-60 shrink-0">
+          <div id="landcommon-card" class="foil-block" width="240px" height="auto">
+            <div class=""></div>
+            <img id="landcommon-image" class="-z-10 h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+          </div>
+          <div class="slot-label">Slot #12 - Land or Common</div>
+          <div id="landcommon-price" class=""></div>
+          <div id="landcommon-roll" class=""></div>
         </div>
-        <div class="card text-center position-2 w-96 sm:w-60">
-          <img id="uncommon-image-2" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
-          <div class="slot-label">Slot #2 - Uncommon</div>
-        </div>
-        <div class="card text-center position-3 w-96 sm:w-60">
-          <img id="uncommon-image-3" class="h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
-          <div class="slot-label">Slot #3 - Uncommon</div>
-        </div>
-      </div>
 
-      <!-- Rare slot -->
-      <div class="card-rare text-center w-60 shrink-0">
-        <img id="rare-image" class="h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
-        <div class="slot-label">Slot #10 - Rare</div>
-        <div id="rare-price" class=""></div>
-        <div id="rare-roll" class=""></div>
-      </div>
+        <!-- Widlcard slot -->
+        <div class="card-wildcard text-center w-60 shrink-0">
+          <img id="wildcard-image" class="h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+          <div class="slot-label">Slot #13 - Non-Foil Wildcard</div>
+          <div id="wildcard-price" class=""></div>
+          <div id="wildcard-roll" class=""></div>
+        </div>
 
-      <!-- New-to-Modern slot -->
-      <div class="card-new-modern text-center w-60 shrink-0">
-        <img id="new-modern-image" class="h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
-        <div class="slot-label">Slot #11 - New-to-Modern</div>
-        <div id="new-modern-price" class=""></div>
-        <div id="new-modern-roll" class=""></div>
+        <!-- Foil slot -->
+        <div class="card-foil text-center w-60 shrink-0">
+          <div id="foil-card" class="foil-block" width="240px" height="auto">
+            <div class=""></div>
+            <img id="foil-image" class="-z-10 h-auto rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+          </div>
+          <div class="slot-label">Slot #14 - Foil Wildcard</div>
+          <div id="foil-price" class=""></div>
+          <div id="foil-roll" class=""></div>
+        </div>
       </div>
     </main>
   </body>

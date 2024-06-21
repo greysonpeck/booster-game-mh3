@@ -39,8 +39,6 @@ main {
     position: absolute;
     top: -80px;
     left: 60px;
-    /* height: 335px;
-    width: 240px; */
     z-index: -3;
 }
 
@@ -48,9 +46,21 @@ main {
     position: absolute;
     top: -120px;
     left: 90px;
-    /* height: 335px;
-    width: 240px; */
     z-index: -4;
+}
+
+.position-5 {
+    position: absolute;
+    top: -160px;
+    left: 120px;
+    z-index: -5;
+}
+
+.position-6 {
+    position: absolute;
+    top: -200px;
+    left: 150px;
+    z-index: -6;
 }
 
 card-default {
@@ -61,4 +71,28 @@ card-default {
 /* #uncommon-set>div>div::not(:last-child), */
 #common-set>div>div {
     display: none;
+}
+
+.foil-block {
+    position: relative;
+    width: 240px;
+    height: auto;
+}
+
+.foil-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #EEE;
+    padding: 10px;
+    width: 230px;
+    height: 98%;
+    border-radius: 8px;
+    padding: -18px;
+    background: rgb(69, 237, 12);
+    background: linear-gradient(138deg, rgba(69, 237, 12, 0.25) 2%, rgba(38, 38, 222, 0.25) 48%, rgba(176, 22, 210, 0.25) 70%, rgba(4, 124, 197, 0.25) 87%, rgba(0, 212, 255, .25) 100%);
+    backdrop-filter: brightness(1.1);
+    filter: brightness(1.1);
 }
