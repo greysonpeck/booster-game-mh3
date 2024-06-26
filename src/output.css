@@ -724,12 +724,24 @@ video {
   margin-right: auto;
 }
 
-.mb-16 {
-  margin-bottom: 4rem;
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.ml-6 {
+  margin-left: 1.5rem;
 }
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.ml-8 {
+  margin-left: 2rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .box-border {
@@ -877,6 +889,14 @@ video {
 
 .grow {
   flex-grow: 1;
+}
+
+.basis-\[1000px\] {
+  flex-basis: 1000px;
+}
+
+.basis-\[1050px\] {
+  flex-basis: 1050px;
 }
 
 .table-auto {
@@ -1381,8 +1401,8 @@ video {
   justify-items: stretch;
 }
 
-.gap-16 {
-  gap: 4rem;
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -1961,6 +1981,30 @@ video {
   padding: 0.5rem;
 }
 
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.pt-20 {
+  padding-top: 5rem;
+}
+
+.pb-8 {
+  padding-bottom: 2rem;
+}
+
+.pl-8 {
+  padding-left: 2rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.pb-3 {
+  padding-bottom: 0.75rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2017,13 +2061,36 @@ video {
   vertical-align: super;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
 
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
 .font-bold {
   font-weight: 700;
+}
+
+.font-thin {
+  font-weight: 100;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .uppercase {
@@ -2094,6 +2161,22 @@ video {
   font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction);
 }
 
+.tracking-\[\.3em\] {
+  letter-spacing: .3em;
+}
+
+.tracking-\[\.5em\] {
+  letter-spacing: .5em;
+}
+
+.tracking-\[\.4em\] {
+  letter-spacing: .4em;
+}
+
+.tracking-\[\.35em\] {
+  letter-spacing: .35em;
+}
+
 .text-\[\#336699\]\/\[\.35\] {
   color: rgb(51 102 153 / .35);
 }
@@ -2147,6 +2230,10 @@ video {
 .subpixel-antialiased {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
+}
+
+.opacity-75 {
+  opacity: 0.75;
 }
 
 .bg-blend-normal {
@@ -2482,19 +2569,36 @@ video {
 
 body {
   padding-left: 12px;
+  background-image: url("../img/MH3_bg.png");
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: "Raleway", sans-serif;
+  color: #FFFFFF;
+}
+
+h2 {
+  font-family: "Oswald", sans-serif;
+}
+
+.slot-label {
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  text-align: left;
+  width: 100%;
+  padding-left: 12px;
+  margin-bottom: 4px;
 }
 
 .card-default {
+  webkit-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
   box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+  /* max-width: none; */
 }
 
 .common-all {
   position: relative;
-}
-
-main {
-  padding-top: 120px;
 }
 
 #common-set {
@@ -2508,10 +2612,14 @@ main {
   position: relative;
 }
 
+.position-1 {
+  position: absolute;
+  top: 228px;
+}
+
 .position-2 {
   position: absolute;
-  top: -40px;
-  left: 30px;
+  top: 188px;
   /* height: 335px;
     width: 240px; */
   z-index: -2;
@@ -2519,29 +2627,25 @@ main {
 
 .position-3 {
   position: absolute;
-  top: -80px;
-  left: 60px;
+  top: 148px;
   z-index: -3;
 }
 
 .position-4 {
   position: absolute;
-  top: -120px;
-  left: 90px;
+  top: 108px;
   z-index: -4;
 }
 
 .position-5 {
   position: absolute;
-  top: -160px;
-  left: 120px;
+  top: 68px;
   z-index: -5;
 }
 
 .position-6 {
   position: absolute;
-  top: -200px;
-  left: 150px;
+  top: 28px;
   z-index: -6;
 }
 
@@ -2642,6 +2746,18 @@ main {
 
   .sm\:underline {
     text-decoration-line: underline;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .md\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
 }
 

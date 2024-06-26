@@ -4,22 +4,37 @@
 
 body {
     padding-left: 12px;
+    background-image: url("../img/MH3_bg.png");
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: "Raleway", sans-serif;
+    color: #FFFFFF;
+}
+
+h2 {
+    font-family: "Oswald", sans-serif;
+}
+
+.slot-label {
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    text-align: left;
+    width: 100%;
+    padding-left: 12px;
+    margin-bottom: 4px;
 }
 
 .card-default {
-    -webkit-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
+    webkit-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
     box-shadow: 0px -2px 2px 0px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
+    /* max-width: none; */
 }
 
 .common-all {
     position: relative;
-}
-
-
-main {
-    padding-top: 120px;
 }
 
 #common-set {
@@ -33,10 +48,14 @@ main {
     position: relative;
 }
 
+.position-1 {
+    position: absolute;
+    top: 228px;
+}
+
 .position-2 {
     position: absolute;
-    top: -40px;
-    left: 30px;
+    top: 188px;
     /* height: 335px;
     width: 240px; */
     z-index: -2;
@@ -44,29 +63,25 @@ main {
 
 .position-3 {
     position: absolute;
-    top: -80px;
-    left: 60px;
+    top: 148px;
     z-index: -3;
 }
 
 .position-4 {
     position: absolute;
-    top: -120px;
-    left: 90px;
+    top: 108px;
     z-index: -4;
 }
 
 .position-5 {
     position: absolute;
-    top: -160px;
-    left: 120px;
+    top: 68px;
     z-index: -5;
 }
 
 .position-6 {
     position: absolute;
-    top: -200px;
-    left: 150px;
+    top: 28px;
     z-index: -6;
 }
 
