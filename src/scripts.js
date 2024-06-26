@@ -16,6 +16,8 @@ function hitMe() {
   // var hitCount = document.getElementById("hit-counter");
   // hitCount.innerText += "0";
 
+  ghostPull();
+
   commonPull_1();
 
   // Pull several Commons, is:first-printing
@@ -140,6 +142,51 @@ let USDollar = new Intl.NumberFormat("en-US", {
 const getRandomNumber = (min, max) => {
   return Math.random() * (max - min) + min;
 };
+
+async function ghostPull() {
+  ghostLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+usd>%3D7+usd<%3D10";
+
+  let response = await fetch(ghostLink);
+
+  // waits until Scryfall fetch completes...
+  let card = await response.json();
+  // console.log(card);
+  ghostName = card.name;
+
+  if (ghostName.includes(",")) {
+    ghostName = ghostName.substring(0, ghostName.indexOf(","));
+  } else {
+    // let it rock
+  }
+
+  ghostPrice = Math.round(Number(card.prices.usd));
+
+  // TO FIX: figure out if DFC....
+  if (ghostName.includes("//")) {
+    ghostImagePrimary = card.card_faces[0].image_uris.normal;
+  } else {
+    ghostImagePrimary = card.image_uris.normal;
+  }
+
+  //  Replace Img Source
+  document.getElementById("ghost-image").src = ghostImagePrimary;
+
+  //  Insert Price
+  const ghostPriceElement = document.getElementById("ghost-price");
+  ghostPriceElement.innerText = ghostPrice;
+
+  //  Insert Name
+  const ghostNameElement = document.getElementById("ghost-name");
+  ghostNameElement.innerText = ghostName;
+
+  //  Add ghost effect
+  var ghostCard = document.getElementById("ghost-card");
+  ghostCard.firstElementChild.classList.add("ghost-effect");
+
+  //  Reveal snark
+  const snarkBox = document.getElementById("snark");
+  snarkBox.classList.remove("hidden");
+}
 
 async function commonPull_1() {
   var commonLink_1 = "";

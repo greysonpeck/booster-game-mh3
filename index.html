@@ -70,10 +70,14 @@
       <div class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center w-full">
         
         <!-- Single you didn't buy slot -->
-        <div class="card-rare text-center w-44 sm:w-60 shrink-0">
+        <div class="text-center w-44 sm:w-60 shrink-0 relative">
           <div class="slot-label">The single</div>
-          <img id="--" class="card-default rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
-          <div id="-" class=""></div>
+          <div id="snark" class="hidden z-10 ring-2 absolute -inset-x-3 top-1/2 rounded-md font-bold py-3 px-2 ring-white bg-cyan-950">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-name"></span>.</div>
+          <div id="ghost-card" class="effect-block" width="240px" height="auto">
+            <div class=""></div>
+             <img id="ghost-image" class="card-default rounded-xl" width="240px" height="auto" src="./img/card_ghost.png" alt="some" />
+          </div>
+          <div id="ghost-price" class=""></div>
           <div id="--" class=""></div>
         </div>  
 
@@ -116,7 +120,7 @@
             <div id="foil-price" class="pr-3 font-bold"></div>
             <div id="foil-roll" class="hidden"></div>
           </div>
-          <div id="foil-card" class="foil-block" width="240px" height="auto">
+          <div id="foil-card" class="effect-block" width="240px" height="auto">
             <div class=""></div>
             <img id="foil-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
           </div>
@@ -130,7 +134,7 @@
             <div id="landcommon-price" class="pr-3 font-bold"></div>
             <div id="landcommon-roll" class="hidden"></div>
           </div>
-          <div id="landcommon-card" class="foil-block" width="240px" height="auto">
+          <div id="landcommon-card" class="effect-block" width="240px" height="auto">
             <div class=""></div>
             <img id="landcommon-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
           </div>
