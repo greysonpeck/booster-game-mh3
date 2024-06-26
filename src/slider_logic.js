@@ -6,6 +6,7 @@ window.onload = function () {
   const volume = document.querySelector("#volume");
   const slider = document.querySelector("#sound-slider");
   const sliderContainer = document.querySelector("#sound-slider__container");
+  const loadingOverlay = document.getElementById("data-loading");
 
   function handleRangeUpdate(el) {
     if (el.target) {
@@ -15,9 +16,10 @@ window.onload = function () {
     root.style.setProperty("--percentage", `${(el.value * 100) / (el.max - el.min)}%`);
 
     if (volume.innerHTML >= 97) {
+      loadingOverlay.classList.add("z-1", "opacity-50");
       setTimeout(function () {
         hitMe();
-      }, 400);
+      }, 700);
     }
   }
 

@@ -663,11 +663,14 @@ function sumTotals() {
   }
 
   var timeout = setInterval(function () {
+    const loadingOverlay = document.getElementById("data-loading");
     if (checkIfFinished()) {
       clearInterval(timeout);
       isFinished = true;
       console.log("bonk");
       console.log(myPrices);
+
+      loadingOverlay.classList.remove("z-1", "opacity-50");
 
       const commonSumElement = document.getElementById("common-sum");
       commonSum = commonSum + commonPrice_1;
@@ -676,6 +679,7 @@ function sumTotals() {
 
       //  Sum up all prices in array
       currentMoneyElement = document.getElementById("current-money");
+      console.log("sending money up");
       myPrices.forEach((num) => {
         newTotal += num;
       });

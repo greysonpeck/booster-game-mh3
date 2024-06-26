@@ -18,33 +18,55 @@
   <body>
 
   
-    <main class="mx-auto pt-20 flex flex-col">
+    <main class="mx-auto px-1 pt-8 sm:pt-20 flex flex-col">
+
+      <!-- BLOCK THING -->
+      <div class="mx-auto items-center mb-6 sm:mb-12">
+        <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">The Booster Game</h1>
+        <h2 class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8">MODERN HORIZONS 3</h1>
+      </div>
+
+
+      <!-- DATA BLOCK -->
+      <div class="relative data-area flex flex-col bg-slate-50 bg-opacity-20 py-2 px-4 m-2 mb-4 rounded-md text-nowrap">
+        <div id="data-loading" class="data-loader opacity-0 rounded-md"></div>
+        <!-- SLIDER  -->
+        <div id="sound-slider__container" class="flex items-center mb-2">
+          <input class="rounded-lg w-full" type="range" value="10" min="0" max="100" step="1" id="sound-slider" />
+          <p class="hidden" id="volume">30</p>
+          <!-- <span class="ml-4 font-bold italic text-xl opacity-75 text-nowrap">Rip it!</span> -->
+        </div>
+        
+        <!-- Simple button -->
+        <!-- <button onclick="hitMe()" class="ring-1 ring-lime-200 rounded-md text-lg p-2 bg-slate-300">Buy Booster ($15)</button> -->
+        <div class="flex flex-row">
+          <span class="w-full font-light">Booster price</span>
+          <span class="font-semibold">$8.00</span>
+        </div>
+        <div class="flex flex-row">
+          <span class="w-full font-light">Boosters bought</span>
+          <span class="font-semibold-4 pr-1">×</span>
+          <span id="boosters-bought" class="font-semibold">--</span>
+        </div>
+        <div class="flex flex-row">
+          <span class="w-full font-light">Total card value</span>
+          <span class="font-semibold-4 pr-1">+</span>
+          <span class="font-semibold ">see below</span>
+        </div>
+        <hr class="my-2 opacity-40">
+        <div class="flex flex-row">
+          <span class="w-full font-light">Net value</span>
+          <div id="current-money" class="font-semibold">$ --</div>
+        </div>
+
+      </div>
 
 
       <!-- CARD SECTION STARTS HERE -->
       <div class="card-section flex">
-      <div class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center w-full basis-[1050px]">
+      <div class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center w-full">
         
-        <!-- BLOCK THING -->
-        <div class="mx-auto items-center mb-12 basis-[1000px] ml-6">
-          <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">The Booster Game</h1>
-          <h2 class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] pb-8">MODERN HORIZONS 3</h1>
-
-          <!-- SLIDER  -->
-          <div id="sound-slider__container" class="flex items-center">
-            <input class="rounded-md" type="range" value="10" min="0" max="100" step="1" id="sound-slider" />
-            <p class="hidden" id="volume">30</p>
-            <span class="ml-4 font-bold italic text-xl opacity-75">Rip it!</span>
-          </div>
-          
-          <!-- <button onclick="hitMe()" class="ring-1 ring-lime-200 rounded-md text-lg p-2 bg-slate-300">Buy Booster ($15)</button> -->
-          <div class="">
-            Current money:
-            <div id="current-money">$--</div>
-            Boosters bought:
-            <div id="boosters-bought">--</div>
-          </div>
-        </div>
+        
 
 
 

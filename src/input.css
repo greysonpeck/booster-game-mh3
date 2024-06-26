@@ -3,16 +3,38 @@
 @tailwind utilities;
 
 body {
-    padding-left: 12px;
     background-image: url("../img/MH3_bg.png");
     background-attachment: fixed;
     background-size: cover;
     font-family: "Raleway", sans-serif;
     color: #FFFFFF;
+    margin: 8px 0;
 }
 
 h2 {
     font-family: "Oswald", sans-serif;
+}
+
+.data-loader {
+    position: absolute;
+    /* Sit on top of the page content */
+    width: 100%;
+    /* Full width (cover the whole page) */
+    height: 100%;
+    /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: -1;
+
+    transition: opacity 500ms ease-out;
+    background-color: #dddddd;
+    background-position: 10px 0, 10px 0, 0 0, 0 0;
+    background-size: 20px 20px;
+    background-repeat: repeat;
+
 }
 
 .slot-label {
