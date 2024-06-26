@@ -315,7 +315,7 @@ async function uncommonPull() {
   uncommonSumElement.innerText = uncommonSum;
 
   // Set Sum on page, clear value.
-  uncommonSumElement.innerText = "Total: $" + uncommonSum.toFixed(2);
+  uncommonSumElement.innerText = "$" + uncommonSum.toFixed(2);
   uncommonSum = 0;
 }
 
@@ -670,11 +670,12 @@ function sumTotals() {
       console.log("bonk");
       console.log(myPrices);
 
-      loadingOverlay.classList.remove("z-1", "opacity-50");
+      loadingOverlay.classList.remove("z-10", "loader-blur-effect");
+      loadingOverlay.classList.add("-z-10", "opacity-0");
 
       const commonSumElement = document.getElementById("common-sum");
       commonSum = commonSum + commonPrice_1;
-      commonSumElement.innerText = "Total: $" + commonSum.toFixed(2);
+      commonSumElement.innerText = "$" + commonSum.toFixed(2);
       commomSum = 0;
 
       //  Sum up all prices in array
@@ -685,6 +686,14 @@ function sumTotals() {
       });
       newTotal = newTotal - boosterValue;
       currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
+
+      if (newTotal > 0) {
+        currentMoneyElement.classList.remove("bg-rose-500");
+        currentMoneyElement.classList.add("bg-emerald-500");
+      } else {
+        currentMoneyElement.classList.remove("bg-emerald-500");
+        currentMoneyElement.classList.add("bg-rose-500");
+      }
 
       // Clear array
       myPrices = [];

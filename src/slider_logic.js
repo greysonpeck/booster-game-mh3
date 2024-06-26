@@ -16,7 +16,8 @@ window.onload = function () {
     root.style.setProperty("--percentage", `${(el.value * 100) / (el.max - el.min)}%`);
 
     if (volume.innerHTML >= 97) {
-      loadingOverlay.classList.add("z-1", "opacity-50");
+      loadingOverlay.classList.remove("-z-10", "opacity-0");
+      loadingOverlay.classList.add("z-10", "loader-blur-effect");
       setTimeout(function () {
         hitMe();
       }, 700);

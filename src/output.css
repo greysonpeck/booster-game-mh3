@@ -675,6 +675,10 @@ video {
   z-index: -10;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .float-start {
   float: inline-start;
 }
@@ -737,20 +741,16 @@ video {
   margin-bottom: 0.5rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
-.ml-12 {
-  margin-left: 3rem;
+.mb-6 {
+  margin-bottom: 1.5rem;
 }
 
 .ml-4 {
   margin-left: 1rem;
 }
 
-.mt-12 {
-  margin-top: 3rem;
+.mt-14 {
+  margin-top: 3.5rem;
 }
 
 .mt-2 {
@@ -880,12 +880,16 @@ video {
   width: weird-and-invalid;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .w-full {
   width: 100%;
 }
 
-.min-w-\[400px\] {
-  min-width: 400px;
+.min-w-\[350px\] {
+  min-width: 350px;
 }
 
 .max-w-\[1080px\] {
@@ -1875,6 +1879,16 @@ video {
   background-color: rgb(255 0 0 / var(--tw-bg-opacity));
 }
 
+.bg-emerald-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity));
+}
+
+.bg-rose-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(244 63 94 / var(--tw-bg-opacity));
+}
+
 .bg-slate-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(203 213 225 / var(--tw-bg-opacity));
@@ -1887,6 +1901,10 @@ video {
 
 .bg-opacity-20 {
   --tw-bg-opacity: 0.2;
+}
+
+.bg-opacity-75 {
+  --tw-bg-opacity: 0.75;
 }
 
 .decoration-slice {
@@ -2008,6 +2026,11 @@ video {
   padding-right: 0.25rem;
 }
 
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -2024,6 +2047,10 @@ video {
 
 .pr-1 {
   padding-right: 0.25rem;
+}
+
+.pr-3 {
+  padding-right: 0.75rem;
 }
 
 .pt-8 {
@@ -2246,10 +2273,6 @@ video {
 
 .opacity-40 {
   opacity: 0.4;
-}
-
-.opacity-50 {
-  opacity: 0.5;
 }
 
 .opacity-75 {
@@ -2611,18 +2634,19 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
-  /* opacity: .5; */
-  z-index: -1;
   transition: opacity 500ms ease-out;
-  background-color: #dddddd;
   background-position: 10px 0, 10px 0, 0 0, 0 0;
   background-size: 20px 20px;
   background-repeat: repeat;
 }
 
+.loader-blur-effect {
+  background-color: rgba(255, 255, 255, 0.3);
+  /* backdrop-filter: blur(2px); */
+}
+
 .slot-label {
   font-optical-sizing: auto;
-  font-weight: 600;
   font-style: normal;
   text-align: left;
   width: 100%;
@@ -2631,8 +2655,8 @@ h2 {
 }
 
 .card-default {
-  webkit-box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.2);
+  webkit-box-shadow: 0px -2px 12px 12px rgba(24, 51, 53, 0.3);
+  box-shadow: 0px -2px 12px 12px rgba(24, 51, 53, 0.3);
   border-radius: 12px;
   margin-bottom: 8px;
   /* max-width: none; */
@@ -2784,6 +2808,10 @@ h2 {
 }
 
 @media (min-width: 640px) {
+  .sm\:ml-12 {
+    margin-left: 3rem;
+  }
+
   .sm\:w-60 {
     width: 15rem;
   }
