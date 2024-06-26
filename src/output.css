@@ -659,16 +659,6 @@ video {
   inset: -0.25rem;
 }
 
-.-inset-x-4 {
-  left: -1rem;
-  right: -1rem;
-}
-
-.-inset-x-3\/4 {
-  left: -75%;
-  right: -75%;
-}
-
 .-inset-x-3 {
   left: -0.75rem;
   right: -0.75rem;
@@ -676,14 +666,6 @@ video {
 
 .end-1 {
   inset-inline-end: 0.25rem;
-}
-
-.top-52 {
-  top: 13rem;
-}
-
-.top-3\/4 {
-  top: 75%;
 }
 
 .top-1\/2 {
@@ -2168,6 +2150,11 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-bold {

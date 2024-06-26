@@ -149,9 +149,9 @@ async function ghostPull() {
   let response = await fetch(ghostLink);
 
   // waits until Scryfall fetch completes...
-  let card = await response.json();
+  let ghostCard = await response.json();
   // console.log(card);
-  ghostName = card.name;
+  ghostName = ghostCard.name;
 
   if (ghostName.includes(",")) {
     ghostName = ghostName.substring(0, ghostName.indexOf(","));
@@ -159,13 +159,18 @@ async function ghostPull() {
     // let it rock
   }
 
-  ghostPrice = Math.round(Number(card.prices.usd));
+  //  Set price, check for etched
+  if (ghostCard.tcgplayer_etched_id) {
+    ghostPrice = Math.round(Number(ghostCard.prices.usd_etched));
+  } else {
+    ghostPrice = Math.round(Number(ghostCard.prices.usd));
+  }
 
   // TO FIX: figure out if DFC....
   if (ghostName.includes("//")) {
-    ghostImagePrimary = card.card_faces[0].image_uris.normal;
+    ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
   } else {
-    ghostImagePrimary = card.image_uris.normal;
+    ghostImagePrimary = ghostCard.image_uris.normal;
   }
 
   //  Replace Img Source
@@ -180,8 +185,8 @@ async function ghostPull() {
   ghostNameElement.innerText = ghostName;
 
   //  Add ghost effect
-  var ghostCard = document.getElementById("ghost-card");
-  ghostCard.firstElementChild.classList.add("ghost-effect");
+  var ghostElement = document.getElementById("ghost-card");
+  ghostElement.firstElementChild.classList.add("ghost-effect");
 
   //  Reveal snark
   const snarkBox = document.getElementById("snark");
