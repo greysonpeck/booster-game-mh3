@@ -7,35 +7,44 @@ uncommonSum = 0;
 
 myPrices = [];
 
+var activeCheck = false;
+
 function hitMe() {
-  // Reset the slider
-  const slider = document.querySelector("#sound-slider");
-  slider.value = 10;
+  // Prevent slider from triggering pulls multiple times
+  if (activeCheck == false) {
+    activeCheck = true;
 
-  //  update hitCount to track multiple triggers
-  // var hitCount = document.getElementById("hit-counter");
-  // hitCount.innerText += "0";
+    // Reset the slider
+    const slider = document.querySelector("#sound-slider");
+    slider.value = 10;
 
-  ghostPull();
+    //  update hitCount to track multiple triggers
+    // var hitCount = document.getElementById("hit-counter");
+    // hitCount.innerText += "0";
 
-  commonPull_1();
+    ghostPull();
 
-  // Pull several Commons, is:first-printing
-  multiplePull("Common", "common-set", 2, 7, "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ac+is%3Afirst-printing");
+    commonPull_1();
 
-  uncommonPull();
+    // Pull several Commons, is:first-printing
+    multiplePull("Common", "common-set", 2, 7, "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ac+is%3Afirst-printing");
 
-  rarePull();
+    uncommonPull();
 
-  newModernPull();
+    rarePull();
 
-  landcommonPull();
+    newModernPull();
 
-  wildcardPull();
+    landcommonPull();
 
-  foilPull();
+    wildcardPull();
 
-  sumTotals();
+    foilPull();
+
+    sumTotals();
+  } else {
+    console.log("already working");
+  }
 }
 
 function rollForWildcard() {
@@ -749,6 +758,7 @@ function sumTotals() {
 
       // Clear array
       myPrices = [];
+      activeCheck = false;
     }
   }, 100);
 }
