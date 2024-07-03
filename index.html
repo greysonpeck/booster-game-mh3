@@ -25,7 +25,7 @@
       <div class="top-content items-center mx-auto flex flex-col md:flex-row">
         <div class="mb-6">
           <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">The Booster Game</h1>
-          <h2 class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8">MODERN HORIZONS 3</h1>
+          <h2 class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8 text-center">MODERN HORIZONS 3</h1>
         </div>
 
         <!-- DATA BLOCK -->
@@ -66,24 +66,26 @@
       </div>
 
       <!-- CARD SECTION STARTS HERE -->
-      <div class="card-section flex mx-auto max-w-[1080px] text-lg">
-      <div class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center w-full">
+      <div class="card-section flex mx-auto max-w-[1080px]">
+      <div class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center w-full text-sm sm:text-base">
         
         <!-- Single you didn't buy slot -->
         <div class="text-center w-44 sm:w-60 shrink-0 relative">
-          <div class="slot-label">The single</div>
+          <!-- <div class="slot-label">The single</div> -->
           <div id="snark" class="hidden z-10 text-sm ring-2 absolute -inset-x-3 top-1/2 rounded-md font-bold py-3 px-2 ring-white bg-cyan-950">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-name"></span>.</div>
           <div id="ghost-card" class="effect-block" width="240px" height="auto">
-            <div class=""></div>
-             <img id="ghost-image" class="card-default rounded-xl" width="240px" height="auto" src="./img/card_ghost.png" alt="some" />
+            <div class="shine-holder">
+             <img id="ghost-image" class="card-default rounded-xl w-60" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+              <div class="shine"></div>
+            </div>
           </div>
-          <div id="ghost-price" class=""></div>
+          <!-- <div id="ghost-price" class=""></div> -->
           <div id="--" class=""></div>
         </div>  
 
         <!-- Rare slot -->
-        <div class="card-rare text-center w-44 sm:w-60 shrink-0 text-nowrap">
-          <div class="card-info flex">
+        <div class="card-rare text-center w-44 sm:w-[240px] shrink-0 text-nowrap pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
             <div class="slot-label">Rare</div>
             <div id="rare-price" class="pr-3 font-bold"></div>
             <div id="rare-roll" class="hidden"></div>
@@ -93,8 +95,8 @@
         </div>
 
         <!-- New-to-Modern slot -->
-        <div class="card-new-modern text-center w-44 sm:w-60 shrink-0">
-          <div class="card-info flex">
+        <div class="card-new-modern text-center w-44 sm:w-[240px] shrink-0 pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
             <div class="slot-label">New-to-Modern</div>
             <div id="new-modern-price" class="pr-3 font-bold"></div>
             <div id="new-modern-roll" class="hidden"></div>
@@ -104,9 +106,9 @@
         </div>
 
         <!-- Widlcard slot -->
-        <div class="card-wildcard text-center w-44 sm:w-60 shrink-0">
-          <div class="card-info flex">
-            <div class="slot-label">Non-Foil Wildcard</div>
+        <div class="card-wildcard text-center w-44 sm:w-[240px] shrink-0 pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
+            <div class="slot-label ">Non-Foil Wildcard</div>
             <div id="wildcard-price" class="pr-3 font-bold"></div>
             <div id="wildcard-roll" class="hidden"></div>
           </div>
@@ -114,8 +116,8 @@
         </div>
 
         <!-- Foil slot -->
-        <div class="card-foil text-center w-44 sm:w-60 shrink-0">
-          <div class="card-info flex">
+        <div class="card-foil text-center w-44 sm:w-[240px] shrink-0 pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
             <div class="slot-label">Foil Wildcard</div>
             <div id="foil-price" class="pr-3 font-bold"></div>
             <div id="foil-roll" class="hidden"></div>
@@ -128,8 +130,8 @@
         </div>
 
         <!-- Land Common slot -->
-        <div class="card-landcommon text-center w-44 sm:w-60 shrink-0">
-          <div class="card-info flex">
+        <div class="card-landcommon text-center w-44 sm:w-[240px] shrink-0 pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
             <div class="slot-label">Land or Common</div>
             <div id="landcommon-price" class="pr-3 font-bold"></div>
             <div id="landcommon-roll" class="hidden"></div>
@@ -142,51 +144,51 @@
         </div>
 
         <!-- Uncommon set -->
-        <div id="uncommon-set" class="w-44 sm:w-60">
-          <div class="card-info flex">
+        <div id="uncommon-set" class="w-44 sm:w-[240px] pt-[3px] sm:pt-0">
+          <div class="card-info flex  items-end">
             <div class="slot-label">Uncommons (3)</div>
             <div id="uncommon-sum" class="pr-3 font-bold"></div>
           </div>
 
-          <div class="text-center position-6 w-44 sm:w-60">
+          <div class="text-center position-6 w-44 sm:w-[240px]">
             <img id="uncommon-image-1" class="card-default h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
 
           </div>
-          <div class="text-center position-5 w-44 sm:w-60">
+          <div class="text-center position-5 w-44 sm:w-[240px]">
             <img id="uncommon-image-2" class="card-default h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
           </div>
-          <div class="text-center position-4 w-44 sm:w-60">
+          <div class="text-center position-4 w-44 sm:w-[240px]">
             <img id="uncommon-image-3" class="card-default h-auto rounded-xl w-full" width="240px" height="" src="./img/card_default.jpeg" alt="some" />
           </div>
         </div>
 
        <!-- Common set -->
-       <div class="common-all w-44 sm:w-60">
-        <div class="card-info flex">
+       <div class="common-all w-44 sm:w-[240px] pt-[3px] sm:pt-0">
+        <div class="card-info flex  items-end">
           <div class="slot-label">Commons (6)</div>
           <div id="common-sum" class="pr-3 font-bold"></div>
         </div>
-        <div class="card-common-1 position-1 text-center  w-44 sm:w-60">
+        <div class="card-common-1 position-1 text-center  w-44 sm:w-[240px]">
           <img id="common-image-1" class="card-default rounded-xl" width="" height="" src="./img/card_default.jpeg" alt="some" />
         </div>
         <div id="common-set" class="relative">
-          <div class="card-default text-center position-2 w-44 sm:w-60">
+          <div class="card-default text-center position-2 w-44 sm:w-[240px]">
             <img class="card rounded-xl w-full" width="" height="" src="./img/card_default.jpeg" alt="some" />
             <div class="slot-label">Slot #2 - Common</div>
           </div>
-          <div class="card text-center position-3 w-44 sm:w-60">
+          <div class="card text-center position-3 w-44 sm:w-[240px]">
             <img class="card-default rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
             <div class="slot-label">Slot #3 - Common</div>
           </div>
-          <div class="card-default text-center position-4 w-44 sm:w-60">
+          <div class="card-default text-center position-4 w-44 sm:w-[240px]">
             <img class="card-default rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
             <div class="slot-label">Slot #4 - Common</div>
           </div>
-          <div class="card text-center position-5 w-44 sm:w-60">
+          <div class="card text-center position-5 w-44 sm:w-[240px]">
             <img class="card-default rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
             <div class="slot-label">Slot #5 - Common</div>
           </div>
-          <div class="card text-center position-6 w-44 sm:w-60">
+          <div class="card text-center position-6 w-44 sm:w-[240px]">
             <img class="card-default rounded-xl w-full" height="" src="./img/card_default.jpeg" alt="some" />
             <div class="slot-label">Slot #6 - Common</div>
           </div>

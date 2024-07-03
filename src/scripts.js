@@ -195,7 +195,7 @@ async function ghostPull() {
 
   //  Add ghost effect
   var ghostElement = document.getElementById("ghost-card");
-  ghostElement.firstElementChild.classList.add("ghost-effect");
+  // ghostElement.firstElementChild.classList.add("ghost-effect");
 
   //  Reveal snark
   const snarkBox = document.getElementById("snark");
@@ -277,7 +277,7 @@ async function multiplePull(rarity, pageElement, startNum, endNum, scryfallLink)
     //  Make card element
     var cardElement = document.createElement("div");
     var positionClass = "position-" + i;
-    cardElement.classList.add("card-default", "w-44", "sm:w-60", positionClass);
+    cardElement.classList.add("card-default", "w-44", "sm:w-[240px]", positionClass);
 
     // Make image element, append to card
     var cardImage = document.createElement("img");
