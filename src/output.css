@@ -865,6 +865,10 @@ video {
   display: none;
 }
 
+.h-\[335px\] {
+  height: 335px;
+}
+
 .h-auto {
   height: auto;
 }
@@ -2816,7 +2820,7 @@ h2 {
   border-radius: 16px;
   position: relative;
   left: -6px;
-  top: 24px;
+  top: 25px;
   /* right: 0;
     bottom: 0; */
   overflow: hidden;
