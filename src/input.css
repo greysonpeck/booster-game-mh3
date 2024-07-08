@@ -27,15 +27,23 @@ h2 {
 }
 
 .toggle::before {
-  content: "";
+  content: "USD";
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.5rem;
+  color: black;
   position: absolute;
-  width: 24px;
+  width: 40px;
   height: 24px;
-  border-radius: 50%;
+  border-radius: 25px;
   background-color: #fff;
   top: 4px;
   left: 4px;
   transition: transform 0.3s;
+}
+
+.toggle-cad::before {
+  content: "CAD";
 }
 
 .toggle.on {
@@ -43,7 +51,7 @@ h2 {
 }
 
 .toggle.on::before {
-  transform: translateX(26px);
+  transform: translateX(12px);
 }
 
 /* The switch - the box around the slider */
@@ -278,11 +286,11 @@ input:checked + .slider:before {
   padding: 0;
   margin: 0;
   border-radius: 10px;
-  background: linear-gradient(138deg, rgba(93, 241, 159, 0.4) 50%, rgb(255, 221, 0) 90%);
-  animation: spin 4s linear infinite;
-  -moz-animation: spin 4s linear infinite;
-  -webkit-animation: spin 4s linear infinite;
-  -ms-animation: spin 4s linear infinite;
+  background: linear-gradient(138deg, rgba(93, 241, 159, 0.4) 50%, rgb(255, 221, 0) 95%);
+  animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  -webkit-animation: spin 2s linear infinite;
+  -ms-animation: spin 2s linear infinite;
 }
 
 @media (max-width: 600px) {

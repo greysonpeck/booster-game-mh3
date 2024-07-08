@@ -38,12 +38,12 @@ document.addEventListener(
   "DOMContentLoaded",
 
   function init() {
-    currencyFlag = document.getElementById("currencyFlag");
     currentMoneyElement = document.getElementById("current-money");
+    const toggle = document.getElementById("currency");
 
     function initializeCAD() {
-      currencyFlag.innerText = "CAD";
       currencyMode = "CAD";
+      toggle.classList.add("toggle-cad");
       boosterValue = 12;
       document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
       currentMoneyElement.classList.remove("px-3");
@@ -52,13 +52,10 @@ document.addEventListener(
     }
 
     function initializeUSD() {
-      currencyFlag.innerText = "USD";
       boosterValue = 8;
       document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
       currentMoneyElement.classList.remove("px-3");
     }
-
-    const toggle = document.getElementById("currency");
 
     // On load, if a CAD cookie exist, initialize to CAD and set toggle visually.
     // If USD cookie, do nothing, load as normal.
@@ -91,16 +88,13 @@ document.addEventListener(
       // Initialize to CAD settings if toggled while on USD and vice-versa.
       if (getCookie("currencyMode") == "'USD'") {
         initializeCAD();
-        currencyMode = "CAD";
         document.cookie = "currencyMode = 'CAD'";
-        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+        window.location.reload();
       } else {
         initializeUSD();
-        currencyMode = "USD";
         document.cookie = "currencyMode = 'USD'";
-        currencyFlag.innerText = "USD";
         boosterValue = 8;
-        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+        window.location.reload();
       }
       toggle.classList.toggle("on");
     });
