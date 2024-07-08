@@ -3,10 +3,26 @@ boosterValue = 8;
 boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
+currencyMode = "";
 
 myPrices = [];
 
 var activeCheck = false;
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 function convertCurrency(value) {
   if (currencyMode == "CAD") {
@@ -17,15 +33,40 @@ function convertCurrency(value) {
   }
 }
 
+function initializeCAD() {
+  currencyFlag.innerText = "CAD";
+  boosterValue = 13;
+  console.log("Initializing cad...");
+}
+
+function initializeUSD() {
+  currencyFlag.innerText = "USD";
+  boosterValue = 13;
+}
+
 // Load DOM content, then execute
 document.addEventListener(
   "DOMContentLoaded",
 
   function init() {
-    currencyMode = "USD";
+    currencyFlag = document.getElementById("currencyFlag");
+
+    if (getCookie("currencyMode")) {
+      if (getCookie("currencyMode") == "CAD") {
+        console.log("FOUND CAD ON LOAD");
+        initializeCAD();
+        toggle.classList.toggle("on");
+      } else {
+        console.log("FOUND USD COOKIE ON LOAD");
+      }
+    } else {
+      currencyMode = "USD";
+      console.log("NO COOKIE FOUND ON LOAD");
+      document.cookie("currencyMode = 'USD'");
+      initializeUSD();
+    }
 
     console.log("currency mode: " + currencyMode);
-    currencyFlag = document.getElementById("currencyFlag");
     currentMoneyElement = document.getElementById("current-money");
 
     const toggle = document.getElementById("currency");
@@ -39,24 +80,26 @@ document.addEventListener(
       document.getElementById("boosters-bought").innerText = "--";
       document.getElementById("current-money").innerText = "$ --";
       currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
+      console.log("RESULT OF getCookie: " + getCookie("currencyMode"));
 
-      if (currencyMode == "USD") {
+      console.log(getCookie("currencyMode"));
+
+      if (getCookie("currencyMode") == "'USD'") {
+        initializeCAD();
         currencyMode = "CAD";
-        currencyFlag.innerText = "CAD";
-        boosterValue = 13;
+        document.cookie = "currencyMode = 'CAD'";
         document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+        console.log("NEXZT OF getCookie: " + getCookie("currencyMode"));
       } else {
+        initializeUSD();
         currencyMode = "USD";
+        document.cookie = "currencyMode = 'USD'";
         currencyFlag.innerText = "USD";
         boosterValue = 8;
         document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
       }
       console.log("currency mode: " + currencyMode);
       toggle.classList.toggle("on");
-      // var pPB = document.getElementById("pricePerBooster");
-      // newValue = fx(pPB.innerText).from("USD").to("CAD");
-      // console.log(newValue);
-      // pPB.innerText = newValue;
     });
     // alert("Ready!");
   },
