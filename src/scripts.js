@@ -1,6 +1,5 @@
-rarePrice = 0;
 newTotal = 0;
-boosterValue = 15;
+boosterValue = 8;
 boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
@@ -8,6 +7,61 @@ uncommonSum = 0;
 myPrices = [];
 
 var activeCheck = false;
+
+function convertCurrency(value) {
+  if (currencyMode == "CAD") {
+    value = fx(value).from("USD").to("CAD").toFixed(2);
+    return Number(value);
+  } else {
+    return Number(value);
+  }
+}
+
+// Load DOM content, then execute
+document.addEventListener(
+  "DOMContentLoaded",
+
+  function init() {
+    currencyMode = "USD";
+
+    console.log("currency mode: " + currencyMode);
+    currencyFlag = document.getElementById("currencyFlag");
+    currentMoneyElement = document.getElementById("current-money");
+
+    const toggle = document.getElementById("currency");
+    toggle.addEventListener("click", () => {
+      boostersBought = 0;
+      newTotal = 0;
+      commonSum = 0;
+      uncommonSum = 0;
+      myPrices = [];
+
+      document.getElementById("boosters-bought").innerText = "--";
+      document.getElementById("current-money").innerText = "$ --";
+      currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
+
+      if (currencyMode == "USD") {
+        currencyMode = "CAD";
+        currencyFlag.innerText = "CAD";
+        boosterValue = 13;
+        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+      } else {
+        currencyMode = "USD";
+        currencyFlag.innerText = "USD";
+        boosterValue = 8;
+        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+      }
+      console.log("currency mode: " + currencyMode);
+      toggle.classList.toggle("on");
+      // var pPB = document.getElementById("pricePerBooster");
+      // newValue = fx(pPB.innerText).from("USD").to("CAD");
+      // console.log(newValue);
+      // pPB.innerText = newValue;
+    });
+    // alert("Ready!");
+  },
+  false
+);
 
 function hitMe() {
   // Prevent slider from triggering pulls multiple times
@@ -176,7 +230,7 @@ async function ghostPull() {
   }
 
   // TO FIX: figure out if DFC....
-  if (ghostName.includes("//")) {
+  if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
     ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
   } else {
     ghostImagePrimary = ghostCard.image_uris.normal;
@@ -192,10 +246,6 @@ async function ghostPull() {
   //  Insert Name
   const ghostNameElement = document.getElementById("ghost-name");
   ghostNameElement.innerText = ghostName;
-
-  //  Add ghost effect
-  var ghostElement = document.getElementById("ghost-card");
-  // ghostElement.firstElementChild.classList.add("ghost-effect");
 
   //  Reveal snark
   const snarkBox = document.getElementById("snark");
@@ -227,7 +277,7 @@ async function commonPull_1() {
 
   //  waits until Scryfall fetch completes...
   let common_1 = await response.json();
-  console.log(common_1);
+  // console.log(common_1);
   commonName_1 = common_1.name;
 
   //  Set Price, but check for Foil Price
@@ -268,7 +318,7 @@ async function multiplePull(rarity, pageElement, startNum, endNum, scryfallLink)
     cardPrice = Number(card.prices.usd);
 
     //  Replace Img Source, check for DFC
-    if (cardName.includes("//")) {
+    if (card.layout == "transform" || card.layout == "modal_dfc") {
       uncommonImage = card.card_faces[0].image_uris.normal;
     } else {
       uncommonImage = card.image_uris.normal;
@@ -322,12 +372,12 @@ async function uncommonPull() {
   for (j = 1; j < 4; j++) {
     let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Au+is%3Afirstprinting");
     let uncommonCard = await response.json();
-    // console.log(uncommonCard);
     uncommonName = uncommonCard.name;
-    uncommonPrice = Number(uncommonCard.prices.usd);
+    uncommonPrice = convertCurrency(uncommonCard.prices.usd);
 
     //  Replace Img Source, check for DFC
-    if (uncommonName.includes("//")) {
+    console.log(uncommonCard);
+    if (uncommonCard.layout == "transform" || uncommonCard.layout == "modal_dfc") {
       uncommonImage = uncommonCard.card_faces[0].image_uris.normal;
     } else {
       uncommonImage = uncommonCard.image_uris.normal;
@@ -337,32 +387,11 @@ async function uncommonPull() {
     uncommonImageElement = document.getElementById(uncommonImageId);
     uncommonImageElement.src = uncommonImage;
 
-    //  Make card element
-    // var uncommonElement = document.createElement("div");
-    // var uncommonPositionClass = "position-" + j;
-    // uncommonElement.classList.add("card-default", uncommonPositionClass);
-
-    // Make image element, append to card
-    // var uncommonImage = document.createElement("img");
-    // uncommonImage.classList.add("w-60", "rounded-lg");
-    // uncommonImage.src = imagePrimary;
-
-    //  Append the card element, attach image to the last one
-    // uncommonSet.appendChild(uncommonElement);
-    // uncommonSet.lastChild.appendChild(uncommonImage);
-
-    //  Append Title and price
-    // var uncommonTitle = "Slot #" + j + " - Uncommon";
-    // var uncommonTitleElement = document.createElement("div");
-    // uncommonTitleElement.classList.add("text-center");
-    // uncommonTitleElement.innerText = uncommonTitle;
-    // uncommonElement.appendChild(uncommonTitleElement);
-
     var uncommonPrice = Number(uncommonCard.prices.usd);
-    // var uncommonPriceElement = document.createElement("div");
-    // uncommonPriceElement.classList.add("text-center");
-    // uncommonPriceElement.innerText = "$" + uncommonPrice.toFixed(2);
-    // uncommonElement.appendChild(uncommonPriceElement);
+    if (currencyMode == "CAD") {
+      uncommonPrice = Number(fx(uncommonPrice).from("USD").to("CAD"));
+    } else {
+    }
 
     //  Create Uncommon Sum Element
     uncommonSum = uncommonSum + uncommonPrice;
@@ -420,10 +449,10 @@ async function rarePull() {
   let card = await response.json();
   // console.log(card);
   rareName = card.name;
-  rarePrice = Number(card.prices.usd);
+  rarePrice = convertCurrency(card.prices.usd);
 
   // TO FIX: figure out if DFC....
-  if (rareName.includes("//")) {
+  if (card.layout == "transform" || card.layout == "modal_dfc") {
     rareImagePrimary = card.card_faces[0].image_uris.normal;
   } else {
     rareImagePrimary = card.image_uris.normal;
@@ -507,7 +536,7 @@ async function newModernPull() {
   newModernPrice = Number(card.prices.usd);
 
   // TO FIX: figure out if DFC....
-  if (newModernName.includes("//")) {
+  if (card.layout == "transform" || card.layout == "modal_dfc") {
     newModernImagePrimary = card.card_faces[0].image_uris.normal;
   } else {
     newModernImagePrimary = card.image_uris.normal;
@@ -543,7 +572,7 @@ async function wildcardPull() {
   wildcardPrice = Number(card.prices.usd);
 
   //  Replace Img Source
-  if (wildcardName.includes("//")) {
+  if (card.layout == "transform" || card.layout == "modal_dfc") {
     wildcardImagePrimary = card.card_faces[0].image_uris.normal;
   } else {
     wildcardImagePrimary = card.image_uris.normal;
@@ -612,7 +641,7 @@ async function foilPull() {
   foilCard.firstElementChild.classList.add("foil-gradient");
 
   //  Replace Img Source
-  if (foilName.includes("//")) {
+  if (card.layout == "transform" || card.layout == "modal_dfc") {
     foilImagePrimary = card.card_faces[0].image_uris.normal;
   } else {
     foilImagePrimary = card.image_uris.normal;
@@ -728,7 +757,6 @@ function sumTotals() {
     if (checkIfFinished()) {
       clearInterval(timeout);
       isFinished = true;
-      console.log("bonk");
       console.log(myPrices);
 
       loadingOverlay.classList.remove("z-10", "loader-blur-effect");
@@ -740,13 +768,13 @@ function sumTotals() {
       commomSum = 0;
 
       //  Sum up all prices in array
-      currentMoneyElement = document.getElementById("current-money");
       console.log("sending money up");
       myPrices.forEach((num) => {
         newTotal += num;
       });
       newTotal = newTotal - boosterValue;
       currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
+      currentMoneyElement.classList.add("px-3");
 
       if (newTotal > 0) {
         currentMoneyElement.classList.remove("bg-rose-500");

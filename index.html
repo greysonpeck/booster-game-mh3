@@ -5,6 +5,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="text/javascript">
+      function codeAddress() {
+          alert('ok');
+      }
+      window.onload = codeAddress;
+      </script>
     <link rel="stylesheet" href="./src/output.css" />
     <link rel="stylesheet" href="./src/slider.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,12 +18,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <script src="./src/scripts.js"></script>
+    <script src="./src/money.js"></script>
     <script src="./src/slider_logic.js"></script>
     <title>Modern Horizons 3</title>
   </head>
   <body>
 
-  
+    <label class="switch">
+      <input type="checkbox">
+      <span id="currency" class="slider round"></span>
+    </label>
+    <h2 id="currencyFlag">USD</h2>
+
     <main class="mx-auto px-1 pt-8 sm:pt-20 flex flex-col">
 
       <!-- BLOCK THING -->
@@ -44,7 +56,7 @@
           <!-- <button onclick="hitMe()" class="ring-1 ring-lime-200 rounded-md text-lg p-2 bg-slate-300">Buy Booster ($15)</button> -->
           <div class="flex flex-row">
             <span class="w-full font-light">Price per booster</span>
-            <span class="font-semibold">$15.00</span>
+            <span id="pricePerBooster" class="font-semibold">$8.00</span>
           </div>
           <div class="flex flex-row">
             <span class="w-full font-light">Boosters bought</span>
