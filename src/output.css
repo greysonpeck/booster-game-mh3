@@ -2667,6 +2667,37 @@ h2 {
   font-family: "Oswald", sans-serif;
 }
 
+.toggle {
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  position: relative;
+  border-radius: 34px;
+  background-color: #ccd;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle::before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 4px;
+  left: 4px;
+  transition: transform 0.3s;
+}
+
+.toggle.on {
+  background-color: #66bb6a;
+}
+
+.toggle.on::before {
+  transform: translateX(26px);
+}
+
 /* The switch - the box around the slider */
 
 .switch {
@@ -2694,7 +2725,7 @@ h2 {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -2705,15 +2736,15 @@ h2 {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {

@@ -33,63 +33,67 @@ function convertCurrency(value) {
   }
 }
 
-function initializeCAD() {
-  currencyFlag.innerText = "CAD";
-  boosterValue = 13;
-  console.log("Initializing cad...");
-}
-
-function initializeUSD() {
-  currencyFlag.innerText = "USD";
-  boosterValue = 13;
-}
-
 // Load DOM content, then execute
 document.addEventListener(
   "DOMContentLoaded",
 
   function init() {
     currencyFlag = document.getElementById("currencyFlag");
+    currentMoneyElement = document.getElementById("current-money");
 
+    function initializeCAD() {
+      currencyFlag.innerText = "CAD";
+      currencyMode = "CAD";
+      boosterValue = 12;
+      document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+      currentMoneyElement.classList.remove("px-3");
+      console.log("Initializing cad...");
+      console.log("currency mode = " + currencyMode);
+    }
+
+    function initializeUSD() {
+      currencyFlag.innerText = "USD";
+      boosterValue = 8;
+      document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+      currentMoneyElement.classList.remove("px-3");
+    }
+
+    const toggle = document.getElementById("currency");
+
+    // On load, if a CAD cookie exist, initialize to CAD and set toggle visually.
+    // If USD cookie, do nothing, load as normal.
+    // If no cookie yyet, set cookie
     if (getCookie("currencyMode")) {
-      if (getCookie("currencyMode") == "CAD") {
-        console.log("FOUND CAD ON LOAD");
+      if (getCookie("currencyMode") == "'CAD'") {
         initializeCAD();
         toggle.classList.toggle("on");
       } else {
-        console.log("FOUND USD COOKIE ON LOAD");
+        currentMoneyElement.classList.remove("px-3");
       }
     } else {
       currencyMode = "USD";
-      console.log("NO COOKIE FOUND ON LOAD");
-      document.cookie("currencyMode = 'USD'");
+      document.cookie = "currencyMode = 'USD'";
       initializeUSD();
     }
 
-    console.log("currency mode: " + currencyMode);
-    currentMoneyElement = document.getElementById("current-money");
-
-    const toggle = document.getElementById("currency");
+    // Toggle click event
     toggle.addEventListener("click", () => {
+      // Initialize all values
       boostersBought = 0;
       newTotal = 0;
       commonSum = 0;
       uncommonSum = 0;
       myPrices = [];
-
       document.getElementById("boosters-bought").innerText = "--";
       document.getElementById("current-money").innerText = "$ --";
       currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
-      console.log("RESULT OF getCookie: " + getCookie("currencyMode"));
 
-      console.log(getCookie("currencyMode"));
-
+      // Initialize to CAD settings if toggled while on USD and vice-versa.
       if (getCookie("currencyMode") == "'USD'") {
         initializeCAD();
         currencyMode = "CAD";
         document.cookie = "currencyMode = 'CAD'";
         document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
-        console.log("NEXZT OF getCookie: " + getCookie("currencyMode"));
       } else {
         initializeUSD();
         currencyMode = "USD";
@@ -98,10 +102,8 @@ document.addEventListener(
         boosterValue = 8;
         document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
       }
-      console.log("currency mode: " + currencyMode);
       toggle.classList.toggle("on");
     });
-    // alert("Ready!");
   },
   false
 );
