@@ -24,10 +24,6 @@
   </head>
   <body>
 
-    <label class="switch">
-      <input type="checkbox">
-      <span id="currency" class="toggle round "></span>
-    </label>
 
     <main class="mx-auto px-1 pt-8 sm:pt-20 flex flex-col">
 
@@ -68,9 +64,15 @@
             <span class="font-semibold text-nowrap">see below</span>
           </div>
           <hr class="my-2 opacity-40">
-          <div class="flex flex-row">
-            <span class="w-full font-light">Net value</span>
-            <div id="current-money" class="font-semibold rounded-xl w-auto px-3 bg-opacity-75">$ --</div>
+          <div class="flex flex-row items-center">
+            <label class="switch -left-2">
+              <input type="checkbox">
+              <span id="currency" class="toggle round "></span>
+            </label>
+            
+            <span class="w-full font-light pr-2 text-right">Net value</span>
+            <div id="current-money" class="font-semibold inline rounded-xl w-auto px-3 bg-opacity-75">
+              $ --</div>
           </div>
 
         </div>
@@ -87,7 +89,8 @@
             <div id="ghost-card" class="effect-block" width="240px" height="auto">
               <div class="shine-holder">
                 <div id="ghost-blank" class="effect-block" width="240px" height="auto">
-                  <div class=""></div>
+                  <img id="ghost-textured" class="absolute hidden" src="/img/textured-foil.png" alt="">
+                  <div id="foil-holder" class=""></div>
                   <img id="ghost-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
                 </div>
                 <div class="shine"></div>

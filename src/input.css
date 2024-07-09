@@ -21,7 +21,7 @@ h2 {
   height: 34px;
   position: relative;
   border-radius: 34px;
-  background-color: #ccd;
+  background-color: #1c45484f;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -31,12 +31,12 @@ h2 {
   font-size: 0.75rem;
   text-align: center;
   line-height: 1.5rem;
-  color: black;
+  color: white;
   position: absolute;
   width: 40px;
   height: 24px;
   border-radius: 25px;
-  background-color: #fff;
+  background-color: #1c45484f;
   top: 4px;
   left: 4px;
   transition: transform 0.3s;
@@ -47,7 +47,7 @@ h2 {
 }
 
 .toggle.on {
-  background-color: #66bb6a;
+  background-color: #0824264f;
 }
 
 .toggle.on::before {
@@ -247,24 +247,6 @@ input:checked + .slider:before {
   );
   backdrop-filter: brightness(1.1);
   filter: brightness(1.1);
-}
-
-.textured-gradient {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  color: #eee;
-  padding: 10px;
-  width: 230px;
-  /* border: 1px solid white; */
-  margin: 0px;
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  padding: -18px;
-  background-image: url("/img/stripe.png");
 }
 
 .ghost-effect {

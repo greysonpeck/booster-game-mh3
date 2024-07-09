@@ -270,23 +270,32 @@ function setGhostData() {
     ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
   }
 
-  ghostBlankElement = document.getElementById("ghost-blank");
+  ghostFoilHolderElement = document.getElementById("foil-holder");
+  ghostTexturedElement = document.getElementById("ghost-textured");
 
   //  Set treatment
   const ghostFoilElement = document.getElementById("ghost-foil");
-  ghostBlankElement.firstElementChild.classList.remove("foil-gradient");
-  ghostBlankElement.firstElementChild.classList.remove("textured-gradient");
 
   if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
     ghostFoilElement.innerText = "textured foil ";
     ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-    ghostBlankElement.firstElementChild.classList.add("foil-gradient");
-
-    ghostBlankElement.firstElementChild.classList.add("textured-gradient");
+    ghostTexturedElement.classList.add("block");
+    ghostTexturedElement.classList.remove("hidden");
+    ghostFoilHolderElement.classList.add("foil-gradient");
   } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
     ghostFoilElement.innerText = "foil ";
     ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-    ghostBlankElement.firstElementChild.classList.add("foil-gradient");
+    ghostFoilHolderElement.classList.add("foil-gradient");
+  } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
+    ghostFoilHolderElement.classList.remove("foil-gradient");
+    ghostFoilElement.innerText = "";
+    ghostTexturedElement.classList.remove("block");
+    ghostTexturedElement.classList.add("hidden");
+  } else {
+    ghostFoilHolderElement.classList.remove("foil-gradient");
+    ghostFoilElement.innerText = "";
+    ghostTexturedElement.classList.remove("block");
+    ghostTexturedElement.classList.add("hidden");
   }
 
   if (ghostCard.frame == "1997") {
