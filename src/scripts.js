@@ -33,6 +33,15 @@ function convertCurrency(value) {
   }
 }
 
+function convertToUSD(value) {
+  if (currencyMode == "CAD") {
+    value = fx(value).from("CAD").to("USD").toFixed(2);
+    return Number(value);
+  } else {
+    return Number(value);
+  }
+}
+
 // Load DOM content, then execute
 document.addEventListener(
   "DOMContentLoaded",
@@ -115,7 +124,9 @@ function hitMe() {
     // var hitCount = document.getElementById("hit-counter");
     // hitCount.innerText += "0";
 
-    ghostPull();
+    // ghostPull();
+
+    newGhostPull();
 
     commonPull_1();
 
@@ -245,13 +256,206 @@ const getRandomNumber = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-async function ghostPull() {
-  ghostLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+usd>%3D7+usd<%3D10";
+function setGhostData() {
+  if (ghostName.includes(",")) {
+    ghostName = ghostName.substring(0, ghostName.indexOf(","));
+  } else {
+    // let it rock
+  }
 
-  let response = await fetch(ghostLink);
+  //  Set price, check for etched
+  if (ghostCard.tcgplayer_etched_id) {
+    ghostPrice = convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
+  } else {
+    ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
+  }
+
+  //  Set treatment
+  const ghostFoilElement = document.getElementById("ghost-foil");
+  if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
+    ghostFoilElement.innerText = "textured foil ";
+    ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+  } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
+    ghostFoilElement.innerText = "foil ";
+    ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+  }
+
+  if (ghostCard.frame == "1997") {
+    ghostTreatment = "retro frame ";
+    // } else if (ghostCard.promo_types[0]) {
+    //   ghostTreatment = "borderless concept art ";
+  } else if (ghostCard.border_color == "borderless") {
+    ghostTreatment = "borderless ";
+  } else if (ghostCard.finishes[0] == "etched") {
+    ghostTreatment = "etched ";
+  } else {
+    ghostTreatment = "";
+  }
+
+  const ghostTreatmentElement = document.getElementById("ghost-treatment");
+  ghostTreatmentElement.innerText = ghostTreatment;
+
+  // TO FIX: figure out if DFC....
+  if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
+    ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
+  } else {
+    ghostImagePrimary = ghostCard.image_uris.normal;
+  }
+
+  //  Replace Img Source
+  document.getElementById("ghost-image").src = ghostImagePrimary;
+
+  //  Insert Price
+  const ghostPriceElement = document.getElementById("ghost-price");
+  ghostPriceElement.innerText = ghostPrice;
+
+  //  Insert Name
+  const ghostNameElement = document.getElementById("ghost-name");
+  ghostNameElement.innerText = ghostName;
+
+  //  Reveal snark
+  const snarkBox = document.getElementById("snark");
+  snarkBox.classList.remove("hidden");
+}
+
+function newGhostPull() {
+  // Set prices and link
+  console.log(boostersBought);
+  console.log(boosterValue);
+  totalBoosterSpend = (boostersBought + 1) * boosterValue;
+  boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
+  boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
+
+  console.log("booster spend bottom: " + boosterSpendBottom);
+  console.log("booster spend top: " + boosterSpendTop);
+
+  console.log(totalBoosterSpend);
+
+  ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+";
+  ghostLinkConstructed = ghostLinkHalf + "USD>%3D" + boosterSpendBottom + "+" + "USD<%3D" + boosterSpendTop;
+
+  topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Amh3+unique%3Aprints+USD%3E%3D15";
+
+  fetch(topOutLink)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Could not fetch resource");
+      }
+      return response.json();
+    })
+
+    // First we set the Ghost Card to the TOP PRICE card
+    .then((data) => {
+      ghostCard = data.data[0];
+      ghostPrice = ghostCard.prices.usd;
+      console.log(ghostPrice);
+
+      if (totalBoosterSpend <= ghostPrice) {
+        ghostLink = ghostLinkConstructed;
+        console.log("using Constructed Link");
+        console.log(ghostLinkConstructed);
+
+        // Get the non-top card
+        ghostCard = fetch(ghostLinkConstructed)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log("second fetch");
+            console.log(data);
+            ghostCard = data;
+
+            ghostName = data.name;
+            console.log("HERE: " + ghostName);
+
+            setGhostData();
+          });
+      } else {
+        ghostLink = ghostCard;
+        console.log("using TOP PRICE Link");
+        ghostName = ghostCard.name;
+        console.log("HERE: " + ghostName);
+
+        setGhostData();
+      }
+    })
+    .catch((error) => console.error(error));
+}
+
+async function ghostPull() {
+  // Set prices and link
+  totalBoosterSpend = boostersBought * boosterValue;
+  boosterSpendTop = totalBoosterSpend + totalBoosterSpend * 0.12;
+  boosterSpendBottom = totalBoosterSpend - totalBoosterSpend * 0.12;
+  currencyMode = "USD";
+
+  console.log("booster spend bottom: " + boosterSpendBottom);
+  console.log(totalBoosterSpend);
+  console.log(boosterSpendTop);
+
+  ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+";
+  ghostLinkConstructed = ghostLinkHalf + currencyMode + ">%3D" + boosterSpendBottom + "+" + currencyMode + "<%3D" + boosterSpendTop;
+
+  // Set Promises
+  topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Amh3+unique%3Aprints+USD%3E%3D15";
+
+  fetch(topOutLink)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(`HTTP error: ${response.status}`);
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Data received:", data);
+      let topOutCard = response.json();
+      console.log(topOutCard);
+      // topOutPrice = topOutCard.value.data[0].prices.usd;
+      console.log("DIBBLE");
+      console.log(topOutCard.value.data[0].prices.usd);
+      // console.log(topOutPrice);
+      if (totalBoosterSpend <= topOutPrice) {
+        ghostLink = ghostLinkConstructed;
+        console.log("using Constructed Link");
+      } else {
+        ghostLink = topOutCard;
+        console.log("using Top Out Link");
+      }
+    })
+    .catch((error) => {
+      console.error("Error message:");
+    });
+
+  // let promiseTop = new Promise((myResolve, myReject) => {
+  //   if (topOutCard) {
+  //     myResolve("OK");
+  //   } else {
+  //     myReject("Not Okay");
+  //   }
+  // });
+
+  // myReject(console.log("REJECTED"));
+
+  // promiseTop.then();
+
+  // await fetch(topOutLink);
+
+  // Promise.all([promiseTop]).then((values) => {
+  //   console.log(values);
+
+  //   promiseGhostLink = fetch(ghostLink);
+
+  //   console.log(ghostLink);
+
+  //   console.log(topOutPrice);
+  // });
+
+  // Default test
+  // ghostLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+usd>%3D7+usd<%3D10";
 
   // waits until Scryfall fetch completes...
-  let ghostCard = await response.json();
+  // let ghostCard = await response.json();
   // console.log(card);
   ghostName = ghostCard.name;
 
