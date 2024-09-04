@@ -762,10 +762,6 @@ video {
   margin-left: 1rem;
 }
 
-.ml-auto {
-  margin-left: auto;
-}
-
 .mt-14 {
   margin-top: 3.5rem;
 }
@@ -2834,10 +2830,7 @@ input:checked + .slider:before {
 }
 
 #common-set {
-  position: absolute;
-  top: 0;
-  z-index: -1;
-  height: 335px;
+  position: relative;
 }
 
 #uncommon-set {
@@ -2879,12 +2872,36 @@ input:checked + .slider:before {
   z-index: -6;
 }
 
+.top-pos-1 {
+  top:34px;
+}
+
+.top-pos-2 {
+  top:74px;
+}
+
+.top-pos-3 {
+  top:114px;
+}
+
+.top-pos-4 {
+  top:154px;
+}
+
+.top-pos-5 {
+  top:194px;
+}
+
+.top-pos-6 {
+  top:234px;
+}
+
 /* Hiding all text in the extra commons */
 
 /* #uncommon-set>div>div::not(:last-child), */
 
 #common-set > div > div {
-  display: none;
+  /* display: none; */
 }
 
 .effect-block {
