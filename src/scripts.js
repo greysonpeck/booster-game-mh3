@@ -4,10 +4,23 @@ boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
+currentSet = "MH3";
+
+const getRandomNumber = (min, max) => {
+    return Math.random() * (max - min) + min;
+};
 
 myPrices = [];
 
 var activeCheck = false;
+
+function pullBooster() {
+    if (currentSet === "DSK") {
+        pullDSK();
+    } else {
+        pullMH3();
+    }
+}
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -73,12 +86,14 @@ document.addEventListener(
 
         // On load, if a CAD cookie exist, initialize to CAD and set toggle visually.
         // If USD cookie, do nothing, load as normal.
-        // If no cookie yyet, set cookie
+        // If no cookie yet, set cookie
         if (getCookie("currencyMode")) {
             if (getCookie("currencyMode") == "'CAD'") {
+                console.log("Canadian Loonie gang");
                 initializeCAD();
                 toggle.classList.toggle("on");
             } else {
+                console.log("USA MONEY GANG");
                 currentMoneyElement.classList.remove("px-3");
             }
         } else {
@@ -88,7 +103,7 @@ document.addEventListener(
         }
 
         // Toggle click event
-        toggle.addEventListener("click", () => {
+        function initializeMoney() {
             // Initialize all values
             boostersBought = 0;
             newTotal = 0;
@@ -111,12 +126,54 @@ document.addEventListener(
                 window.location.reload();
             }
             toggle.classList.toggle("on");
+        }
+
+        toggle.addEventListener("click", () => {
+            initializeMoney();
         });
+
+        if (getCookie("currentSet")) {
+            if (getCookie("currentSet") == "'MH3'") {
+                setMH3();
+            } else if (getCookie("currentSet") == "'DSK'") {
+                setDSK();
+            }
+        } else {
+            setMH3();
+        }
     },
     false
 );
 
 // Card maker
+
+function clearMoney() {
+    currentSetElement = document.getElementById("current-set");
+    currentMoneyElement = document.getElementById("current-money");
+
+    // Toggle click event
+    function initializeMoney() {
+        // Initialize all values
+        boostersBought = 0;
+        newTotal = 0;
+        commonSum = 0;
+        uncommonSum = 0;
+        myPrices = [];
+        document.getElementById("boosters-bought").innerText = "--";
+        document.getElementById("current-money").innerText = "$ --";
+        currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
+    }
+
+    initializeMoney();
+}
+
+function clearSlots() {
+    const cardSection = document.getElementById("card-section");
+    while (cardSection.childElementCount > 1) {
+        cardSection.removeChild(cardSection.lastChild);
+    }
+}
+
 function makeSlot(id, label, hasFoil, quantity) {
     const cardSection = document.getElementById("card-section");
 
@@ -145,7 +202,7 @@ function makeSlot(id, label, hasFoil, quantity) {
 
         setLabel = document.createElement("div");
         setLabel.classList.add("card-info", "relative", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
-        setLabel.innerHTML = '<div class="slot-label">' + label + "(" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
+        setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
         cardSet.append(setLabel);
 
         for (var i = 0; i < quantity; i++) {

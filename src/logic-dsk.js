@@ -1,22 +1,19 @@
-function setMH3() {
-    console.log("running setMH3()");
+function setDSK() {
+    currentSet = "DSK";
+    document.cookie = "currentSet = 'DSK'";
 
-    currentSet = "MH3";
-    document.cookie = "currentSet = 'MH3'";
-
-    document.getElementById("set-header").innerText = "MODERN HORIZONS 3";
-    document.getElementById("set-toggle").innerText = "go duskmourn";
+    document.getElementById("set-header").innerText = "DUSKMOURN";
+    document.getElementById("set-toggle").innerText = "go modern horizons 3";
     document.getElementById("set-toggle").addEventListener("click", () => {
-        setDSK();
+        setMH3();
     });
-    document.body.style.backgroundImage = "url('../img/MH3_bg.png')";
-
+    document.body.style.backgroundImage = "url('../img/DSK_bg.jpg')";
     clearSlots();
-    makeMH3Slots();
+    makeDSKSlots();
     clearMoney();
 }
 
-function makeMH3Slots() {
+function makeDSKSlots() {
     makeSlot("rare", "Rare");
     makeSlot("new-modern", "New-to-Modern");
     makeSlot("wildcard", "Non-Foil Wildcard");
@@ -26,7 +23,7 @@ function makeMH3Slots() {
     makeSlot("common", "Commons", false, 6);
 }
 
-function pullMH3() {
+function pullDSK() {
     // Prevent slider from triggering pulls multiple times
     if (activeCheck == false) {
         activeCheck = true;
@@ -35,21 +32,21 @@ function pullMH3() {
         const slider = document.querySelector("#sound-slider");
         slider.value = 10;
 
-        ghostPull_MH3();
+        ghostPull();
 
-        commonPull_MH3();
+        commonPull();
 
-        uncommonPull_MH3();
+        uncommonPull();
 
-        rarePull_MH3();
+        rarePull_DSK();
 
-        newModernPull_MH3();
+        newModernPull();
 
-        landcommonPull_MH3();
+        landcommonPull();
 
-        wildcardPull_MH3();
+        wildcardPull();
 
-        foilPull_MH3();
+        foilPull();
 
         sumTotals();
     } else {
@@ -231,7 +228,7 @@ function setGhostData() {
     snarkBox.classList.remove("hidden");
 }
 
-function ghostPull_MH3() {
+function ghostPull() {
     // Set prices and link
     totalBoosterSpend = (boostersBought + 1) * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
@@ -282,7 +279,7 @@ function ghostPull_MH3() {
 }
 
 //   New commons function
-async function commonPull_MH3() {
+async function commonPull() {
     //  Get card from Scryfall
     for (j = 1; j < 7; j++) {
         // If we hit on SPG roll...
@@ -293,9 +290,9 @@ async function commonPull_MH3() {
 
         for (j = 1; j < 7; j++) {
             if (commonSPGRoll === 64 && j === 6) {
-                // Special Guest, set:spg date:2024-06-07
+                // Special Guest, set:spg date:2024-09-27
                 commonType = "Special Guest";
-                commonSPGLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2024-06-07+%28game%3Apaper%29";
+                commonSPGLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2024-09-27+%28game%3Apaper%29";
                 let response = await fetch(commonSPGLink);
                 let commonSPGCard = await response.json();
                 commonName = commonSPGCard.name;
@@ -320,7 +317,9 @@ async function commonPull_MH3() {
                 //  Push price to price array
                 myPrices.push(commonSPGPrice);
             } else {
-                let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ac+is%3Afirst-printing");
+                // Common, 81 cards. There are two commons that have Lurking Evil variants, appearing 25% of the time.
+                // rarity:c -type:basic
+                let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ac");
                 let commonCard = await response.json();
                 commonName = commonCard.name;
                 commonPrice = convertCurrency(commonCard.prices.usd);
@@ -355,7 +354,7 @@ async function commonPull_MH3() {
     }
 }
 
-async function uncommonPull_MH3() {
+async function uncommonPull() {
     // Clear out all uncommon card divs, if they exist
     uncommonSet = document.getElementById("uncommon-set");
     // while (uncommonSet.firstChild) {
@@ -363,7 +362,7 @@ async function uncommonPull_MH3() {
     // }
     //  Get card from Scryfall
     for (k = 1; k < 4; k++) {
-        let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Au+is%3Afirstprinting");
+        let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Au");
         let uncommonCard = await response.json();
         uncommonName = uncommonCard.name;
         uncommonPrice = convertCurrency(uncommonCard.prices.usd);
@@ -400,7 +399,7 @@ async function uncommonPull_MH3() {
     uncommonSum = 0;
 }
 
-async function rarePull_MH3() {
+async function rarePull_DSK() {
     //Rare roll
     const getRandomNumber = (min, max) => {
         return Math.random() * (max - min) + min;
@@ -410,28 +409,40 @@ async function rarePull_MH3() {
     var rareLink = "";
 
     // Override roll
-    // rareRoll = 91;
+    // rareRoll = 94.9;
 
-    if (rareRoll <= 79.8) {
-        rareType = "Normal Rare";
-        // rarity:r (is:first-printing OR is:fetchland)
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ar+%28is%3Afirst-printing+OR+is%3Afetchland%29";
-    } else if (rareRoll <= 92.8) {
-        // Mythics include DFC Planeswalkers
-        // rarity:m  is:first-printing
-        rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+is%3Afirst-printing";
-        rareType = "Mythic Rare";
-    } else if (rareRoll <= 94.9) {
-        // Retro frames include 24 Rares, 8 Mythics
-        // (rarity:r OR rarity:m) frame:old
-        rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+frame%3Aold";
-        rareType = "Retro Frame";
-    } else {
-        // Borderless, fetch lands, concept Eldrazi, DFC planeswalkers, frame break, profile, other borderless rares or mythic rares.
-        //  (rarity:r OR rarity:m) (frame:extendedart OR is:concept OR type:planeswalker OR border:borderless)
+    if (rareRoll <= 75) {
+        // Rare
+        // rarity:r
+        rareType = "Rare";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ar";
+    } else if (rareRoll <= 87.6) {
+        // Mythic
+        // rarity:m
+        rareType = "Mythic";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am";
+    } else if (rareRoll <= 95.8) {
+        // Rare Booster Fun (46 cards)
+        // rarity:r is:boosterfun
+        rareType = "Rare - Booster Fun";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ar+is%3Aboosterfun";
+    } else if (rareRoll <= 97.2) {
+        // Mythic Booster Fun (20 cards)
+        // rarity:m is:boosterfun
+        rareType = "Mythic - Booster Fun";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am+is%3Aboosterfun";
+    } else if (rareRoll <= 99.7) {
+        // Rare Lurking Evil (7 cards)
+        // set:dsk (collectornumber=292 OR collectornumber=294  OR collectornumber=296  OR collectornumber=301)
+        // MISSING THREE CARD IDs
+        rareType = "Rare - Lurking Evil";
         rareLink =
-            "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+%28frame%3Aextendedart+OR+is%3Aconcept+OR+type%3Aplaneswalker+OR+border%3Aborderless%29";
-        rareType = "Booster Fun";
+            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D292+OR+collectornumber%3D294++OR+collectornumber%3D296++OR+collectornumber%3D301%29";
+    } else {
+        // Mythic Lurking Evil (2 cards)
+        // set:dsk (collectornumber=293 or collectornumber=298)
+        rareType = "Mythic - Lurking Evil";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D293+or+collectornumber%3D298%29";
     }
 
     let response = await fetch(rareLink);
@@ -463,7 +474,7 @@ async function rarePull_MH3() {
     myPrices.push(rarePrice);
 }
 
-async function newModernPull_MH3() {
+async function newModernPull() {
     //  New-to-Modern roll
     const getRandomNumber = (min, max) => {
         return Math.random() * (max - min) + min;
@@ -545,7 +556,7 @@ async function newModernPull_MH3() {
     myPrices.push(newModernPrice);
 }
 
-async function wildcardPull_MH3() {
+async function wildcardPull() {
     rollForWildcard();
 
     let response = await fetch(wildcardLink);
@@ -575,7 +586,7 @@ async function wildcardPull_MH3() {
     myPrices.push(wildcardPrice);
 }
 
-async function foilPull_MH3() {
+async function foilPull() {
     //  Foil roll
     const getRandomNumber = (min, max) => {
         return Math.random() * (max - min) + min;
@@ -639,7 +650,7 @@ async function foilPull_MH3() {
     myPrices.push(foilPrice);
 }
 
-async function landcommonPull_MH3() {
+async function landcommonPull() {
     //Rare roll
     const getRandomNumber = (min, max) => {
         return Math.random() * (max - min) + min;

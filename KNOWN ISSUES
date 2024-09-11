@@ -11,3 +11,5 @@ https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-a
 July 9 Clean up foil treatment naming/clutter on both Ghost Card and Foil Wildcard.
 
 July 9 Snark Box trim "//" from DFCs
+
+Sept 5 - If there's no price in the data, it can't convert to CAD. USD shows at $0.00. Should work on a catch?

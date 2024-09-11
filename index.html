@@ -19,9 +19,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <script src="./src/scripts.js"></script>
     <script src="./src/logic-mh3.js"></script>
+    <script src="./src/logic-dsk.js"></script>
     <script src="./src/money.js"></script>
     <script src="./src/slider_logic.js"></script>
     <title>Modern Horizons 3</title>
+    <a href="#" id="set-toggle"></a>
+    <div id="current-set"></div>
   </head>
   <body>
 
@@ -33,7 +36,7 @@
       <div class="top-content items-center mx-auto flex flex-col md:flex-row">
         <div class="mb-6">
           <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">The Booster Game</h1>
-          <h2 class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8 text-center">MODERN HORIZONS 3</h1>
+          <h2 id="set-header" class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8 text-center">MODERN HORIZONS 3</h1>
         </div>
 
         <!-- DATA BLOCK -->
@@ -48,8 +51,6 @@
             <!-- <span class="ml-4 font-bold italic text-xl opacity-75 text-nowrap">Rip it!</span> -->
           </div>
           
-          <!-- Simple button -->
-          <!-- <button onclick="hitMe()" class="ring-1 ring-lime-200 rounded-md text-lg p-2 bg-slate-300">Buy Booster ($15)</button> -->
           <div class="flex flex-row">
             <span class="w-full font-light">Price per booster</span>
             <span id="pricePerBooster" class="font-semibold">$8.00</span>
