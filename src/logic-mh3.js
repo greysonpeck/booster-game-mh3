@@ -9,7 +9,7 @@ function setMH3() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setDSK();
     });
-    document.body.style.backgroundImage = "url('/img/MH3_bg.png')";
+    document.body.style.backgroundImage = "url('./img/MH3_bg.png')";
 
     clearSlots();
     makeMH3Slots();
