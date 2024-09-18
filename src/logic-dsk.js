@@ -7,18 +7,17 @@ function setDSK() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setMH3();
     });
-    document.body.style.backgroundImage = "url('/booster-game-mh3/img/DSK_bg.jpg')";
+    document.body.style.backgroundImage = "url('/img/DSK_bg.jpg')";
     clearSlots();
     makeDSKSlots();
     clearMoney();
 }
 
 function makeDSKSlots() {
-    makeSlot("rare", "Rare");
-    makeSlot("new-modern", "New-to-Modern");
-    makeSlot("wildcard", "Non-Foil Wildcard");
+    makeSlot("rare", "Rare or Mythic");
+    makeSlot("wildcard", "Wildcard");
     makeSlot("foil", "Foil Wildcard", true);
-    makeSlot("landcommon", "Land or Common", true);
+    makeSlot("land", "Land or Common", true);
     makeSlot("uncommon", "Uncommons", false, 3);
     makeSlot("common", "Commons", false, 6);
 }
@@ -40,11 +39,9 @@ function pullDSK() {
 
         rarePull_DSK();
 
-        newModernPull();
+        landPull();
 
-        landcommonPull();
-
-        wildcardPull();
+        wildcardPull_DSK();
 
         foilPull();
 
@@ -205,12 +202,7 @@ function setGhostData() {
     const ghostTreatmentElement = document.getElementById("ghost-treatment");
     ghostTreatmentElement.innerText = ghostTreatment;
 
-    // TO FIX: figure out if DFC....
-    if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
-        ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
-    } else {
-        ghostImagePrimary = ghostCard.image_uris.normal;
-    }
+    ghostImagePrimary = ghostCard.image_uris.normal;
 
     //  Replace Img Source
     document.getElementById("ghost-image").src = ghostImagePrimary;
@@ -234,10 +226,10 @@ function ghostPull() {
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
 
-    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+";
+    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Adsk+unique%3Aprints+";
     ghostLinkConstructed = ghostLinkHalf + "USD>%3D" + boosterSpendBottom + "+" + "USD<%3D" + boosterSpendTop;
 
-    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Amh3+unique%3Aprints+USD%3E%3D15";
+    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Adsk+unique%3Aprints+USD%3E%3D15";
 
     fetch(topOutLink)
         .then((response) => {
@@ -250,8 +242,12 @@ function ghostPull() {
         // First we set the Ghost Card to the TOP PRICE card
         .then((data) => {
             ghostCard = data.data[0];
-            ghostPrice = ghostCard.prices.usd;
-            console.log(ghostPrice);
+
+            if (ghostCard.prices.usd == !null) {
+                ghostPrice = ghostCard.prices.usd;
+            } else {
+                ghostPrice = ghostCard.prices.usd_foil;
+            }
 
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
@@ -318,14 +314,16 @@ async function commonPull() {
                 myPrices.push(commonSPGPrice);
             } else {
                 // Common, 81 cards. There are two commons that have Lurking Evil variants, appearing 25% of the time.
-                // rarity:c -type:basic
-                let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ac");
+                // rarity:c (-type:land OR name:"Terramorphic Expanse")
+                // No dual lands, but include Terramorphic Expanse
+                let response = await fetch(
+                    "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ac+%28-type%3Aland+OR+name%3A'Terramorphic+Expanse'%29&unique=cards&as=checklist&order=name&dir=asc"
+                );
                 let commonCard = await response.json();
                 commonName = commonCard.name;
                 commonPrice = convertCurrency(commonCard.prices.usd);
 
-                //  Replace Img Source, check for DFC
-                console.log(commonCard);
+                //  Set img source
                 commonImage = commonCard.image_uris.normal;
 
                 var commonImageId = "common-image-" + j;
@@ -424,8 +422,10 @@ async function rarePull_DSK() {
     } else if (rareRoll <= 95.8) {
         // Rare Booster Fun (46 cards)
         // rarity:r is:boosterfun
+        // Exclude Endurings, Leylines, Dissection Tools, Grievous Wound, Twitching Doll
         rareType = "Rare - Booster Fun";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ar+is%3Aboosterfun";
+        rareLink =
+            "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+is%3Aboosterfun+-name%3A'enduring'+-name%3A'leyline'+-name%3A'dissection'+-name%3A'grievous'+-name%3A'twitching'";
     } else if (rareRoll <= 97.2) {
         // Mythic Booster Fun (20 cards)
         // rarity:m is:boosterfun
@@ -433,11 +433,10 @@ async function rarePull_DSK() {
         rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am+is%3Aboosterfun";
     } else if (rareRoll <= 99.7) {
         // Rare Lurking Evil (7 cards)
-        // set:dsk (collectornumber=292 OR collectornumber=294  OR collectornumber=296  OR collectornumber=301)
-        // MISSING THREE CARD IDs
+        // set:dsk (collectornumber=289 OR collectornumber=290  OR collectornumber=292  OR collectornumber=294 OR collectornumber=296 OR collectornumber=299 OR collectornumber=301)
         rareType = "Rare - Lurking Evil";
         rareLink =
-            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D292+OR+collectornumber%3D294++OR+collectornumber%3D296++OR+collectornumber%3D301%29";
+            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D289+OR+collectornumber%3D290++OR+collectornumber%3D292++OR+collectornumber%3D294+OR+collectornumber%3D296+OR+collectornumber%3D299+OR+collectornumber%3D301%29";
     } else {
         // Mythic Lurking Evil (2 cards)
         // set:dsk (collectornumber=293 or collectornumber=298)
@@ -474,104 +473,38 @@ async function rarePull_DSK() {
     myPrices.push(rarePrice);
 }
 
-async function newModernPull() {
-    //  New-to-Modern roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
+async function wildcardPull_DSK() {
     // Random number between 0 and 100
-    newModernRoll = getRandomNumber(0, 100);
-    var newModernLink = "";
+    wildcardRoll = getRandomNumber(0, 100);
+    var wildcardLink = "";
 
     // Override roll
-    // newModernRoll = 99;
+    // wildcardRoll = 94.9;
 
-    let newModernType = "unknown";
-    if (newModernRoll <= 75.0) {
-        newModernType = "Uncommon New-to-Modern";
-        // Uncommon, New-to-Modern (75%)
-        // rarity:u, not:firstprinting
-        newModernLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Au+not%3Afirstprinting";
-    } else if (newModernRoll <= 96.3) {
-        // Rare, New-to-Modern (21.3%)
-        // rarity:u, not:firstprinting
-        newModernLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Ar++not%3Afirstprinting+-type%3Aland";
-        newModernType = "Rare New-to-Modern";
-    } else if (newModernRoll <= 98.6) {
-        // Mythic, New-to-Modern (2.3%)
-        // rarity:m not:firstprinting
-        newModernLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+not%3Afirstprinting";
-        newModernType = "Mythic, New-to-Modern";
-    } else if (newModernRoll <= 99.4) {
-        // NO DATA? Medallions, Orim's Chant, and Kaalia. Exclude K'rrik, Laelia, Breya
-        //
-        newModernLink =
-            'https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+-type%3Aland+not%3Afirstprinting+is%3Aborderless+-"breya"+-"k%27rrik"+-"laelia"';
-        newModernType = "Rare or Mythic, New-to-Modern Frame Break";
-    } else if (newModernRoll <= 99.7) {
-        // NO DATA? Breya, Kaalia, K'rrik, Laeli
-        //  (rarity:r OR rarity:m) not:firstprinting is:borderless (type:legendary AND type:creature)
-        newModernLink =
-            "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+not%3Afirstprinting+is%3Aborderless+%28type%3Alegendary+AND+type%3Acreature%29";
-        newModernType = "Rare or Mythic, New-to-Modern Borderless Profile";
-    } else if (newModernRoll <= 99.9) {
-        //  HARD DATA: Rare or Mythic Retro Frame, but NOT Flusterstorm
-        //  (rarity:r OR rarity:m) -type:land not:firstprinting frame:old -"flusterstorm"
-        newModernLink =
-            'https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+-type%3Aland+not%3Afirstprinting+frame%3Aold+-"flusterstorm"';
-        newModernType = "Rare or Mythic, New-to-Modern Retro Frame";
+    if (wildcardRoll <= 91.7) {
+        // Wildcard Common or Uncommon, inc. Booster Fun, inc. Terramorphic Expanse
+        // (rarity:c OR rarity:u) unique:art (-type:land or name:"Terramorphic Expanse")
+        wildcardType = "Common or Uncommon";
+        wildcardLink =
+            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ac+OR+rarity%3Au%29+unique%3Aart+%28-type%3Aland+or+name%3A'Terramorphic+Expanse'%29";
     } else {
-        // Mythic Retro Frame (just Recruiter of the Guard)
-        //  rarity:m not:firstprinting frame:old
-        newModernLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+not%3Afirstprinting+frame%3Aold";
-        newModernType = "Mythic New-to-Modern Borderless";
+        // Rare or Mythic, inc. Booster Fun, excl. Lands
+        // (rarity:r or rarity:m) -type:land unique:art collectornumber<386
+        // THIS ONE IS WRONG, INCLUDES COLLECTOR BOOSTER STUFF
+        wildcardType = "Rare or Mythic, may include Booster Fun";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ar+or+rarity%3Am%29+-type%3Aland+unique%3Aart+collectornumber<386";
     }
-
-    let response = await fetch(newModernLink);
-
-    // waits until Scryfall fetch completes...
-    let card = await response.json();
-    newModernName = card.name;
-    newModernPrice = Number(card.prices.usd);
-
-    // TO FIX: figure out if DFC....
-    if (card.layout == "transform" || card.layout == "modal_dfc") {
-        newModernImagePrimary = card.card_faces[0].image_uris.normal;
-    } else {
-        newModernImagePrimary = card.image_uris.normal;
-    }
-
-    //  Replace Img Source
-    document.getElementById("new-modern-image").src = newModernImagePrimary;
-
-    //  Insert Price
-    const newModernPriceElement = document.getElementById("new-modern-price");
-    newModernPriceElement.innerText = USDollar.format(newModernPrice);
-
-    //  Insert Roll
-    const newModernRollElement = document.getElementById("new-modern-roll");
-    newModernRollElement.innerText = "Roll: " + newModernRoll.toFixed(0);
-
-    //  Push price to price array
-    myPrices.push(newModernPrice);
-}
-
-async function wildcardPull() {
-    rollForWildcard();
 
     let response = await fetch(wildcardLink);
 
     // waits until Scryfall fetch completes...
     let card = await response.json();
     wildcardName = card.name;
-    wildcardPrice = Number(card.prices.usd);
+    wildcardPrice = convertCurrency(card.prices.usd);
 
-    //  Replace Img Source
-    if (card.layout == "transform" || card.layout == "modal_dfc") {
-        wildcardImagePrimary = card.card_faces[0].image_uris.normal;
-    } else {
-        wildcardImagePrimary = card.image_uris.normal;
-    }
+    wildcardImagePrimary = card.image_uris.normal;
+
+    //   Replace Img Source
     document.getElementById("wildcard-image").src = wildcardImagePrimary;
 
     //  Insert Price
@@ -587,56 +520,42 @@ async function wildcardPull() {
 }
 
 async function foilPull() {
-    //  Foil roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
     // Random number between 0 and 100
     foilRoll = getRandomNumber(0, 100);
-
     var foilLink = "";
 
     // Override roll
-    // foilRoll = 100;
+    // foilRoll = 94.9;
 
-    let foilType = "unknown";
-    if (foilRoll <= 43) {
-        // 43 card
-        // rarity:c, is:firstprinting
-        foilLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+not%3Afirstprinting+-type%3Abasic+not%3Afetchland";
-        foilType = "Foil New-to-Modern";
-    } else if (foilRoll <= 51) {
-        // 8 cards
-        // not:firstprinting (-type:basic and not:fetchland) frame:old
-        foilLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+not%3Afirstprinting+(-type%3Abasic+and+not%3Afetchland)+frame%3Aold";
-        foilType = "Foil Retro-frame New-to-Modern";
+    if (foilRoll <= 91.7) {
+        // Foil Common or Uncommon, inc. Booster Fun, inc. Terramorphic Expanse
+        // (rarity:c OR rarity:u) unique:art (-type:land or name:"Terramorphic Expanse")
+        foilType = "Common or Uncommon";
+        foilLink =
+            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ac+OR+rarity%3Au%29+unique%3Aart+%28-type%3Aland+or+name%3A'Terramorphic+Expanse'%29";
     } else {
-        //  362 cards
-        //  see logic for Wildcard roll
-        rollForWildcard();
-
-        foilLink = wildcardLink;
-        foilType = "Foil Wildcard ";
+        // Rare or Mythic, inc. Booster Fun, excl. Lands
+        // (rarity:r or rarity:m) -type:land unique:art collectornumber<386
+        // THIS ONE IS WRONG, INCLUDES COLLECTOR BOOSTER STUFF
+        foilType = "Rare or Mythic, may include Booster Fun";
+        foilLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ar+or+rarity%3Am%29+-type%3Aland+unique%3Aart+collectornumber<386";
     }
 
-    let response = await fetch(wildcardLink);
+    let response = await fetch(foilLink);
 
     // waits until Scryfall fetch completes...
     let card = await response.json();
+    console.log(card);
     foilName = card.name;
-    foilPrice = Number(card.prices.usd_foil);
+    foilPrice = convertCurrency(card.prices.usd_foil);
+
+    // Replace Img Source
+    foilImagePrimary = card.image_uris.normal;
+    document.getElementById("foil-image").src = foilImagePrimary;
 
     //  Add foil effect
     var foilCard = document.getElementById("foil-card");
     foilCard.firstElementChild.classList.add("foil-gradient");
-
-    //  Replace Img Source
-    if (card.layout == "transform" || card.layout == "modal_dfc") {
-        foilImagePrimary = card.card_faces[0].image_uris.normal;
-    } else {
-        foilImagePrimary = card.image_uris.normal;
-    }
-    document.getElementById("foil-image").src = foilImagePrimary;
 
     //  Insert Price
     const foilPriceElement = document.getElementById("foil-price");
@@ -650,83 +569,86 @@ async function foilPull() {
     myPrices.push(foilPrice);
 }
 
-async function landcommonPull() {
-    //Rare roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
+async function landPull() {
     // Random number between 0 and 100
-    landcommonRoll = getRandomNumber(0, 100);
-    var landcommonLink = "";
+    landRoll = getRandomNumber(0, 100);
+    var landLink = "";
 
     // Override roll
-    // landcommonRoll = 98;
+    // landRoll = 98;
 
-    let landcommonType = "unknown";
-    if (landcommonRoll <= 50) {
-        // rarity:c is:firstprinting
-        landcommonLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+rarity%3Ac+is%3Afirstprinting";
-        landcommonType = "Common";
-    } else if (landcommonRoll <= 70) {
-        // Non-foil basic land
-        // type:"basic land" unique:art  not:boosterfun not:fullart
-        landcommonLink = 'https://api.scryfall.com/cards/random?q=set%3Amh3+type%3A"basic+land"+unique%3Aart++not%3Afullart+not%3Aboosterfun';
-        landcommonType = "Non-foil Land";
-    } else if (landcommonRoll <= 83.3) {
+    let landType = "unknown";
+    if (landRoll <= 13.3) {
+        // Non-foil full-art land
+        // type:basic is:fullart
+        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+is%3Afullart";
+        landType = "Full-art basic";
+    } else if (landRoll <= 16.6) {
+        // Foil full-art land
+        // type:basic is:fullart
+        // NEEDS FOIL TREATMENT
+        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+is%3Afullart";
+        landType = "Foil full-art basic";
+    } else if (landRoll <= 43.3) {
+        // Basic land
+        //  type:basic unique:art -is:fullart
+        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+unique%3Aart+-is%3Afullart";
+        landType = "Non-foil Basic";
+    } else if (landRoll <= 50) {
         // Foil basic land
-        // type:"basic land" unique:art  not:boosterfun not:fullart
-        landcommonLink = 'https://api.scryfall.com/cards/random?q=set%3Amh3+type%3A"basic+land"+unique%3Aart++not%3Afullart+not%3Aboosterfun';
-        landcommonType = "Foil Land";
-    } else if (landcommonRoll <= 93.3) {
-        // Non-foil full-art Eldrazi land
-        // type:"basic land" unique:art is:foil is:fullart
-        landcommonLink = 'https://api.scryfall.com/cards/random?q=set%3Amh3+type%3A"basic+land"+unique%3Aart+is%3Afoil+is%3Afullart';
-        landcommonType = "Non-Foil Full-Art Land";
+        // type:basic unique:art -is:fullart
+        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+unique%3Aart+-is%3Afullart";
+        landType = "Foil Basic";
+    } else if (landRoll <= 90) {
+        // Common dual-land
+        // rarity:c type:land -type:basic -name:"Terramorphic Expanse"
+        landLink = 'https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Aland+rarity%3Ac+-type%3Abasic+-name%3A"Terramorphic+Expanse"';
+        landType = "Common Dual";
     } else {
         // Foil full-art Edlrazi land
         // type:"basic land" unique:art is:foil is:fullart
-        landcommonLink = 'https://api.scryfall.com/cards/random?q=set%3Amh3+type%3A"basic+land"+unique%3Aart+is%3Afoil+is%3Afullart';
-        landcommonType = "Foil Full-Art Land";
+        landLink = 'https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Aland+rarity%3Ac+-type%3Abasic+-name%3A"Terramorphic+Expanse"';
+        landType = "Foil Common Dual";
     }
 
-    let response = await fetch(landcommonLink);
+    let response = await fetch(landLink);
 
     // waits until Scryfall fetch completes...
     let card = await response.json();
-    landcommonName = card.name;
-    console.log(landcommonType);
+    landName = card.name;
+    console.log(landType);
 
-    var landcommonCard = document.getElementById("landcommon-card");
+    var landCard = document.getElementById("land-card");
 
     // Add foil effect if foil
-    if (landcommonType == "Foil Land" || landcommonType == "Foil Full-Art Land") {
-        landcommonCard.firstElementChild.classList.add("foil-gradient");
+    if (landType == "Foil full-art basic" || landType == "Foil Basic" || landType == "Foil Common Dual") {
+        landCard.firstElementChild.classList.add("foil-gradient");
     } else {
-        landcommonCard.firstElementChild.classList.remove("foil-gradient");
+        landCard.firstElementChild.classList.remove("foil-gradient");
     }
 
     // Set price, foil price if foil
-    if (landcommonType == "Foil Land" || landcommonType == "Foil Full-Art Land") {
-        landcommonPrice = Number(card.prices.usd_foil);
+    if (landType == "Foil full-art basic" || landType == "Foil Basic" || landType == "Foil Common Dual") {
+        landPrice = Number(card.prices.usd_foil);
     } else {
-        landcommonPrice = Number(card.prices.usd);
+        landPrice = Number(card.prices.usd);
     }
 
-    landcommonImagePrimary = card.image_uris.normal;
+    landImagePrimary = card.image_uris.normal;
 
     //   Replace Img Source
-    document.getElementById("landcommon-image").src = landcommonImagePrimary;
+    document.getElementById("land-image").src = landImagePrimary;
 
     //  Insert Price
-    const landcommonPriceElement = document.getElementById("landcommon-price");
-    landcommonPriceElement.innerText = USDollar.format(landcommonPrice);
+    const landPriceElement = document.getElementById("land-price");
+    landPriceElement.innerText = USDollar.format(landPrice);
 
     //  Insert Roll
-    const landcommonRollElement = document.getElementById("landcommon-roll");
-    landcommonRollElement.innerText = "Roll: " + landcommonRoll.toFixed(0);
+    const landRollElement = document.getElementById("land-roll");
+    landRollElement.innerText = "Roll: " + landRoll.toFixed(0);
 
     //  Push price to price array
-    myPrices.push(landcommonPrice);
+    myPrices.push(landPrice);
 }
 
 function sumTotals() {
@@ -737,7 +659,7 @@ function sumTotals() {
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 
     function checkIfFinished() {
-        return myPrices.length >= 14;
+        return myPrices.length >= 13;
     }
 
     var timeout = setInterval(function () {

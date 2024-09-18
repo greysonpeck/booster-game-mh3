@@ -9,7 +9,7 @@ function setMH3() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setDSK();
     });
-    document.body.style.backgroundImage = "url('/booster-game-mh3/img/MH3_bg.png')";
+    document.body.style.backgroundImage = "url('/img/MH3_bg.png')";
 
     clearSlots();
     makeMH3Slots();
@@ -253,8 +253,12 @@ function ghostPull_MH3() {
         // First we set the Ghost Card to the TOP PRICE card
         .then((data) => {
             ghostCard = data.data[0];
-            ghostPrice = ghostCard.prices.usd;
-            console.log(ghostPrice);
+
+            if (ghostCard.prices.usd == !null) {
+                ghostPrice = ghostCard.prices.usd;
+            } else {
+                ghostPrice = ghostCard.prices.usd_foil;
+            }
 
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
