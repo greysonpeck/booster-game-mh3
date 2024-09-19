@@ -7,7 +7,7 @@ function setDSK() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setMH3();
     });
-    document.body.style.backgroundImage = "url(/img/DSK_bg.jpg)";
+    document.body.style.backgroundImage = "url(img/DSK_bg.jpg)";
     clearSlots();
     makeDSKSlots();
     clearMoney();

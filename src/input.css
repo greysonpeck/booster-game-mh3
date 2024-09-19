@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    background-image: url("./img/MH3_bg.png");
+    background-image: url("img/MH3_bg.png");
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
