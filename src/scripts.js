@@ -172,6 +172,11 @@ function clearSlots() {
     while (cardSection.childElementCount > 1) {
         cardSection.removeChild(cardSection.lastChild);
     }
+
+    // Clear Ghost Card and associated material
+    document.getElementById("snark").classList.add("hidden");
+    document.getElementById("ghost-image").src = "/img/card_default.jpeg";
+    document.getElementById("foil-holder").style.display = "none";
 }
 
 function makeSlot(id, label, hasFoil, quantity) {
@@ -198,20 +203,33 @@ function makeSlot(id, label, hasFoil, quantity) {
         const cardSet = document.createElement("div");
         cardSet.id = id + "-set";
         cardSet.classList.add("w-44", "sm:w-[240px]", "pt-[12px]", "sm:pt-0");
+
+        // Check for dummy/spacer slot
+        if (quantity && quantity < 1) {
+            cardSet.classList.add("sm:hidden", "block");
+        } else {
+            // nothing
+        }
         cardSection.append(cardSet);
 
         setLabel = document.createElement("div");
         setLabel.classList.add("card-info", "relative", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
-        setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
+        if (quantity < 1) {
+            setLabel.innerHTML = "";
+        } else {
+            setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
+        }
         cardSet.append(setLabel);
 
         for (var i = 0; i < quantity; i++) {
             const card = document.createElement("div");
             topVar = "top-pos-" + (i + 1);
-            card.classList.add("text-center", "w-44", "sm:w-[240px]", "absolute", "-z-10", topVar);
+            card.classList.add("text-center", "w-44", "sm:w-[240px]", "absolute", topVar);
+            card.id = id + "-" + (i + 1);
             cardSet.append(card);
 
             const cardImg = document.createElement("img");
+
             cardImg.id = id + "-image-" + (i + 1);
 
             cardImg.classList.add("card-default", "h-auto", "rounded-xl");
@@ -248,4 +266,84 @@ function makeSlot(id, label, hasFoil, quantity) {
         cardImg.alt = "Default Magic card back";
         card.append(cardImg);
     }
+}
+
+function setGhostData() {
+    if (ghostName.includes(",")) {
+        ghostName = ghostName.substring(0, ghostName.indexOf(","));
+    } else {
+        // let it rock
+    }
+
+    //  Set price, check for etched
+    if (ghostCard.tcgplayer_etched_id) {
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
+    } else {
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
+    }
+
+    ghostFoilHolderElement = document.getElementById("foil-holder");
+    ghostTexturedElement = document.getElementById("ghost-textured");
+
+    //  Set treatment
+    const ghostFoilElement = document.getElementById("ghost-foil");
+
+    if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
+        ghostFoilElement.innerText = "textured foil ";
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+        ghostTexturedElement.classList.add("block");
+        ghostTexturedElement.classList.remove("hidden");
+        ghostFoilHolderElement.classList.add("foil-gradient");
+    } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
+        ghostFoilElement.innerText = "foil ";
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+        ghostFoilHolderElement.classList.add("foil-gradient");
+    } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
+        ghostFoilHolderElement.classList.remove("foil-gradient");
+        ghostFoilElement.innerText = "";
+        ghostTexturedElement.classList.remove("block");
+        ghostTexturedElement.classList.add("hidden");
+    } else {
+        ghostFoilHolderElement.classList.remove("foil-gradient");
+        ghostFoilElement.innerText = "";
+        ghostTexturedElement.classList.remove("block");
+        ghostTexturedElement.classList.add("hidden");
+    }
+
+    if (ghostCard.frame == "1997") {
+        ghostTreatment = "retro frame ";
+        // } else if (ghostCard.promo_types[0]) {
+        //   ghostTreatment = "borderless concept art ";
+    } else if (ghostCard.border_color == "borderless") {
+        ghostTreatment = "borderless ";
+    } else if (ghostCard.finishes[0] == "etched") {
+        ghostTreatment = "etched ";
+    } else {
+        ghostTreatment = "";
+    }
+
+    const ghostTreatmentElement = document.getElementById("ghost-treatment");
+    ghostTreatmentElement.innerText = ghostTreatment;
+
+    // TO FIX: figure out if DFC....
+    if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
+        ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
+    } else {
+        ghostImagePrimary = ghostCard.image_uris.normal;
+    }
+
+    //  Replace Img Source
+    document.getElementById("ghost-image").src = ghostImagePrimary;
+
+    //  Insert Price
+    const ghostPriceElement = document.getElementById("ghost-price");
+    ghostPriceElement.innerText = ghostPrice;
+
+    //  Insert Name
+    const ghostNameElement = document.getElementById("ghost-name");
+    ghostNameElement.innerText = ghostName;
+
+    //  Reveal snark
+    const snarkBox = document.getElementById("snark");
+    snarkBox.classList.remove("hidden");
 }

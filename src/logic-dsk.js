@@ -7,7 +7,7 @@ function setDSK() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setMH3();
     });
-    document.body.style.backgroundImage = "url('/img/DSK_bg.jpg')";
+    document.body.style.backgroundImage = "url(/img/DSK_bg.jpg)";
     clearSlots();
     makeDSKSlots();
     clearMoney();
@@ -20,6 +20,7 @@ function makeDSKSlots() {
     makeSlot("land", "Land or Common", true);
     makeSlot("uncommon", "Uncommons", false, 3);
     makeSlot("common", "Commons", false, 6);
+    makeSlot("", "", false, -1);
 }
 
 function pullDSK() {
@@ -143,81 +144,6 @@ function rollForWildcard() {
     }
 
     return wildcardLink;
-}
-
-function setGhostData() {
-    if (ghostName.includes(",")) {
-        ghostName = ghostName.substring(0, ghostName.indexOf(","));
-    } else {
-        // let it rock
-    }
-
-    //  Set price, check for etched
-    if (ghostCard.tcgplayer_etched_id) {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
-    } else {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
-    }
-
-    ghostFoilHolderElement = document.getElementById("foil-holder");
-    ghostTexturedElement = document.getElementById("ghost-textured");
-
-    //  Set treatment
-    const ghostFoilElement = document.getElementById("ghost-foil");
-
-    if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
-        ghostFoilElement.innerText = "textured foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostTexturedElement.classList.add("block");
-        ghostTexturedElement.classList.remove("hidden");
-        ghostFoilHolderElement.classList.add("foil-gradient");
-    } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
-        ghostFoilElement.innerText = "foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostFoilHolderElement.classList.add("foil-gradient");
-    } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
-        ghostFoilElement.innerText = "";
-        ghostTexturedElement.classList.remove("block");
-        ghostTexturedElement.classList.add("hidden");
-    } else {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
-        ghostFoilElement.innerText = "";
-        ghostTexturedElement.classList.remove("block");
-        ghostTexturedElement.classList.add("hidden");
-    }
-
-    if (ghostCard.frame == "1997") {
-        ghostTreatment = "retro frame ";
-        // } else if (ghostCard.promo_types[0]) {
-        //   ghostTreatment = "borderless concept art ";
-    } else if (ghostCard.border_color == "borderless") {
-        ghostTreatment = "borderless ";
-    } else if (ghostCard.finishes[0] == "etched") {
-        ghostTreatment = "etched ";
-    } else {
-        ghostTreatment = "";
-    }
-
-    const ghostTreatmentElement = document.getElementById("ghost-treatment");
-    ghostTreatmentElement.innerText = ghostTreatment;
-
-    ghostImagePrimary = ghostCard.image_uris.normal;
-
-    //  Replace Img Source
-    document.getElementById("ghost-image").src = ghostImagePrimary;
-
-    //  Insert Price
-    const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice;
-
-    //  Insert Name
-    const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName;
-
-    //  Reveal snark
-    const snarkBox = document.getElementById("snark");
-    snarkBox.classList.remove("hidden");
 }
 
 function ghostPull() {
@@ -411,23 +337,23 @@ async function rarePull_DSK() {
 
     if (rareRoll <= 75) {
         // Rare
-        // rarity:r
+        // rarity:r -is:boosterfun
         rareType = "Rare";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Ar";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+-is%3Aboosterfun";
     } else if (rareRoll <= 87.6) {
         // Mythic
-        // rarity:m
+        // rarity:m -is:boosterfun
         rareType = "Mythic";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Am+-is%3Aboosterfun";
     } else if (rareRoll <= 95.8) {
-        // Rare Booster Fun (46 cards)
-        // rarity:r is:boosterfun
-        // Exclude Endurings, Leylines, Dissection Tools, Grievous Wound, Twitching Doll
+        // Rare Booster Fun (59 cards, quoted 46)
+        // rarity:r is:boosterfun collectornumber<386
+        // Exclude Japan Showcase, Double Exposure Textured Foil, Promos
+        // INCLUDES Endurings, Leylines, Overlords, which also show up in borderless. These are reduced % in the packs, but show up higher than average here.
         rareType = "Rare - Booster Fun";
-        rareLink =
-            "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+is%3Aboosterfun+-name%3A'enduring'+-name%3A'leyline'+-name%3A'dissection'+-name%3A'grievous'+-name%3A'twitching'";
+        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+is%3Aboosterfun+collectornumber<386";
     } else if (rareRoll <= 97.2) {
-        // Mythic Booster Fun (20 cards)
+        // Mythic Booster Fun (20 cards, quoted 16)
         // rarity:m is:boosterfun
         rareType = "Mythic - Booster Fun";
         rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am+is%3Aboosterfun";

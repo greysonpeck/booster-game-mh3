@@ -172,6 +172,10 @@ input:checked + .slider:before {
     position: relative;
 }
 
+.text-center:hover {
+    z-index: 10;
+}
+
 .position-1 {
     position: absolute;
     top: 234px;

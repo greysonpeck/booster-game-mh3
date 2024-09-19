@@ -9,7 +9,7 @@ function setMH3() {
     document.getElementById("set-toggle").addEventListener("click", () => {
         setDSK();
     });
-    document.body.style.backgroundImage = "url('/img/MH3_bg.png')";
+    document.body.style.backgroundImage = "url(/img/MH3_bg.png)";
 
     clearSlots();
     makeMH3Slots();
@@ -149,86 +149,6 @@ function rollForWildcard() {
     }
 
     return wildcardLink;
-}
-
-function setGhostData() {
-    if (ghostName.includes(",")) {
-        ghostName = ghostName.substring(0, ghostName.indexOf(","));
-    } else {
-        // let it rock
-    }
-
-    //  Set price, check for etched
-    if (ghostCard.tcgplayer_etched_id) {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
-    } else {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
-    }
-
-    ghostFoilHolderElement = document.getElementById("foil-holder");
-    ghostTexturedElement = document.getElementById("ghost-textured");
-
-    //  Set treatment
-    const ghostFoilElement = document.getElementById("ghost-foil");
-
-    if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
-        ghostFoilElement.innerText = "textured foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostTexturedElement.classList.add("block");
-        ghostTexturedElement.classList.remove("hidden");
-        ghostFoilHolderElement.classList.add("foil-gradient");
-    } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
-        ghostFoilElement.innerText = "foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostFoilHolderElement.classList.add("foil-gradient");
-    } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
-        ghostFoilElement.innerText = "";
-        ghostTexturedElement.classList.remove("block");
-        ghostTexturedElement.classList.add("hidden");
-    } else {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
-        ghostFoilElement.innerText = "";
-        ghostTexturedElement.classList.remove("block");
-        ghostTexturedElement.classList.add("hidden");
-    }
-
-    if (ghostCard.frame == "1997") {
-        ghostTreatment = "retro frame ";
-        // } else if (ghostCard.promo_types[0]) {
-        //   ghostTreatment = "borderless concept art ";
-    } else if (ghostCard.border_color == "borderless") {
-        ghostTreatment = "borderless ";
-    } else if (ghostCard.finishes[0] == "etched") {
-        ghostTreatment = "etched ";
-    } else {
-        ghostTreatment = "";
-    }
-
-    const ghostTreatmentElement = document.getElementById("ghost-treatment");
-    ghostTreatmentElement.innerText = ghostTreatment;
-
-    // TO FIX: figure out if DFC....
-    if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
-        ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
-    } else {
-        ghostImagePrimary = ghostCard.image_uris.normal;
-    }
-
-    //  Replace Img Source
-    document.getElementById("ghost-image").src = ghostImagePrimary;
-
-    //  Insert Price
-    const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice;
-
-    //  Insert Name
-    const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName;
-
-    //  Reveal snark
-    const snarkBox = document.getElementById("snark");
-    snarkBox.classList.remove("hidden");
 }
 
 function ghostPull_MH3() {
