@@ -175,7 +175,7 @@ function clearSlots() {
 
     // Clear Ghost Card and associated material
     document.getElementById("snark").classList.add("hidden");
-    document.getElementById("ghost-image").src = "/img/card_default.jpeg";
+    document.getElementById("ghost-image").src = "img/card_default.jpeg";
     document.getElementById("foil-holder").style.display = "none";
 }
 
