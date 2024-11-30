@@ -17,8 +17,10 @@ var activeCheck = false;
 function pullBooster() {
     if (currentSet === "DSK") {
         pullDSK();
-    } else {
+    } else if (currentSet === "MH3") {
         pullMH3();
+    } else {
+        pullFDN();
     }
 }
 
@@ -137,9 +139,11 @@ document.addEventListener(
                 setMH3();
             } else if (getCookie("currentSet") == "'DSK'") {
                 setDSK();
+            } else {
+                setFDN();
             }
         } else {
-            setMH3();
+            setFDN();
         }
     },
     false

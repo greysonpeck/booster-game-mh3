@@ -5,8 +5,12 @@ function setMH3() {
     document.cookie = "currentSet = 'MH3'";
 
     document.getElementById("set-header").innerText = "MODERN HORIZONS 3";
-    document.getElementById("set-toggle").innerText = "go duskmourn";
-    document.getElementById("set-toggle").addEventListener("click", () => {
+    document.getElementById("set-toggle-1").innerText = "go foundations";
+    document.getElementById("set-toggle-1").addEventListener("click", () => {
+        setFDN();
+    });
+    document.getElementById("set-toggle-2").innerText = "go duskmourn";
+    document.getElementById("set-toggle-2").addEventListener("click", () => {
         setDSK();
     });
     document.body.style.backgroundImage = "url(img/MH3_bg.png)";

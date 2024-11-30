@@ -1,33 +1,34 @@
-function setDSK() {
-    currentSet = "DSK";
-    document.cookie = "currentSet = 'DSK'";
+function setFDN() {
+    currentSet = "FDN";
+    document.cookie = "currentSet = 'FDN'";
 
-    document.getElementById("set-header").innerText = "DUSKMOURN";
-    document.getElementById("set-toggle-1").innerText = "go foundations";
+    document.getElementById("set-header").innerText = "FOUNDATIONS";
+    document.getElementById("set-toggle-1").innerText = "go modern horizons 3";
     document.getElementById("set-toggle-1").addEventListener("click", () => {
-        setFDN();
-    });
-    document.getElementById("set-toggle-2").innerText = "go modern horizons 3";
-    document.getElementById("set-toggle-2").addEventListener("click", () => {
         setMH3();
     });
-    document.body.style.backgroundImage = "url(img/DSK_bg.jpg)";
+    document.getElementById("set-toggle-2").innerText = "go duskmourn";
+    document.getElementById("set-toggle-2").addEventListener("click", () => {
+        setDSK();
+    });
+    document.body.style.backgroundImage = "url(img/FDN_bg.jpg)";
     clearSlots();
-    makeDSKSlots();
+    makeFDNSlots();
     clearMoney();
 }
 
-function makeDSKSlots() {
-    makeSlot("rare", "Rare or Mythic");
+function makeFDNSlots() {
+    makeSlot("raremythic-1", "Foil Rare/Mythic #1", true);
+    makeSlot("raremythic-2", "Foil Rare/Mythic #2", true);
     makeSlot("wildcard", "Wildcard");
     makeSlot("foil", "Foil Wildcard", true);
-    makeSlot("land", "Land or Common", true);
-    makeSlot("uncommon", "Uncommons", false, 3);
-    makeSlot("common", "Commons", false, 6);
+    makeSlot("land", "Full-Art Land", true);
+    makeSlot("uncommon", "Uncommons", false, 4);
+    makeSlot("common", "Commons", false, 5);
     makeSlot("", "", false, -1);
 }
 
-function pullDSK() {
+function pullFDN() {
     // Prevent slider from triggering pulls multiple times
     if (activeCheck == false) {
         activeCheck = true;
@@ -38,19 +39,19 @@ function pullDSK() {
 
         ghostPull();
 
-        commonPull();
+        commonPull_FDN();
 
-        uncommonPull();
+        uncommonPull_FDN();
 
-        rarePull_DSK();
+        rareMythic_FDN();
 
-        landPull();
+        landPull_FDN();
 
         wildcardPull_DSK();
 
         foilPull();
 
-        sumTotals();
+        sumTotals_FDN();
     } else {
         console.log("already working");
     }
@@ -204,75 +205,52 @@ function ghostPull() {
         .catch((error) => console.error(error));
 }
 
-//   New commons function
-async function commonPull() {
+async function commonPull_FDN() {
     //  Get card from Scryfall
-    for (j = 1; j < 7; j++) {
-        // If we hit on SPG roll...
-        commonSPGRollRaw = getRandomNumber(1, 64);
-        commonSPGRoll = Math.round(commonSPGRollRaw);
-        // Override roll
-        // commonSPGRoll = 64;
+    for (j = 1; j < 6; j++) {
+        //Common roll
+        commonRoll = getRandomNumber(0, 100);
 
-        for (j = 1; j < 7; j++) {
-            if (commonSPGRoll === 64 && j === 6) {
-                // Special Guest, set:spg date:2024-09-27
-                commonType = "Special Guest";
-                commonSPGLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2024-09-27+%28game%3Apaper%29";
-                let response = await fetch(commonSPGLink);
-                let commonSPGCard = await response.json();
-                commonName = commonSPGCard.name;
-                commonPrice = convertCurrency(commonSPGCard.prices.usd);
-
-                //  Replace Img Source, check for DFC
-                commonSPGImage = commonSPGCard.image_uris.normal;
-
-                var commonSPGImageId = "common-image-" + j;
-                commonSPGImageElement = document.getElementById(commonSPGImageId);
-                commonSPGImageElement.src = commonSPGImage;
-
-                var commonSPGPrice = Number(commonSPGCard.prices.usd);
-                if (currencyMode == "CAD") {
-                    commonSPGPrice = Number(fx(commonSPGPrice).from("USD").to("CAD"));
-                } else {
-                }
-
-                //  Create Common Sum Element
-                commonSum = commonSum + commonSPGPrice;
-
-                //  Push price to price array
-                myPrices.push(commonSPGPrice);
-            } else {
-                // Common, 81 cards. There are two commons that have Lurking Evil variants, appearing 25% of the time.
-                // rarity:c (-type:land OR name:"Terramorphic Expanse")
-                // No dual lands, but include Terramorphic Expanse
-                let response = await fetch(
-                    "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ac+%28-type%3Aland+OR+name%3A'Terramorphic+Expanse'%29&unique=cards&as=checklist&order=name&dir=asc"
-                );
-                let commonCard = await response.json();
-                commonName = commonCard.name;
-                commonPrice = convertCurrency(commonCard.prices.usd);
-
-                //  Set img source
-                commonImage = commonCard.image_uris.normal;
-
-                var commonImageId = "common-image-" + j;
-                commonImageElement = document.getElementById(commonImageId);
-                commonImageElement.src = commonImage;
-
-                var commonPrice = Number(commonCard.prices.usd);
-                if (currencyMode == "CAD") {
-                    commonPrice = Number(fx(commonPrice).from("USD").to("CAD"));
-                } else {
-                }
-
-                //  Create Common Sum Element
-                commonSum = commonSum + commonPrice;
-
-                //  Push price to price array
-                myPrices.push(commonPrice);
-            }
+        if (commonRoll <= 87) {
+            // set:fdn rarity:c (cn<=253 or cn=262)
+            commonType = "Main Set Common";
+            commonLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+rarity%3Ac+%28cn<%3D253+or+cn%3D262%29";
+        } else if (commonRoll <= 97.9) {
+            // set:fdn rarity:c cn>=258 AND cn<=271 AND cn!=262
+            commonTye = "Common Dual Lands";
+            commonLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+rarity%3Ac+cn>%3D258+AND+cn<%3D271+AND+cn%21%3D262";
+        } else {
+            // set:fdn rarity:c border:borderless
+            commonType = "Common Borderless";
+            commonLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+rarity%3Ac+border%3Aborderless";
         }
+
+        let response = await fetch(commonLink);
+        let commonCard = await response.json();
+
+        commonName = commonCard.name;
+        commonPrice = convertCurrency(commonCard.prices.usd);
+
+        //  Set img source
+        commonImage = commonCard.image_uris.normal;
+
+        var commonImageId = "common-image-" + j;
+        commonImageElement = document.getElementById(commonImageId);
+        commonImageElement.src = commonImage;
+
+        var commonPrice = Number(commonCard.prices.usd);
+        if (currencyMode == "CAD") {
+            commonPrice = Number(fx(commonPrice).from("USD").to("CAD"));
+        } else {
+        }
+
+        //  Create Common Sum Element
+        commonSum = commonSum + commonPrice;
+        console.log(commonSum);
+
+        //  Push price to price array
+        myPrices.push(commonPrice);
+
         const commonSumElement = document.getElementById("common-sum");
         commonSumElement.innerText = commonSum;
 
@@ -282,25 +260,22 @@ async function commonPull() {
     }
 }
 
-async function uncommonPull() {
+async function uncommonPull_FDN() {
     // Clear out all uncommon card divs, if they exist
     uncommonSet = document.getElementById("uncommon-set");
     // while (uncommonSet.firstChild) {
     //   uncommonSet.removeChild(uncommonSet.lastChild);
     // }
     //  Get card from Scryfall
-    for (k = 1; k < 4; k++) {
-        let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Au");
+    for (k = 1; k < 5; k++) {
+        // set:fdn rarity:u (is:booster OR border:borderless)
+        let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afdn+rarity%3Au+%28is%3Abooster+OR+border%3Aborderless%29");
         let uncommonCard = await response.json();
         uncommonName = uncommonCard.name;
         uncommonPrice = convertCurrency(uncommonCard.prices.usd);
 
         //  Replace Img Source, check for DFC
-        if (uncommonCard.layout == "transform" || uncommonCard.layout == "modal_dfc") {
-            uncommonImage = uncommonCard.card_faces[0].image_uris.normal;
-        } else {
-            uncommonImage = uncommonCard.image_uris.normal;
-        }
+        uncommonImage = uncommonCard.image_uris.normal;
 
         var uncommonImageId = "uncommon-image-" + k;
         uncommonImageElement = document.getElementById(uncommonImageId);
@@ -327,80 +302,58 @@ async function uncommonPull() {
     uncommonSum = 0;
 }
 
-async function rarePull_DSK() {
-    //Rare roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
-    // Random number between 0 and 100
-    rareRoll = getRandomNumber(0, 100);
-    var rareLink = "";
+async function rareMythic_FDN() {
+    for (i = 1; i < 3; i++) {
+        // Random number between 0 and 100
+        rareMythicRoll = getRandomNumber(0, 100);
+        var rareMythicLink = "";
 
-    // Override roll
-    // rareRoll = 94.9;
+        // Override roll
+        // rareRoll = 94.9;
 
-    if (rareRoll <= 75) {
-        // Rare
-        // rarity:r -is:boosterfun
-        rareType = "Rare";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+-is%3Aboosterfun";
-    } else if (rareRoll <= 87.6) {
-        // Mythic
-        // rarity:m -is:boosterfun
-        rareType = "Mythic";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Am+-is%3Aboosterfun";
-    } else if (rareRoll <= 95.8) {
-        // Rare Booster Fun (59 cards, quoted 46)
-        // rarity:r is:boosterfun collectornumber<386
-        // Exclude Japan Showcase, Double Exposure Textured Foil, Promos
-        // INCLUDES Endurings, Leylines, Overlords, which also show up in borderless. These are reduced % in the packs, but show up higher than average here.
-        rareType = "Rare - Booster Fun";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+rarity%3Ar+is%3Aboosterfun+collectornumber<386";
-    } else if (rareRoll <= 97.2) {
-        // Mythic Booster Fun (20 cards, quoted 16)
-        // rarity:m is:boosterfun
-        rareType = "Mythic - Booster Fun";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28game%3Apaper%29+rarity%3Am+is%3Aboosterfun";
-    } else if (rareRoll <= 99.7) {
-        // Rare Lurking Evil (7 cards)
-        // set:dsk (collectornumber=289 OR collectornumber=290  OR collectornumber=292  OR collectornumber=294 OR collectornumber=296 OR collectornumber=299 OR collectornumber=301)
-        rareType = "Rare - Lurking Evil";
-        rareLink =
-            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D289+OR+collectornumber%3D290++OR+collectornumber%3D292++OR+collectornumber%3D294+OR+collectornumber%3D296+OR+collectornumber%3D299+OR+collectornumber%3D301%29";
-    } else {
-        // Mythic Lurking Evil (2 cards)
-        // set:dsk (collectornumber=293 or collectornumber=298)
-        rareType = "Mythic - Lurking Evil";
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28collectornumber%3D293+or+collectornumber%3D298%29";
+        if (rareMythicRoll <= 85.7) {
+            // Rare, normal border
+            // set:fdn is:booster rarity:r
+            rareMythicType = "Rare - normal border";
+            rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+is%3Abooster+rarity%3Ar";
+        } else {
+            // Mythic, normal border
+            // set:fdn is:booster rarity:m
+            rareMythicType = "Mythic - normal border";
+            rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+is%3Abooster+rarity%3Am";
+        }
+
+        let response = await fetch(rareMythicLink);
+
+        // waits until Scryfall fetch completes...
+        let card = await response.json();
+        rareMythicName = card.name;
+        rareMythicPrice = convertCurrency(card.prices.usd_foil);
+
+        // TO FIX: figure out if DFC....
+        rareMythicImagePrimary = card.image_uris.normal;
+
+        //   Replace Img Source
+        var rareMythicImageId = "raremythic-" + i + "-image";
+        document.getElementById(rareMythicImageId).src = rareMythicImagePrimary;
+        rareMythicImageElement = document.getElementById(rareMythicImageId);
+        rareMythicImageElement.src = rareMythicImagePrimary;
+
+        //  Add foil effect
+        var rareMythicCard = document.getElementById("raremythic-" + i + "-card");
+        rareMythicCard.firstElementChild.classList.add("foil-gradient");
+
+        //  Insert Price
+        const rarePriceElement = document.getElementById("raremythic-" + i + "-price");
+        rarePriceElement.innerText = USDollar.format(rareMythicPrice);
+
+        //  Insert Roll
+        const rareMythicRollElement = document.getElementById("raremythic-" + i + "-roll");
+        rareMythicRollElement.innerText = "Roll: " + rareMythicRoll.toFixed(0);
+
+        //  Push price to price array
+        myPrices.push(rareMythicPrice);
     }
-
-    let response = await fetch(rareLink);
-
-    // waits until Scryfall fetch completes...
-    let card = await response.json();
-    rareName = card.name;
-    rarePrice = convertCurrency(card.prices.usd);
-
-    // TO FIX: figure out if DFC....
-    if (card.layout == "transform" || card.layout == "modal_dfc") {
-        rareImagePrimary = card.card_faces[0].image_uris.normal;
-    } else {
-        rareImagePrimary = card.image_uris.normal;
-    }
-
-    //   Replace Img Source
-    document.getElementById("rare-image").src = rareImagePrimary;
-
-    //  Insert Price
-    const rarePriceElement = document.getElementById("rare-price");
-    rarePriceElement.innerText = USDollar.format(rarePrice);
-
-    //  Insert Roll
-    const rareRollElement = document.getElementById("rare-roll");
-    rareRollElement.innerText = "Roll: " + rareRoll.toFixed(0);
-
-    //  Push price to price array
-    myPrices.push(rarePrice);
 }
 
 async function wildcardPull_DSK() {
@@ -475,7 +428,6 @@ async function foilPull() {
 
     // waits until Scryfall fetch completes...
     let card = await response.json();
-    console.log(card);
     foilName = card.name;
     foilPrice = convertCurrency(card.prices.usd_foil);
 
@@ -499,47 +451,11 @@ async function foilPull() {
     myPrices.push(foilPrice);
 }
 
-async function landPull() {
-    // Random number between 0 and 100
-    landRoll = getRandomNumber(0, 100);
-    var landLink = "";
-
-    // Override roll
-    // landRoll = 98;
-
-    let landType = "unknown";
-    if (landRoll <= 13.3) {
-        // Non-foil full-art land
-        // type:basic is:fullart
-        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+is%3Afullart";
-        landType = "Full-art basic";
-    } else if (landRoll <= 16.6) {
-        // Foil full-art land
-        // type:basic is:fullart
-        // NEEDS FOIL TREATMENT
-        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+is%3Afullart";
-        landType = "Foil full-art basic";
-    } else if (landRoll <= 43.3) {
-        // Basic land
-        //  type:basic unique:art -is:fullart
-        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+unique%3Aart+-is%3Afullart";
-        landType = "Non-foil Basic";
-    } else if (landRoll <= 50) {
-        // Foil basic land
-        // type:basic unique:art -is:fullart
-        landLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Abasic+unique%3Aart+-is%3Afullart";
-        landType = "Foil Basic";
-    } else if (landRoll <= 90) {
-        // Common dual-land
-        // rarity:c type:land -type:basic -name:"Terramorphic Expanse"
-        landLink = 'https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Aland+rarity%3Ac+-type%3Abasic+-name%3A"Terramorphic+Expanse"';
-        landType = "Common Dual";
-    } else {
-        // Foil full-art Edlrazi land
-        // type:"basic land" unique:art is:foil is:fullart
-        landLink = 'https://api.scryfall.com/cards/random?q=set%3Adsk+type%3Aland+rarity%3Ac+-type%3Abasic+-name%3A"Terramorphic+Expanse"';
-        landType = "Foil Common Dual";
-    }
+async function landPull_FDN() {
+    // Foil full-art land
+    // set:fdn type:basic is:fullart
+    landLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+type%3Abasic+is%3Afullart";
+    landType = "Full-art basic";
 
     let response = await fetch(landLink);
 
@@ -548,24 +464,13 @@ async function landPull() {
     landName = card.name;
 
     var landCard = document.getElementById("land-card");
-
-    // Add foil effect if foil
-    if (landType == "Foil full-art basic" || landType == "Foil Basic" || landType == "Foil Common Dual") {
-        landCard.firstElementChild.classList.add("foil-gradient");
-    } else {
-        landCard.firstElementChild.classList.remove("foil-gradient");
-    }
+    landCard.firstElementChild.classList.add("foil-gradient");
 
     // Set price, foil price if foil
-    if (landType == "Foil full-art basic" || landType == "Foil Basic" || landType == "Foil Common Dual") {
-        landPrice = Number(card.prices.usd_foil);
-    } else {
-        landPrice = Number(card.prices.usd);
-    }
-
-    landImagePrimary = card.image_uris.normal;
+    landPrice = Number(card.prices.usd_foil);
 
     //   Replace Img Source
+    landImagePrimary = card.image_uris.normal;
     document.getElementById("land-image").src = landImagePrimary;
 
     //  Insert Price
@@ -574,13 +479,13 @@ async function landPull() {
 
     //  Insert Roll
     const landRollElement = document.getElementById("land-roll");
-    landRollElement.innerText = "Roll: " + landRoll.toFixed(0);
+    landRollElement.innerText = "N/A";
 
     //  Push price to price array
     myPrices.push(landPrice);
 }
 
-function sumTotals() {
+function sumTotals_FDN() {
     // Add Boosters Bought
     boostersBought++;
     boosterTotalValue = boostersBought * boosterValue;
