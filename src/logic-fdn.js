@@ -20,7 +20,8 @@ function setFDN() {
 function makeFDNSlots() {
     makeSlot("raremythic-1", "Foil Rare/Mythic #1", true);
     makeSlot("raremythic-2", "Foil Rare/Mythic #2", true);
-    makeSlot("wildcard", "Wildcard");
+    makeSlot("raremythic-nf-1", "Rare/Mythic #1");
+    makeSlot("raremythic-nf-2", "Rare/Mythic #2");
     makeSlot("foil", "Foil Wildcard", true);
     makeSlot("land", "Full-Art Land", true);
     makeSlot("uncommon", "Uncommons", false, 4);
@@ -45,9 +46,9 @@ function pullFDN() {
 
         rareMythic_FDN();
 
-        landPull_FDN();
+        nfRareMythic_FDN();
 
-        wildcardPull_DSK();
+        landPull_FDN();
 
         foilPull();
 
@@ -207,7 +208,7 @@ function ghostPull() {
 
 async function commonPull_FDN() {
     //  Get card from Scryfall
-    for (j = 1; j < 6; j++) {
+    for (i = 1; i < 6; i++) {
         //Common roll
         commonRoll = getRandomNumber(0, 100);
 
@@ -234,7 +235,7 @@ async function commonPull_FDN() {
         //  Set img source
         commonImage = commonCard.image_uris.normal;
 
-        var commonImageId = "common-image-" + j;
+        var commonImageId = "common-image-" + i;
         commonImageElement = document.getElementById(commonImageId);
         commonImageElement.src = commonImage;
 
@@ -267,7 +268,7 @@ async function uncommonPull_FDN() {
     //   uncommonSet.removeChild(uncommonSet.lastChild);
     // }
     //  Get card from Scryfall
-    for (k = 1; k < 5; k++) {
+    for (j = 1; j < 5; j++) {
         // set:fdn rarity:u (is:booster OR border:borderless)
         let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afdn+rarity%3Au+%28is%3Abooster+OR+border%3Aborderless%29");
         let uncommonCard = await response.json();
@@ -277,7 +278,7 @@ async function uncommonPull_FDN() {
         //  Replace Img Source, check for DFC
         uncommonImage = uncommonCard.image_uris.normal;
 
-        var uncommonImageId = "uncommon-image-" + k;
+        var uncommonImageId = "uncommon-image-" + j;
         uncommonImageElement = document.getElementById(uncommonImageId);
         uncommonImageElement.src = uncommonImage;
 
@@ -303,7 +304,7 @@ async function uncommonPull_FDN() {
 }
 
 async function rareMythic_FDN() {
-    for (i = 1; i < 3; i++) {
+    for (k = 1; k < 3; k++) {
         // Random number between 0 and 100
         rareMythicRoll = getRandomNumber(0, 100);
         var rareMythicLink = "";
@@ -334,21 +335,21 @@ async function rareMythic_FDN() {
         rareMythicImagePrimary = card.image_uris.normal;
 
         //   Replace Img Source
-        var rareMythicImageId = "raremythic-" + i + "-image";
+        var rareMythicImageId = "raremythic-" + k + "-image";
         document.getElementById(rareMythicImageId).src = rareMythicImagePrimary;
         rareMythicImageElement = document.getElementById(rareMythicImageId);
         rareMythicImageElement.src = rareMythicImagePrimary;
 
         //  Add foil effect
-        var rareMythicCard = document.getElementById("raremythic-" + i + "-card");
+        var rareMythicCard = document.getElementById("raremythic-" + k + "-card");
         rareMythicCard.firstElementChild.classList.add("foil-gradient");
 
         //  Insert Price
-        const rarePriceElement = document.getElementById("raremythic-" + i + "-price");
+        const rarePriceElement = document.getElementById("raremythic-" + k + "-price");
         rarePriceElement.innerText = USDollar.format(rareMythicPrice);
 
         //  Insert Roll
-        const rareMythicRollElement = document.getElementById("raremythic-" + i + "-roll");
+        const rareMythicRollElement = document.getElementById("raremythic-" + k + "-roll");
         rareMythicRollElement.innerText = "Roll: " + rareMythicRoll.toFixed(0);
 
         //  Push price to price array
@@ -356,50 +357,54 @@ async function rareMythic_FDN() {
     }
 }
 
-async function wildcardPull_DSK() {
-    // Random number between 0 and 100
-    wildcardRoll = getRandomNumber(0, 100);
-    var wildcardLink = "";
+async function nfRareMythic_FDN() {
+    for (l = 1; l < 3; l++) {
+        // Random number between 0 and 100
+        nfRareMythicRoll = getRandomNumber(0, 100);
+        var nfRareMythicLink = "";
 
-    // Override roll
-    // wildcardRoll = 94.9;
+        // Override roll
+        // nfRareMythicRoll = 94.9;
 
-    if (wildcardRoll <= 91.7) {
-        // Wildcard Common or Uncommon, inc. Booster Fun, inc. Terramorphic Expanse
-        // (rarity:c OR rarity:u) unique:art (-type:land or name:"Terramorphic Expanse")
-        wildcardType = "Common or Uncommon";
-        wildcardLink =
-            "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ac+OR+rarity%3Au%29+unique%3Aart+%28-type%3Aland+or+name%3A'Terramorphic+Expanse'%29";
-    } else {
-        // Rare or Mythic, inc. Booster Fun, excl. Lands
-        // (rarity:r or rarity:m) -type:land unique:art collectornumber<386
-        // THIS ONE IS WRONG, INCLUDES COLLECTOR BOOSTER STUFF
-        wildcardType = "Rare or Mythic, may include Booster Fun";
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Adsk+%28rarity%3Ar+or+rarity%3Am%29+-type%3Aland+unique%3Aart+collectornumber<386";
+        if (nfRareMythicRoll <= 85.7) {
+            // Rare, normal border
+            // set:fdn is:booster rarity:r
+            nfRareMythicType = "Rare - normal border";
+            nfRareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+is%3Abooster+rarity%3Ar";
+        } else {
+            // Mythic, normal border
+            // set:fdn is:booster rarity:m
+            nfRareMythicType = "Mythic - normal border";
+            nfRareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Afdn+is%3Abooster+rarity%3Am";
+        }
+
+        let response = await fetch(nfRareMythicLink);
+
+        // waits until Scryfall fetch completes...
+        let card = await response.json();
+        nfRareMythicName = card.name;
+        nfRareMythicPrice = convertCurrency(card.prices.usd_foil);
+
+        // TO FIX: figure out if DFC....
+        nfRareMythicImagePrimary = card.image_uris.normal;
+
+        //   Replace Img Source
+        var nfRareMythicImageId = "raremythic-nf-" + l + "-image";
+        document.getElementById(nfRareMythicImageId).src = nfRareMythicImagePrimary;
+        nfRareMythicImageElement = document.getElementById(nfRareMythicImageId);
+        nfRareMythicImageElement.src = nfRareMythicImagePrimary;
+
+        //  Insert Price
+        const nfRarePriceElement = document.getElementById("raremythic-nf-" + l + "-price");
+        nfRarePriceElement.innerText = USDollar.format(nfRareMythicPrice);
+
+        //  Insert Roll
+        const nfRareMythicRollElement = document.getElementById("raremythic-nf-" + l + "-roll");
+        nfRareMythicRollElement.innerText = "Roll: " + nfRareMythicRoll.toFixed(0);
+
+        //  Push price to price array
+        myPrices.push(nfRareMythicPrice);
     }
-
-    let response = await fetch(wildcardLink);
-
-    // waits until Scryfall fetch completes...
-    let card = await response.json();
-    wildcardName = card.name;
-    wildcardPrice = convertCurrency(card.prices.usd);
-
-    wildcardImagePrimary = card.image_uris.normal;
-
-    //   Replace Img Source
-    document.getElementById("wildcard-image").src = wildcardImagePrimary;
-
-    //  Insert Price
-    const wildcardPriceElement = document.getElementById("wildcard-price");
-    wildcardPriceElement.innerText = USDollar.format(wildcardPrice);
-
-    //  Insert Roll
-    const wildcardRollElement = document.getElementById("wildcard-roll");
-    wildcardRollElement.innerText = "Roll: " + wildcardRoll.toFixed(0);
-
-    //  Push price to price array
-    myPrices.push(wildcardPrice);
 }
 
 async function foilPull() {
