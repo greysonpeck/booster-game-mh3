@@ -88,24 +88,32 @@
       <div class="card-section flex mx-auto max-w-[1080px]">
       <div id="card-section" class="flex flex-wrap gap-2 sm:gap-6 mx-auto justify-center  w-full text-sm sm:text-base">
         
-        <!-- Single you didn't buy slot -->
-        <div class="text-center w-44 sm:w-60 shrink-0 relative">
-          <!-- <div class="slot-label">The single</div> -->
-          <div id="snark" class="hidden z-10 text-sm ring-2 absolute -inset-x-3 top-1/2 rounded-md font-bold py-3 px-2 ring-white bg-cyan-950">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-foil"></span><span id="ghost-treatment"></span><span id="ghost-name"></span>.</div>
-            <div id="ghost-card" class="effect-block" width="240px" height="auto">
-              <div class="shine-holder">
-                <div id="ghost-blank" class="effect-block" width="240px" height="auto">
-                  <img id="ghost-textured" class="absolute hidden" src="./img/textured-foil.png" alt="">
-                  <div id="foil-holder" class=""></div>
-                  <img id="ghost-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
-                </div>
-                <div class="shine"></div>
-              </div>
-
-            </div>
-            <!-- <div id="ghost-price" class=""></div> -->
-          <div id="--" class=""></div>
-        </div>  
+                <!-- Single you didn't buy slot -->
+                <div class="text-center w-44 h-[356px] sm:w-60 shrink-0 relative">
+                    <div class="card-info flex items-end sm:text-base text-xs pb-1.5">
+                        <div class="slot-label">PLACEHOLDER</div>
+                    </div>
+                  <!-- <div class="slot-label">The single</div> -->
+                    <div id="snark" class="hidden z-10 text-sm ring-2 absolute -inset-x-3 top-1/2 rounded-md font-bold py-3 px-2 ring-white bg-cyan-950">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-foil"></span><span id="ghost-treatment"></span><span id="ghost-name"></span>.</div>
+                    <div class="perspective-midrange">
+                        <div class="both-cards flipped">
+                            <div id="ghost-card" class="effect-block absolute card-face" width="240px" height="auto">
+                                <div class="shine-holder">
+                                    <div id="ghost-blank" class="effect-block" width="240px" height="auto">
+                                        <img id="ghost-textured" class="absolute hidden" src="./img/textured-foil.png" alt="">
+                                        <div id="foil-holder" class=""></div>
+                                        <img id="ghost-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+                                    </div>
+                                    <div class="shine"></div>
+                                </div>
+                            </div>
+                            <img class="card card-back card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg" />
+                        </div>
+                    </div>
+        
+                    <!-- <div id="ghost-price" class=""></div> -->
+                  <div id="--" class=""></div>
+                </div>  
 
         <!-- Rare slot -->
         <!-- now scripted -->

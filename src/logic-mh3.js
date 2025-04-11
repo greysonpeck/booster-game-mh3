@@ -1,3 +1,30 @@
+let rareFirstFlip = true;
+
+function waitforme(millisec) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("");
+        }, millisec);
+    });
+}
+
+const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
+    cardStack.classList.add("flipped");
+    if (!rareFirstFlip) {
+        console.log("this is not the first flip");
+        console.log("Waiting 1400ms before flipping the stack");
+        await waitforme(1400);
+    } else {
+        console.log("first flip!");
+        rareFirstFlip = false;
+    }
+
+    //  Flipping
+    console.log("oh we flipin");
+    cardType.src = cardImagePrimary;
+    cardStack.classList.remove("flipped");
+};
+
 function setMH3() {
     console.log("running setMH3()");
 
@@ -377,7 +404,11 @@ async function rarePull_MH3() {
     }
 
     //   Replace Img Source
-    document.getElementById("rare-image").src = rareImagePrimary;
+    rareImageElement = document.getElementById("rare-image");
+
+    //  When Rare Image has loaded...Flip and wait accordingly
+    const rareStack = document.getElementById("rare-image").parentElement;
+    rareImageElement.addEventListener("load", cardImageLoaded(rareImageElement, rareImagePrimary, rareStack));
 
     //  Insert Price
     const rarePriceElement = document.getElementById("rare-price");
@@ -459,7 +490,11 @@ async function newModernPull_MH3() {
     }
 
     //  Replace Img Source
-    document.getElementById("new-modern-image").src = newModernImagePrimary;
+    newModernImageElement = document.getElementById("new-modern-image");
+
+    //  When New Modern Image has loaded...Flip and wait accordingly
+    const newModernStack = document.getElementById("new-modern-image").parentElement;
+    newModernImageElement.addEventListener("load", cardImageLoaded(newModernImageElement, newModernImagePrimary, newModernStack));
 
     //  Insert Price
     const newModernPriceElement = document.getElementById("new-modern-price");
@@ -489,7 +524,13 @@ async function wildcardPull_MH3() {
     } else {
         wildcardImagePrimary = card.image_uris.normal;
     }
-    document.getElementById("wildcard-image").src = wildcardImagePrimary;
+
+    //  Replace Img Source
+    wildcardImageElement = document.getElementById("wildcard-image");
+
+    //  When Wildcard Image has loaded...Flip and wait accordingly
+    const wildcardStack = document.getElementById("wildcard-image").parentElement;
+    wildcardImageElement.addEventListener("load", cardImageLoaded(wildcardImageElement, wildcardImagePrimary, wildcardStack));
 
     //  Insert Price
     const wildcardPriceElement = document.getElementById("wildcard-price");
@@ -553,7 +594,13 @@ async function foilPull_MH3() {
     } else {
         foilImagePrimary = card.image_uris.normal;
     }
-    document.getElementById("foil-image").src = foilImagePrimary;
+
+    //  Replace Img Source
+    foilImageElement = document.getElementById("foil-image");
+
+    //  When Foil Image has loaded...Flip and wait accordingly
+    const foilStack = document.getElementById("foil-image").closest(".both-cards");
+    foilImageElement.addEventListener("load", cardImageLoaded(foilImageElement, foilImagePrimary, foilStack));
 
     //  Insert Price
     const foilPriceElement = document.getElementById("foil-price");

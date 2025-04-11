@@ -1,3 +1,4 @@
+@import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -352,4 +353,21 @@ input:checked + .slider:before {
     to {
         -webkit-transform: rotateZ(360deg);
     }
+}
+
+.card-face {
+    width: 240px;
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+.both-cards {
+    position: relative;
+    width: 240px;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.flipped {
+    transform: rotateY(180deg);
 }

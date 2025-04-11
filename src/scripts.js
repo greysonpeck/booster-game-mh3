@@ -186,8 +186,12 @@ function clearSlots() {
 function makeSlot(id, label, hasFoil, quantity) {
     const cardSection = document.getElementById("card-section");
 
-    const card = document.createElement("div");
-    card.classList.add("text-center", "w-44", "sm:w-[240px]", "shrink-0", "text-nowrap", "pt-[12px]", "sm:pt-0");
+    //  Make card container
+    const cardContainer = document.createElement("div");
+    cardContainer.classList.add("card-container", "perspective-midrange");
+
+    const slotContainer = document.createElement("div");
+    slotContainer.classList.add("w-44", "sm:w-[240px]", "shrink-0", "text-nowrap", "pt-[12px]", "sm:pt-0");
 
     const cardInfo = document.createElement("div");
     cardInfo.classList.add("card-info", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
@@ -201,6 +205,13 @@ function makeSlot(id, label, hasFoil, quantity) {
         '<div id="' +
         id +
         '-roll" class="hidden"></div>';
+
+    const bothCards = document.createElement("div");
+    bothCards.classList.add("both-cards", "flipped");
+
+    const cardBack = document.createElement("img");
+    cardBack.classList.add("card", "card-back", "card-face", "rounded-xl", "backface-hidden", "rotate-y-180");
+    cardBack.src = "./img/card_default.jpeg";
 
     if (quantity) {
         // Quantity stuff
@@ -242,8 +253,8 @@ function makeSlot(id, label, hasFoil, quantity) {
             card.append(cardImg);
         }
     } else if (hasFoil) {
-        cardSection.append(card);
-        card.append(cardInfo);
+        cardSection.append(slotContainer);
+        slotContainer.append(cardInfo);
 
         // const foilBlock = document.createElement("div");
         // foilBlock.id = "foil-card";
@@ -255,20 +266,35 @@ function makeSlot(id, label, hasFoil, quantity) {
         foilBlock.id = id + "-card";
         foilBlock.classList.add("effect-block");
         foilBlock.innerHTML =
-            ' <div class=""></div><img id="' +
+            ' <div class="card-container perspective-midrange"> ' +
+            '<div class="both-cards flipped">' +
+            '<div class="" style="position:absolute;">' +
+            // old stuff
+            ' <div class="foil-hold"></div><img id="' +
             id +
-            '-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />';
-        card.append(foilBlock);
+            '-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />' +
+            // close div
+            "</div>" +
+            // hardcode card back
+            '<img class="card-back card card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg">';
+
+        slotContainer.append(foilBlock);
     } else {
-        cardSection.append(card);
-        card.append(cardInfo);
+        cardSection.append(slotContainer);
+        slotContainer.append(cardInfo);
+
+        // Append Card Container
+        slotContainer.append(cardContainer);
+        cardContainer.append(bothCards);
 
         const cardImg = document.createElement("img");
         cardImg.id = id + "-image";
-        cardImg.classList.add("card-default", "rounded-xl");
+        cardImg.classList.add("card-face", "card-default", "rounded-xl");
         cardImg.src = "./img/card_default.jpeg";
         cardImg.alt = "Default Magic card back";
-        card.append(cardImg);
+
+        bothCards.append(cardImg);
+        bothCards.append(cardBack);
     }
 }
 
