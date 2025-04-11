@@ -585,8 +585,8 @@ async function foilPull_MH3() {
     foilPrice = Number(card.prices.usd_foil);
 
     //  Add foil effect
-    var foilCard = document.getElementById("foil-card");
-    foilCard.firstElementChild.classList.add("foil-gradient");
+    var foilCard = document.querySelector("#foil-card .foil-hold");
+    foilCard.classList.add("foil-gradient");
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -678,8 +678,12 @@ async function landcommonPull_MH3() {
 
     landcommonImagePrimary = card.image_uris.normal;
 
-    //   Replace Img Source
-    document.getElementById("landcommon-image").src = landcommonImagePrimary;
+    //  Replace Img Source
+    landcommonImageElement = document.getElementById("landcommon-image");
+
+    //  When Land/Common Image has loaded...Flip and wait accordingly
+    const landcommonStack = landcommonImageElement.closest(".both-cards");
+    landcommonImageElement.addEventListener("load", cardImageLoaded(landcommonImageElement, landcommonImagePrimary, landcommonStack));
 
     //  Insert Price
     const landcommonPriceElement = document.getElementById("landcommon-price");

@@ -365,6 +365,16 @@ function setGhostData() {
     //  Replace Img Source
     document.getElementById("ghost-image").src = ghostImagePrimary;
 
+    //  Flipping
+    document.getElementById("ghost-card").parentElement.classList.remove("flipped");
+
+    //  Replace Img Source
+    ghostImageElement = document.getElementById("ghost-image");
+
+    //  When Ghost Image has loaded...Flip and wait accordingly
+    const ghostStack = ghostImageElement.closest(".both-cards");
+    ghostImageElement.addEventListener("load", cardImageLoaded(ghostImageElement, ghostImagePrimary, ghostStack));
+
     //  Insert Price
     const ghostPriceElement = document.getElementById("ghost-price");
     ghostPriceElement.innerText = ghostPrice;

@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
     background-image: url("img/MH3_bg.png");
@@ -289,7 +286,7 @@ input:checked + .slider:before {
     border-radius: 16px;
     position: relative;
     left: -6px;
-    top: 25px;
+    top: -6px;
     /* right: 0;
     bottom: 0; */
     overflow: hidden;
