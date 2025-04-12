@@ -237,20 +237,30 @@ function makeSlot(id, label, hasFoil, quantity) {
         cardSet.append(setLabel);
 
         for (var i = 0; i < quantity; i++) {
-            const card = document.createElement("div");
-            topVar = "top-pos-" + (i + 1);
-            card.classList.add("text-center", "w-44", "sm:w-[240px]", "absolute", topVar);
-            card.id = id + "-" + (i + 1);
-            cardSet.append(card);
+            const perspectiveContainer = document.createElement("div");
+            perspectiveContainer.classList.add("card-container", "perspective-midrange");
+            cardSet.append(perspectiveContainer);
+
+            const bothContainer = document.createElement("div");
+            bothContainer.classList.add("both-cards", "flipped");
+
+            topVar = "top-pos-" + i;
 
             const cardImg = document.createElement("img");
-
             cardImg.id = id + "-image-" + (i + 1);
-
-            cardImg.classList.add("card-default", "h-auto", "rounded-xl");
+            cardImg.classList.add("card-face", "card-default", "rounded-xl", topVar);
             cardImg.src = "./img/card_default.jpeg";
             cardImg.alt = "Default Magic card back";
-            card.append(cardImg);
+
+            const card = document.createElement("img");
+            card.classList.add("card", "card-back", "card-face", "rounded-xl", "backface-hidden", "rotate-y-180", topVar);
+            card.src = "./img/card_default.jpeg";
+            card.id = id + "-" + (i + 1);
+
+            // Nest elements
+            perspectiveContainer.append(bothContainer);
+            bothContainer.append(cardImg);
+            bothContainer.append(card);
         }
     } else if (hasFoil) {
         cardSection.append(slotContainer);

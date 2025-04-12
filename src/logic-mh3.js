@@ -250,7 +250,7 @@ async function commonPull_MH3() {
             if (commonSPGRoll === 64 && j === 6) {
                 // Special Guest, set:spg date:2024-06-07
                 commonType = "Special Guest";
-                commonSPGLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2024-06-07+%28game%3Apaper%29";
+                commonSPGLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+cn≥39+cn≤48+%28game%3Apaper%29";
                 let response = await fetch(commonSPGLink);
                 let commonSPGCard = await response.json();
                 commonName = commonSPGCard.name;
@@ -300,6 +300,9 @@ async function commonPull_MH3() {
                 //  Push price to price array
                 myPrices.push(commonPrice);
             }
+
+            const commonStack = document.getElementById("common-image-" + j).parentElement;
+            commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
         }
         const commonSumElement = document.getElementById("common-sum");
         commonSumElement.innerText = commonSum;
@@ -333,6 +336,9 @@ async function uncommonPull_MH3() {
         var uncommonImageId = "uncommon-image-" + k;
         uncommonImageElement = document.getElementById(uncommonImageId);
         uncommonImageElement.src = uncommonImage;
+
+        const uncommonStack = document.getElementById("uncommon-image-" + k).parentElement;
+        uncommonImageElement.addEventListener("load", cardImageLoaded(uncommonImageElement, uncommonImage, uncommonStack));
 
         var uncommonPrice = Number(uncommonCard.prices.usd);
         if (currencyMode == "CAD") {
