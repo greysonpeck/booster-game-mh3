@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer theme {
+    :root {
+        --spacing: 0.25rem;
+    }
+}
+
 body {
     background-image: url("img/MH3_bg.png");
     background-attachment: fixed;

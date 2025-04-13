@@ -191,7 +191,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     cardContainer.classList.add("card-container", "perspective-midrange");
 
     const slotContainer = document.createElement("div");
-    slotContainer.classList.add("w-44", "sm:w-[240px]", "shrink-0", "text-nowrap", "pt-[12px]", "sm:pt-0");
+    slotContainer.classList.add("h-[356px]", "shrink-0", "text-nowrap", "mb-1", "sm:pt-0");
 
     const cardInfo = document.createElement("div");
     cardInfo.classList.add("card-info", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
@@ -217,7 +217,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Quantity stuff
         const cardSet = document.createElement("div");
         cardSet.id = id + "-set";
-        cardSet.classList.add("w-44", "sm:w-[240px]", "pt-[12px]", "sm:pt-0");
+        cardSet.classList.add("mb-1", "sm:pt-0");
 
         // Check for dummy/spacer slot
         if (quantity && quantity < 1) {
