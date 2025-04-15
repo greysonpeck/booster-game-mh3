@@ -47,6 +47,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-500: oklch(63.7% 0.237 25.331);
     --color-emerald-500: oklch(69.6% 0.17 162.48);
     --color-cyan-950: oklch(30.2% 0.056 229.695);
     --color-rose-500: oklch(64.5% 0.246 16.439);
@@ -275,12 +276,6 @@
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
-  .mb-3 {
-    margin-bottom: calc(var(--spacing) * 3);
-  }
-  .mb-4 {
-    margin-bottom: calc(var(--spacing) * 4);
-  }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
   }
@@ -302,20 +297,11 @@
   .h-\[356px\] {
     height: 356px;
   }
-  .w-32 {
-    width: calc(var(--spacing) * 32);
-  }
-  .w-44 {
-    width: calc(var(--spacing) * 44);
-  }
-  .w-62 {
-    width: calc(var(--spacing) * 62);
-  }
-  .w-64 {
-    width: calc(var(--spacing) * 64);
-  }
   .w-auto {
     width: auto;
+  }
+  .w-fit {
+    width: fit-content;
   }
   .w-full {
     width: 100%;
@@ -325,6 +311,9 @@
   }
   .min-w-\[350px\] {
     min-width: 350px;
+  }
+  .min-w-\[512px\] {
+    min-width: 512px;
   }
   .shrink-0 {
     flex-shrink: 0;
@@ -400,9 +389,6 @@
   .pt-8 {
     padding-top: calc(var(--spacing) * 8);
   }
-  .pt-\[12px\] {
-    padding-top: 12px;
-  }
   .pr-1 {
     padding-right: calc(var(--spacing) * 1);
   }
@@ -475,6 +461,13 @@
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentColor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .ring-4 {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentColor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .ring-red-500 {
+    --tw-ring-color: var(--color-red-500);
+  }
   .ring-white {
     --tw-ring-color: var(--color-white);
   }
@@ -495,11 +488,6 @@
   .sm\:hidden {
     @media (width >= 40rem) {
       display: none;
-    }
-  }
-  .sm\:w-60 {
-    @media (width >= 40rem) {
-      width: calc(var(--spacing) * 60);
     }
   }
   .sm\:gap-6 {
