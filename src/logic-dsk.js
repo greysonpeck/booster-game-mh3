@@ -50,7 +50,7 @@ function pullDSK() {
 
         foilPull();
 
-        sumTotals();
+        sumTotals_DSK();
     } else {
         console.log("already working");
     }
@@ -580,7 +580,7 @@ async function landPull() {
     myPrices.push(landPrice);
 }
 
-function sumTotals() {
+function sumTotals_DSK() {
     // Add Boosters Bought
     boostersBought++;
     boosterTotalValue = boostersBought * boosterValue;

@@ -191,7 +191,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     cardContainer.classList.add("card-container", "perspective-midrange");
 
     const slotContainer = document.createElement("div");
-    slotContainer.classList.add("h-[356px]", "w-fit", "shrink-0", "text-nowrap", "mb-1", "sm:pt-0");
+    slotContainer.classList.add("total-card", "h-[356px]", "w-fit", "text-nowrap", "mb-1", "sm:pt-0");
 
     const cardInfo = document.createElement("div");
     cardInfo.classList.add("card-info", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
@@ -233,6 +233,10 @@ function makeSlot(id, label, hasFoil, quantity) {
             setLabel.innerHTML = "";
         } else {
             setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
+            let stackHeightValue = quantity * 40 + 312;
+            console.log(cardSet);
+            cardSet.style.height = stackHeightValue + "px";
+            console.log("we did it");
         }
         cardSet.append(setLabel);
 

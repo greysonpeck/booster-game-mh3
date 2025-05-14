@@ -45,6 +45,8 @@ function setMH3() {
     clearSlots();
     makeMH3Slots();
     clearMoney();
+
+    console.log(activeCheck);
 }
 
 function makeMH3Slots() {
@@ -82,7 +84,7 @@ function pullMH3() {
 
         foilPull_MH3();
 
-        sumTotals();
+        sumTotals_MH3();
     } else {
         console.log("already working");
     }
@@ -236,7 +238,6 @@ function ghostPull_MH3() {
         .catch((error) => console.error(error));
 }
 
-//   New commons function
 async function commonPull_MH3() {
     //  Get card from Scryfall
     for (j = 1; j < 7; j++) {
@@ -419,6 +420,7 @@ async function rarePull_MH3() {
     //  Insert Price
     const rarePriceElement = document.getElementById("rare-price");
     rarePriceElement.innerText = USDollar.format(rarePrice);
+    console.log("rare price: " + rarePrice);
 
     //  Insert Roll
     const rareRollElement = document.getElementById("rare-roll");
@@ -703,7 +705,7 @@ async function landcommonPull_MH3() {
     myPrices.push(landcommonPrice);
 }
 
-function sumTotals() {
+function sumTotals_MH3() {
     // Add Boosters Bought
     boostersBought++;
     boosterTotalValue = boostersBought * boosterValue;
@@ -717,6 +719,7 @@ function sumTotals() {
     var timeout = setInterval(function () {
         const loadingOverlay = document.getElementById("data-loading");
         if (checkIfFinished()) {
+            console.log("checking if finished");
             clearInterval(timeout);
             isFinished = true;
 
