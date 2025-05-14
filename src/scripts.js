@@ -234,9 +234,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         } else {
             setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
             let stackHeightValue = quantity * 40 + 312;
-            console.log(cardSet);
             cardSet.style.height = stackHeightValue + "px";
-            console.log("we did it");
         }
         cardSet.append(setLabel);
 
@@ -375,9 +373,6 @@ function setGhostData() {
     } else {
         ghostImagePrimary = ghostCard.image_uris.normal;
     }
-
-    //  Replace Img Source
-    document.getElementById("ghost-image").src = ghostImagePrimary;
 
     //  Flipping
     document.getElementById("ghost-card").parentElement.classList.remove("flipped");

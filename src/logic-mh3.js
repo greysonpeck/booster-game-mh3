@@ -1,5 +1,3 @@
-let rareFirstFlip = true;
-
 function waitforme(millisec) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -8,21 +6,23 @@ function waitforme(millisec) {
     });
 }
 
+let rareFirstFlip = true;
+
 const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardStack.classList.add("flipped");
     if (!rareFirstFlip) {
         console.log("this is not the first flip");
-        console.log("Waiting 1400ms before flipping the stack");
+        // console.log("Waiting 1400ms before flipping the stack");
         await waitforme(1400);
     } else {
         console.log("first flip!");
-        rareFirstFlip = false;
     }
 
     //  Flipping
     console.log("oh we flipin");
-    cardType.src = cardImagePrimary;
     cardStack.classList.remove("flipped");
+
+    cardType.src = cardImagePrimary;
 };
 
 function setMH3() {
@@ -45,8 +45,6 @@ function setMH3() {
     clearSlots();
     makeMH3Slots();
     clearMoney();
-
-    console.log(activeCheck);
 }
 
 function makeMH3Slots() {
@@ -749,6 +747,7 @@ function sumTotals_MH3() {
             // Clear array
             myPrices = [];
             activeCheck = false;
+            rareFirstFlip = false;
         }
     }, 100);
 }
