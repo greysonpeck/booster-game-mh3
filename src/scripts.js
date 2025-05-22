@@ -6,8 +6,38 @@ uncommonSum = 0;
 currencyMode = "";
 currentSet = "MH3";
 
+function waitforme(millisec) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("");
+        }, millisec);
+    });
+}
+
+const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
+    cardStack.classList.add("flipped");
+    if (!rareFirstFlip) {
+        // Not the first flip
+        // console.log("Waiting 1400ms before flipping the stack");
+        await waitforme(1400);
+    } else {
+        // first flip
+    }
+
+    //  Flipping
+    cardStack.classList.remove("flipped");
+
+    cardType.src = cardImagePrimary;
+};
+
 const getRandomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
+};
+
+const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 myPrices = [];
@@ -19,6 +49,8 @@ function pullBooster() {
         pullDSK();
     } else if (currentSet === "MH3") {
         pullMH3();
+    } else if (currentSet === "FIN") {
+        pullFIN();
     } else {
         pullFDN();
     }
@@ -139,6 +171,8 @@ document.addEventListener(
                 setMH3();
             } else if (getCookie("currentSet") == "'DSK'") {
                 setDSK();
+            } else if (getCookie("currentSet") == "'FIN'") {
+                setFIN();
             } else {
                 setFDN();
             }
@@ -213,6 +247,20 @@ function makeSlot(id, label, hasFoil, quantity) {
     cardBack.classList.add("card", "card-back", "card-face", "rounded-xl", "backface-hidden", "rotate-y-180");
     cardBack.src = "./img/card_default.jpeg";
 
+    const foilBlock = document.createElement("div");
+    foilBlock.classList.add("card-container", "perspective-midrange");
+    foilBlock.innerHTML =
+        '<div class="both-cards flipped">' +
+        '<div class="" style="position:absolute;">' +
+        // old stuff
+        ' <div class="foil-hold foil-gradient"></div><img id="' +
+        id +
+        '-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />' +
+        // close div
+        "</div>" +
+        // hardcode card back
+        '<img class="card-back card card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg">';
+
     if (quantity) {
         // Quantity stuff
         const cardSet = document.createElement("div");
@@ -263,6 +311,16 @@ function makeSlot(id, label, hasFoil, quantity) {
             perspectiveContainer.append(bothContainer);
             bothContainer.append(cardImg);
             bothContainer.append(card);
+
+            if (hasFoil) {
+                bothContainer.classList.add("absolute", topVar);
+                cardImg.classList.remove(topVar);
+                card.classList.remove(topVar);
+
+                const foilMulti = document.createElement("div");
+                foilMulti.classList.add("foil-hold", "foil-gradient", "foil-in-list");
+                bothContainer.insertBefore(foilMulti, card);
+            }
         }
     } else if (hasFoil) {
         cardSection.append(slotContainer);
@@ -273,22 +331,6 @@ function makeSlot(id, label, hasFoil, quantity) {
         // foilBlock.classList.add("effect-block");
         // foilBlock.innerHTML = ' <div class=""></div><img id="foil-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />';
         // card.append(foilBlock);
-
-        const foilBlock = document.createElement("div");
-        foilBlock.id = id + "-card";
-        foilBlock.classList.add("effect-block");
-        foilBlock.innerHTML =
-            ' <div class="card-container perspective-midrange"> ' +
-            '<div class="both-cards flipped">' +
-            '<div class="" style="position:absolute;">' +
-            // old stuff
-            ' <div class="foil-hold"></div><img id="' +
-            id +
-            '-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />' +
-            // close div
-            "</div>" +
-            // hardcode card back
-            '<img class="card-back card card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg">';
 
         slotContainer.append(foilBlock);
     } else {
@@ -335,18 +377,18 @@ function setGhostData() {
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
         ghostTexturedElement.classList.add("block");
         ghostTexturedElement.classList.remove("hidden");
-        ghostFoilHolderElement.classList.add("foil-gradient");
+        // ghostFoilHolderElement.classList.add("foil-gradient");
     } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
         ghostFoilElement.innerText = "foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostFoilHolderElement.classList.add("foil-gradient");
+        // ghostFoilHolderElement.classList.add("foil-gradient");
     } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
+        // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
     } else {
-        ghostFoilHolderElement.classList.remove("foil-gradient");
+        // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");

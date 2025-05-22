@@ -50,7 +50,7 @@ function pullFDN() {
 
         landPull_FDN();
 
-        foilPull();
+        foilPull_FDN();
 
         sumTotals_FDN();
     } else {
@@ -239,6 +239,10 @@ async function commonPull_FDN() {
         commonImageElement = document.getElementById(commonImageId);
         commonImageElement.src = commonImage;
 
+        //  When card has loaded...Flip and wait accordingly
+        const commonStack = document.getElementById("common-image-" + i).parentElement;
+        commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
+
         var commonPrice = Number(commonCard.prices.usd);
         if (currencyMode == "CAD") {
             commonPrice = Number(fx(commonPrice).from("USD").to("CAD"));
@@ -281,6 +285,10 @@ async function uncommonPull_FDN() {
         var uncommonImageId = "uncommon-image-" + j;
         uncommonImageElement = document.getElementById(uncommonImageId);
         uncommonImageElement.src = uncommonImage;
+
+        //  When card has loaded...Flip and wait accordingly
+        const uncommonStack = document.getElementById("uncommon-image-" + j).parentElement;
+        uncommonImageElement.addEventListener("load", cardImageLoaded(uncommonImageElement, uncommonImage, uncommonStack));
 
         var uncommonPrice = Number(uncommonCard.prices.usd);
         if (currencyMode == "CAD") {
@@ -340,9 +348,13 @@ async function rareMythic_FDN() {
         rareMythicImageElement = document.getElementById(rareMythicImageId);
         rareMythicImageElement.src = rareMythicImagePrimary;
 
+        //  When card has loaded...Flip and wait accordingly
+        let rareMythicStack = document.getElementById("raremythic-" + k + "-image").closest(".both-cards");
+        rareMythicImageElement.addEventListener("load", cardImageLoaded(rareMythicImageElement, rareMythicImagePrimary, rareMythicStack));
+
         //  Add foil effect
-        var rareMythicCard = document.getElementById("raremythic-" + k + "-card");
-        rareMythicCard.firstElementChild.classList.add("foil-gradient");
+        // var rareMythicCard = document.getElementById("raremythic-" + k + "-card");
+        // rareMythicCard.firstElementChild.classList.add("foil-gradient");
 
         //  Insert Price
         const rarePriceElement = document.getElementById("raremythic-" + k + "-price");
@@ -394,6 +406,10 @@ async function nfRareMythic_FDN() {
         nfRareMythicImageElement = document.getElementById(nfRareMythicImageId);
         nfRareMythicImageElement.src = nfRareMythicImagePrimary;
 
+        //  When card has loaded...Flip and wait accordingly
+        let nfRareMythicStack = document.getElementById("raremythic-nf-" + l + "-image").closest(".both-cards");
+        nfRareMythicImageElement.addEventListener("load", cardImageLoaded(nfRareMythicImageElement, nfRareMythicImagePrimary, nfRareMythicStack));
+
         //  Insert Price
         const nfRarePriceElement = document.getElementById("raremythic-nf-" + l + "-price");
         nfRarePriceElement.innerText = USDollar.format(nfRareMythicPrice);
@@ -407,7 +423,7 @@ async function nfRareMythic_FDN() {
     }
 }
 
-async function foilPull() {
+async function foilPull_FDN() {
     // Random number between 0 and 100
     foilRoll = getRandomNumber(0, 100);
     var foilLink = "";
@@ -438,11 +454,18 @@ async function foilPull() {
 
     // Replace Img Source
     foilImagePrimary = card.image_uris.normal;
-    document.getElementById("foil-image").src = foilImagePrimary;
+    foilImageElement = document.getElementById("foil-image");
+    foilImageElement.src = foilImagePrimary;
+
+    //  When card has loaded...Flip and wait accordingly
+    let foilStack = foilImageElement.parentElement;
+    foilStack = document.getElementById("foil-image").closest(".both-cards");
+    console.log(foilStack);
+    foilImageElement.addEventListener("load", cardImageLoaded(foilImageElement, foilImagePrimary, foilStack));
 
     //  Add foil effect
-    var foilCard = document.getElementById("foil-card");
-    foilCard.firstElementChild.classList.add("foil-gradient");
+    // var foilCard = document.getElementById("foil-card");
+    // foilCard.firstElementChild.classList.add("foil-gradient");
 
     //  Insert Price
     const foilPriceElement = document.getElementById("foil-price");

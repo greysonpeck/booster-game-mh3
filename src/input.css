@@ -274,6 +274,15 @@ input:checked + .slider:before {
     filter: brightness(1.1);
 }
 
+.surge-gradient {
+    background-image: url("../img/surge-2.png");
+}
+
+.foil-in-list {
+    width: 240px;
+    height: 335px;
+}
+
 .ghost-effect {
     position: absolute;
     top: 0;
