@@ -50,7 +50,7 @@ function pullFIN() {
 
         uncommonPull_FIN();
 
-        rarePull_FIN();
+        // rarePull_FIN();
 
         defaultRarePull_FIN();
 
@@ -59,6 +59,8 @@ function pullFIN() {
         nfBFCUPull_FIN();
 
         foilBFCU_FIN();
+
+        threeBFRaresPull_FIN();
 
         sumTotals_FIN();
     } else {
@@ -165,7 +167,7 @@ function ghostPull_FIN() {
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
 
-    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Amh3+unique%3Aprints+";
+    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Afic+unique%3Aprints+";
     ghostLinkConstructed = ghostLinkHalf + "USD>%3D" + boosterSpendBottom + "+" + "USD<%3D" + boosterSpendTop;
 
     topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Amh3+unique%3Aprints+USD%3E%3D15";
@@ -305,72 +307,72 @@ async function uncommonPull_FIN() {
     uncommonSum = 0;
 }
 
-async function rarePull_FIN() {
-    //Rare roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
-    // Random number between 0 and 100
-    rareRoll = getRandomNumber(0, 100);
-    var rareLink = "";
+// async function rarePull_FIN() {
+//     //Rare roll
+//     const getRandomNumber = (min, max) => {
+//         return Math.random() * (max - min) + min;
+//     };
+//     // Random number between 0 and 100
+//     rareRoll = getRandomNumber(0, 100);
+//     var rareLink = "";
 
-    // Override roll
-    // rareRoll = 91;
+//     // Override roll
+//     // rareRoll = 91;
 
-    if (rareRoll <= 79.8) {
-        rareType = "Normal Rare";
-        // rarity:r (is:first-printing OR is:fetchland)
-        rareLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ar+%28is%3Afirst-printing+OR+is%3Afetchland%29";
-    } else if (rareRoll <= 92.8) {
-        // Mythics include DFC Planeswalkers
-        // rarity:m  is:first-printing
-        rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+is%3Afirst-printing";
-        rareType = "Mythic Rare";
-    } else if (rareRoll <= 94.9) {
-        // Retro frames include 24 Rares, 8 Mythics
-        // (rarity:r OR rarity:m) frame:old
-        rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+frame%3Aold";
-        rareType = "Retro Frame";
-    } else {
-        // Borderless, fetch lands, concept Eldrazi, DFC planeswalkers, frame break, profile, other borderless rares or mythic rares.
-        //  (rarity:r OR rarity:m) (frame:extendedart OR is:concept OR type:planeswalker OR border:borderless)
-        rareLink =
-            "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+%28frame%3Aextendedart+OR+is%3Aconcept+OR+type%3Aplaneswalker+OR+border%3Aborderless%29";
-        rareType = "Booster Fun";
-    }
+//     if (rareRoll <= 79.8) {
+//         rareType = "Normal Rare";
+//         // rarity:r (is:first-printing OR is:fetchland)
+//         rareLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ar+%28is%3Afirst-printing+OR+is%3Afetchland%29";
+//     } else if (rareRoll <= 92.8) {
+//         // Mythics include DFC Planeswalkers
+//         // rarity:m  is:first-printing
+//         rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+is%3Afirst-printing";
+//         rareType = "Mythic Rare";
+//     } else if (rareRoll <= 94.9) {
+//         // Retro frames include 24 Rares, 8 Mythics
+//         // (rarity:r OR rarity:m) frame:old
+//         rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+frame%3Aold";
+//         rareType = "Retro Frame";
+//     } else {
+//         // Borderless, fetch lands, concept Eldrazi, DFC planeswalkers, frame break, profile, other borderless rares or mythic rares.
+//         //  (rarity:r OR rarity:m) (frame:extendedart OR is:concept OR type:planeswalker OR border:borderless)
+//         rareLink =
+//             "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+%28frame%3Aextendedart+OR+is%3Aconcept+OR+type%3Aplaneswalker+OR+border%3Aborderless%29";
+//         rareType = "Booster Fun";
+//     }
 
-    let response = await fetch(rareLink);
+//     let response = await fetch(rareLink);
 
-    // waits until Scryfall fetch completes...
-    let card = await response.json();
-    rareName = card.name;
-    rarePrice = convertCurrency(card.prices.usd);
+//     // waits until Scryfall fetch completes...
+//     let card = await response.json();
+//     rareName = card.name;
+//     rarePrice = convertCurrency(card.prices.usd);
 
-    // TO FIX: figure out if DFC....
-    if (card.layout == "transform" || card.layout == "modal_dfc") {
-        rareImagePrimary = card.card_faces[0].image_uris.normal;
-    } else {
-        rareImagePrimary = card.image_uris.normal;
-    }
+//     // TO FIX: figure out if DFC....
+//     if (card.layout == "transform" || card.layout == "modal_dfc") {
+//         rareImagePrimary = card.card_faces[0].image_uris.normal;
+//     } else {
+//         rareImagePrimary = card.image_uris.normal;
+//     }
 
-    //   Replace Img Source
-    rareImageElement = document.getElementById("rare-image");
+//     //   Replace Img Source
+//     rareImageElement = document.getElementById("rare-image");
 
-    //  When Rare Image has loaded...Flip and wait accordingly
-    const rareStack = document.getElementById("rare-image").parentElement;
-    rareImageElement.addEventListener("load", cardImageLoaded(rareImageElement, rareImagePrimary, rareStack));
+//     //  When Rare Image has loaded...Flip and wait accordingly
+//     const rareStack = document.getElementById("rare-image").closest(".both-cards");
+//     rareImageElement.addEventListener("load", cardImageLoaded(rareImageElement, rareImagePrimary, rareStack));
 
-    //  Insert Price
-    const rarePriceElement = document.getElementById("rare-price");
-    rarePriceElement.innerText = USDollar.format(rarePrice);
+//     //  Insert Price
+//     const rarePriceElement = document.getElementById("rare-price");
+//     rarePriceElement.innerText = USDollar.format(rarePrice);
 
-    //  Insert Roll
-    const rareRollElement = document.getElementById("rare-roll");
-    rareRollElement.innerText = "Roll: " + rareRoll.toFixed(0);
+//     //  Insert Roll
+//     const rareRollElement = document.getElementById("rare-roll");
+//     rareRollElement.innerText = "Roll: " + rareRoll.toFixed(0);
 
-    //  Push price to price array
-    myPrices.push(rarePrice);
-}
+//     //  Push price to price array
+//     myPrices.push(rarePrice);
+// }
 
 async function defaultRarePull_FIN() {
     defaultRareRoll = getRandomNumber(0, 100);
@@ -589,6 +591,140 @@ async function basicLandPull_FIN() {
 
     //  Push price to price array
     myPrices.push(basicLandPrice);
+}
+
+function bfRareSingleRoll(allowFoil = true) {
+    let bfRareRoll;
+    let hitFoil = false;
+    if (allowFoil) {
+        bfRareRoll = getRandomNumber(0, 100);
+        console.log("full rolling");
+    } else {
+        bfRareRoll = getRandomNumber(0, 91.0);
+        console.log("no-foil rolling");
+    }
+
+    if (bfRareRoll > 91.0) {
+        console.log("WE HIT FOIL");
+        hitFoil = true;
+    }
+
+    // Override roll
+    // bfRareRoll = 95;
+
+    var bfRareLink = "";
+    let foilType = "";
+
+    if (bfRareRoll <= 23.1) {
+        //  set:fin is:boosterfun rarity:r unique:art
+        bfRareType = "Non-foil main set Booster Fun Rare (23.1%)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Ar+unique%3Aart&unique=cards";
+    } else if (bfRareRoll <= 26.9) {
+        //  set:fin is:boosterfun rarity:m unique:art
+        bfRareType = "Non-foil main set Booster Fun Mythic (3.8%)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Am+unique%3Aart&unique=cards";
+    } else if (bfRareRoll <= 45.1) {
+        //  set:fin frame:extendedart type:legendary rarity:r unique:art
+        bfRareType = "Non-foil extended-art legendary Mythic (18.2%, 44 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+type%3Alegendary+rarity%3Ar+unique%3Aart";
+    } else if (bfRareRoll <= 48.0) {
+        //  set:fin frame:extendedart type:legendary rarity:r unique:art
+        bfRareType = "Non-foil extended-art legendary Mythic (2.9%, 14 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+type%3Alegendary+rarity%3Am+unique%3Aart";
+    } else if (bfRareRoll <= 50.9) {
+        //  set:fic is:boosterfun rarity:m unique:art (CN>=194 AND CN<=200)
+        bfRareType = "Non-foil Booster Fun Commander Rare (2.9%, 16 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Ar+unique%3Aart+%28CN>%3D194+AND+CN<%3D200%29&unique=cards";
+    } else if (bfRareRoll <= 54.2) {
+        //  set:fic is:boosterfun rarity:m unique:art
+        bfRareType = "Non-foil Booster Fun Commander Mythic (3.3%, 16 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Am+unique%3Aart&unique=cards";
+    } else if (bfRareRoll <= 65.8) {
+        //  set:fic rarity:r frame:extendedart -CN:228 (-type:"legendary creature" AND -type:"legendary artifact creature")
+        //  !! Custom query, excludes Legendary Creatures and Herald's Horn, Buy-a-Box Promo
+        bfRareType = "Non-foil extended-art non-Legendary Creature Commander Rare (11.6%, 28 cards)";
+        bfRareLink =
+            "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Ar+frame%3Aextendedart+-CN%3A228+%28-type%3A'legendary+creature'+AND+-type%3A'legendary+artifact+creature'%29";
+    } else if (bfRareRoll <= 89.4) {
+        //  set:fic frame:extendedart rarity:r (type:legendary and type:creature)
+        bfRareType = "Non-foil extended-art Legendary Creature Commander Rare (23.6%, 57 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+frame%3Aextendedart+rarity%3Ar+%28type%3Alegendary+and+type%3Acreature%29";
+    } else if (bfRareRoll <= 91.0) {
+        //  set:fic frame:extendedart rarity:m (type:legendary and type:creature)
+        bfRareType = "Non-foil extended-art Legendary Creature Commander Mythic (1.6%, 8 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+frame%3Aextendedart+rarity%3Am+%28type%3Alegendary+and+type%3Acreature%29";
+    } else if (bfRareRoll <= 92.4) {
+        //  set:fic is:boosterfun rarity:r CN>=194
+        //  !!! Assuming the Commander set is implied, and that the group of 7 is 7 Summons
+        bfRareType = "Foil Booster Fun Rare (1.4%, 7 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Ar+CN>%3D194";
+        foilType = "trad";
+    } else if (bfRareRoll <= 98.2) {
+        //  set:fic rarity:r frame:extendedart -CN:228 (-type:"legendary creature" AND -type:"legendary artifact creature")
+        //  !! Custom query, excludes Legendary Creatures and Herald's Horn, Buy-a-Box Promo
+        bfRareType = "Foil extended-art Commander Rare (5.8%, 28 cards)";
+        bfRareLink =
+            "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Ar+frame%3Aextendedart+-CN%3A228+%28-type%3A'legendary+creature'+AND+-type%3A'legendary+artifact+creature'%29";
+        foilType = "trad";
+    } else if (bfRareRoll <= 99) {
+        //  set:fic is:boosterfun rarity:m
+        bfRareType = "Foil extended-art Commander Mythic (0.8%, 8 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+frame%3Aextendedart";
+        foilType = "trad";
+    } else {
+        //  set:fic is:boosterfun rarity:m
+        bfRareType = "Surge Foil extended-art Commander Mythic (1%, 8 cards)";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+frame%3Aextendedart";
+        foilType = "surge";
+    }
+    console.log("bfRareRoll: " + bfRareRoll);
+    return [bfRareLink, hitFoil, foilType];
+}
+
+async function threeBFRaresPull_FIN() {
+    let results = [];
+    let foilUsed = false;
+
+    for (l = 1; l < 4; l++) {
+        // Do a full roll first.
+        let fohit = bfRareSingleRoll(!foilUsed);
+        if (fohit[1] === true) {
+            foilUsed = true;
+        }
+        results.push(fohit[2]);
+
+        let response = await fetch(fohit[0]);
+
+        // waits until Scryfall fetch completes...
+        let card = await response.json();
+        bfRareName = card.name;
+
+        // Set price
+        bfRarePrice = Number(card.prices.usd_foil);
+
+        //  Set image
+        if (card.layout == "transform" || card.layout == "modal_dfc") {
+            bfRareImagePrimary = card.card_faces[0].image_uris.normal;
+        } else {
+            bfRareImagePrimary = card.image_uris.normal;
+        }
+
+        //  Replace Img Source
+        bfRareImageElement = document.getElementById("bfr-" + l + "-image");
+
+        //  When Land/Common Image has loaded...Flip and wait accordingly
+        const bfRareStack = bfRareImageElement.closest(".both-cards");
+        bfRareImageElement.addEventListener("load", cardImageLoaded(bfRareImageElement, bfRareImagePrimary, bfRareStack));
+
+        //  Insert Price
+        const bfRarePriceElement = document.getElementById("bfr-" + l + "-price");
+        bfRarePriceElement.innerText = USDollar.format(bfRarePrice);
+
+        //  Push price to price array
+        myPrices.push(bfRarePrice);
+    }
+
+    console.log("results: " + results);
 }
 
 function sumTotals_FIN() {
