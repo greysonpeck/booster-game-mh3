@@ -24,9 +24,10 @@ function setFIN() {
 }
 
 function makeFINSlots() {
-    makeSlot("bfr-1", "B.F. Rare or Mythic #1");
-    makeSlot("bfr-2", "B.F. Rare or Mythic #2");
-    makeSlot("bfr-3", "B.F. Rare or Mythic #3");
+    makeSlot("fca", "Through the Ages", true);
+    makeSlot("bfr-1", "B.F. Rare or Mythic #1", true);
+    makeSlot("bfr-2", "B.F. Rare or Mythic #2", true);
+    makeSlot("bfr-3", "B.F. Rare or Mythic #3", true);
     makeSlot("defaultrare", "Foil Rare or Mythic", true);
     makeSlot("nfbfcu", "Booster Fun (C/U)");
     makeSlot("foilbfcu", "Foil Booster Fun (C/U)", true);
@@ -50,8 +51,6 @@ function pullFIN() {
 
         uncommonPull_FIN();
 
-        // rarePull_FIN();
-
         defaultRarePull_FIN();
 
         basicLandPull_FIN();
@@ -61,6 +60,8 @@ function pullFIN() {
         foilBFCU_FIN();
 
         threeBFRaresPull_FIN();
+
+        fcaPull_FIN();
 
         sumTotals_FIN();
     } else {
@@ -672,9 +673,9 @@ function bfRareSingleRoll(allowFoil = true) {
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+frame%3Aextendedart";
         foilType = "trad";
     } else {
-        //  set:fic is:boosterfun rarity:m
+        //  set:fic is:surge rarity:m (CN>=209 AND CN<=217)
         bfRareType = "Surge Foil extended-art Commander Mythic (1%, 8 cards)";
-        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+frame%3Aextendedart";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Asurge+rarity%3Am+%28CN>%3D209+AND+CN<%3D217%29";
         foilType = "surge";
     }
     console.log("bfRareRoll: " + bfRareRoll);
@@ -687,20 +688,20 @@ async function threeBFRaresPull_FIN() {
 
     for (l = 1; l < 4; l++) {
         // Do a full roll first.
-        let fohit = bfRareSingleRoll(!foilUsed);
-        if (fohit[1] === true) {
+        let thisBFRarePull = bfRareSingleRoll(!foilUsed);
+        if (thisBFRarePull[1] === true) {
             foilUsed = true;
         }
-        results.push(fohit[2]);
+        results.push(thisBFRarePull[2]);
 
-        let response = await fetch(fohit[0]);
+        let response = await fetch(thisBFRarePull[0]);
 
         // waits until Scryfall fetch completes...
         let card = await response.json();
         bfRareName = card.name;
 
-        // Set price
-        bfRarePrice = Number(card.prices.usd_foil);
+        //  Replace Img Source
+        bfRareImageElement = document.getElementById("bfr-" + l + "-image");
 
         //  Set image
         if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -709,12 +710,24 @@ async function threeBFRaresPull_FIN() {
             bfRareImagePrimary = card.image_uris.normal;
         }
 
-        //  Replace Img Source
-        bfRareImageElement = document.getElementById("bfr-" + l + "-image");
-
-        //  When Land/Common Image has loaded...Flip and wait accordingly
+        //  When Image has loaded...Flip and wait accordingly
         const bfRareStack = bfRareImageElement.closest(".both-cards");
         bfRareImageElement.addEventListener("load", cardImageLoaded(bfRareImageElement, bfRareImagePrimary, bfRareStack));
+
+        bfRareImageElement.previousElementSibling.classList.remove("foil-gradient");
+        bfRareImageElement.previousElementSibling.classList.remove("surge-gradient");
+
+        if (thisBFRarePull[2] === "trad") {
+            // Set price
+            bfRarePrice = Number(card.prices.usd_foil);
+            bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
+        } else if (thisBFRarePull[2] === "surge") {
+            bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
+            bfRareImageElement.previousElementSibling.classList.add("surge-gradient");
+            bfRarePrice = Number(card.prices.usd_foil);
+        } else {
+            bfRarePrice = Number(card.prices.usd);
+        }
 
         //  Insert Price
         const bfRarePriceElement = document.getElementById("bfr-" + l + "-price");
@@ -727,6 +740,69 @@ async function threeBFRaresPull_FIN() {
     console.log("results: " + results);
 }
 
+async function fcaPull_FIN() {
+    fcaRoll = getRandomNumber(0, 100);
+
+    let fcaLink = "";
+
+    // Override roll
+    // fcaRoll = 99;
+
+    let fcaType = "unknown";
+    if (fcaRoll <= 68.3) {
+        //  Uncommon (68.3%, 17 cards)
+        //  set:fca rarity:u
+        fcaType = "Through the Ages — Uncommon";
+        fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Au";
+    } else if (fcaRoll <= 94) {
+        //  Rare (25.7%, 32 cards)
+        //  set:fca rarity:r
+        fcaType = "Through the Ages — Rare";
+        fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Ar";
+    } else {
+        //  Mythic (6%, 15 cards)
+        //  set:fca rarity:m
+        fcaType = "Through the Ages — Mythic";
+        fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Am";
+    }
+
+    let response = await fetch(fcaLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    fcaName = card.name;
+
+    //  Replace Img Source
+    fcaImagePrimary = card.image_uris.normal;
+    fcaImageElement = document.getElementById("fca-image");
+
+    //  When Image has loaded...Flip and wait accordingly
+    fcaImageElement.previousElementSibling.classList.remove("foil-gradient");
+
+    //  Apply foil in 50% of rolls
+    if (getRandomInt(1, 2) === 2) {
+        fcaImageElement.previousElementSibling.classList.add("foil-gradient");
+        fcaPrice = Number(card.prices.usd_foil) ? Number(card.prices.usd_foil) : 0;
+    } else {
+        // Non-foil
+        fcaPrice = Number(card.prices.usd) ? Number(card.prices.usd) : 0;
+    }
+
+    const fcaStack = document.getElementById("fca-image").closest(".both-cards");
+    fcaImageElement.addEventListener("load", cardImageLoaded(fcaImageElement, fcaImagePrimary, fcaStack));
+
+    //  Insert Price
+    const fcaPriceElement = document.getElementById("fca-price");
+    fcaPriceElement.innerText = USDollar.format(fcaPrice);
+
+    //  Insert Roll
+    const fcaRollElement = document.getElementById("fca-roll");
+    fcaRollElement.innerText = "Roll: " + fcaRoll.toFixed(0);
+
+    //  Push price to price array
+    myPrices.push(fcaPrice);
+}
+
 function sumTotals_FIN() {
     // Add Boosters Bought
     boostersBought++;
@@ -735,7 +811,7 @@ function sumTotals_FIN() {
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 
     function checkIfFinished() {
-        return myPrices.length >= 11;
+        return myPrices.length >= 12;
     }
 
     var timeout = setInterval(function () {
