@@ -24,6 +24,7 @@ function setFIN() {
 }
 
 function makeFINSlots() {
+    makeSlot("fchoco", "Foil Rare/Mythic or Chocobo", true);
     makeSlot("fca", "Through the Ages", true);
     makeSlot("bfr-1", "B.F. Rare or Mythic #1", true);
     makeSlot("bfr-2", "B.F. Rare or Mythic #2", true);
@@ -62,6 +63,8 @@ function pullFIN() {
         threeBFRaresPull_FIN();
 
         fcaPull_FIN();
+
+        foilOrChocoPull_FIN();
 
         sumTotals_FIN();
     } else {
@@ -803,6 +806,83 @@ async function fcaPull_FIN() {
     myPrices.push(fcaPrice);
 }
 
+async function foilOrChocoPull_FIN() {
+    chocoRareRoll = getRandomNumber(0, 100);
+
+    let chocoRareLink = "";
+
+    // Override roll
+    // chocoRareRoll = 99;
+
+    let chocoRareType = "unknown";
+    if (chocoRareRoll <= 1.9) {
+        //  1 of 3 Traditional foil Artist Rares (1.9%, 3 cards)
+        //  set:fin rarity:r (a:"akihiko yoshida" or a:"toshitaka matsuda" or a:"roberto ferrari")
+        chocoRareType = "(Traditional Foil) Artist Rare";
+        chocoRareLink =
+            "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28a%3A'akihiko+yoshida'+or+a%3A'toshitaka+matsuda'+or+a%3A'roberto+ferrari'%29";
+    } else if (chocoRareRoll <= 4.1) {
+        //  1 of 7 Traditional foil Artist Mythics (2.2%, 7 cards)
+        //  set:fin rarity:m (a:"yoshitaka amano" or a:"toshiyuki itahana" or a:"tetsuya nomura" or a:"isamu kamikokuryo" or a:"kazuya takahashi" or a:"yusuke mogi")
+        chocoRareType = "(Traditional Foil) Artist Rare";
+        chocoRareLink =
+            "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28a%3A'yoshitaka+amano'+or+a%3A'toshiyuki+itahana'+or+a%3A'tetsuya+nomura'+or+a%3A'isamu+kamikokuryo+or+a%3A'kazuya+takahashi'+or+a%3A'yusuke+mogi'%29";
+    } else if (chocoRareRoll <= 40.6) {
+        //  Traditional foil borderles woodblock Rare (36.5%, 29 cards)
+        //  set:fin rarity:r (CN>=324 AND CN<=373)
+        chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D324+AND+CN<%3D373%29";
+    } else if (chocoRareRoll <= 44.4) {
+        //  Traditional foil borderless Woodblock Mythic (3.8%, 6 cards)
+        //  set:fin rarity:m (CN>=334 AND CN<=359)
+        chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D334+AND+CN<%3D359%29";
+    } else if (chocoRareRoll <= 44.4) {
+        //  Traditional foil borderles Woodblock Mythic (3.8%, 6 cards)
+        //  set:fin rarity:m (CN>=334 AND CN<=359)
+        chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D334+AND+CN<%3D359%29";
+    }
+
+    let response = await fetch(chocoRareLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    chocoRareUName = card.name;
+    chocoRarePrice = Number(card.prices.usd_foil) ? Number(card.prices.usd_foil) : 0;
+
+    //  Replace Img Source
+    if (card.layout == "transform" || card.layout == "modal_dfc") {
+        chocoRareImagePrimary = card.card_faces[0].image_uris.normal;
+    } else {
+        chocoRareImagePrimary = card.image_uris.normal;
+    }
+
+    //  Replace Img Source
+    chocoRareImageElement = document.getElementById("fchoco-image");
+
+    //  When Foil Image has loaded...Flip and wait accordingly
+    const chocoRareStack = document.getElementById("fchoco-image").closest(".both-cards");
+    chocoRareImageElement.addEventListener("load", cardImageLoaded(chocoRareImageElement, chocoRareImagePrimary, chocoRareStack));
+
+    if (chocoRareType == "Surge Foil Uncommon Borderless Character Card") {
+        chocoRareImageElement.previousElementSibling.classList.add("surge-gradient");
+    } else {
+        chocoRareImageElement.previousElementSibling.classList.remove("surge-gradient");
+    }
+
+    //  Insert Price
+    const chocoRarePriceElement = document.getElementById("fchoco-price");
+    chocoRarePriceElement.innerText = USDollar.format(chocoRarePrice);
+
+    //  Insert Roll
+    const foilBFCURollElement = document.getElementById("foilbfcu-roll");
+    foilBFCURollElement.innerText = "Roll: " + foilBFCURoll.toFixed(0);
+
+    //  Push price to price array
+    myPrices.push(foilBFCUPrice);
+}
+
 function sumTotals_FIN() {
     // Add Boosters Bought
     boostersBought++;
@@ -811,7 +891,7 @@ function sumTotals_FIN() {
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 
     function checkIfFinished() {
-        return myPrices.length >= 12;
+        return myPrices.length >= 15;
     }
 
     var timeout = setInterval(function () {

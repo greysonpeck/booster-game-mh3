@@ -491,8 +491,14 @@ async function landPull_FDN() {
     let card = await response.json();
     landName = card.name;
 
-    var landCard = document.getElementById("land-card");
-    landCard.firstElementChild.classList.add("foil-gradient");
+    var landImageElement = document.getElementById("land-image").previousElementSibling;
+
+    // Add foil effect if foil
+    if (landType == "Foil Land" || landType == "Foil Full-Art Land") {
+        landImageElement.classList.add("foil-gradient");
+    } else {
+        landImageElement.classList.remove("foil-gradient");
+    }
 
     // Set price, foil price if foil
     landPrice = Number(card.prices.usd_foil);
@@ -500,6 +506,10 @@ async function landPull_FDN() {
     //   Replace Img Source
     landImagePrimary = card.image_uris.normal;
     document.getElementById("land-image").src = landImagePrimary;
+
+    //  When Land/Common Image has loaded...Flip and wait accordingly
+    const landStack = landImageElement.closest(".both-cards");
+    landImageElement.addEventListener("load", cardImageLoaded(landImageElement, landImagePrimary, landStack));
 
     //  Insert Price
     const landPriceElement = document.getElementById("land-price");
@@ -521,7 +531,7 @@ function sumTotals_FDN() {
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 
     function checkIfFinished() {
-        return myPrices.length >= 13;
+        return myPrices.length >= 15;
     }
 
     var timeout = setInterval(function () {
