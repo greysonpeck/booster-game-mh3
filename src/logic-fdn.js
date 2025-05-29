@@ -38,7 +38,7 @@ function pullFDN() {
         const slider = document.querySelector("#sound-slider");
         slider.value = 10;
 
-        ghostPull();
+        ghostPull_FDN();
 
         commonPull_FDN();
 
@@ -152,16 +152,16 @@ function rollForWildcard() {
     return wildcardLink;
 }
 
-function ghostPull() {
+function ghostPull_FDN() {
     // Set prices and link
     totalBoosterSpend = (boostersBought + 1) * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
 
-    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Adsk+unique%3Aprints+";
+    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Afdn+unique%3Aprints+";
     ghostLinkConstructed = ghostLinkHalf + "USD>%3D" + boosterSpendBottom + "+" + "USD<%3D" + boosterSpendTop;
 
-    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Adsk+unique%3Aprints+USD%3E%3D15";
+    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afdn+unique%3Aprints+USD%3E%3D15";
 
     fetch(topOutLink)
         .then((response) => {
