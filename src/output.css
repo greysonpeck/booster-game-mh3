@@ -584,6 +584,9 @@ body {
   scale: 1.5;
   bottom: 200px !important;
 }
+.single-view:hover {
+  filter: none !important;
+}
 #single-holder:hover {
   filter: brightness(1.3);
   bottom: -140px;

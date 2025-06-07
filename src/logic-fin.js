@@ -39,8 +39,6 @@ function makeFINSlots() {
     makeSlot("basicland", "Foil Basic Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 3);
     makeSlot("common", "Foil Commons", true, 3);
-
-    ghostDataGrab_FIN();
 }
 
 function pullFIN() {
@@ -53,6 +51,7 @@ function pullFIN() {
         slider.value = 10;
 
         // ghostPull_FIN();
+        ghostDataGrab_FIN();
 
         commonPull_FIN();
 
@@ -80,14 +79,20 @@ function pullFIN() {
 async function ghostDataGrab_FIN() {
     console.log("starting ghostDataGrab_FIN()");
     // Set prices and link
-    totalBoosterSpend = boostersBought + 1 * boosterValue;
+
+    // Add Boosters Bought
+    boostersBought++;
+
+    totalBoosterSpend = boostersBought * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
 
-    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=set%3Afic+unique%3Aprints+";
-    ghostLinkConstructed = ghostLinkHalf + "USD>%3D" + boosterSpendBottom + "+" + "USD<%3D" + boosterSpendTop;
+    console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
-    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Amh3+unique%3Aprints+USD%3E%3D15";
+    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
+    ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
+
+    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afin+unique%3Aprints+USD%3E%3D15";
 
     fetch(topOutLink)
         .then((response) => {
@@ -767,8 +772,6 @@ async function foilOrChocoPull_FIN() {
 }
 
 function sumTotals_FIN() {
-    // Add Boosters Bought
-    boostersBought++;
     boosterTotalValue = boostersBought * boosterValue;
     const boostersBoughtElement = document.getElementById("boosters-bought");
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
