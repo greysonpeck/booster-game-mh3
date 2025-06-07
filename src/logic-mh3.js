@@ -1,10 +1,9 @@
 let rareFirstFlip = true;
 
 function setMH3() {
-    console.log("running setMH3()");
-
     currentSet = "MH3";
     document.cookie = "currentSet = 'MH3'";
+    boosterValue = 8;
 
     document.getElementById("set-header").innerText = "MODERN HORIZONS 3";
     document.getElementById("set-toggle-1").innerText = "go foundations";

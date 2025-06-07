@@ -1,5 +1,4 @@
 newTotal = 0;
-boosterValue = 8;
 boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
@@ -102,10 +101,24 @@ document.addEventListener(
         currentMoneyElement = document.getElementById("current-money");
         const toggle = document.getElementById("currency");
 
+        if (getCookie("currentSet")) {
+            if (getCookie("currentSet") == "'MH3'") {
+                setMH3();
+            } else if (getCookie("currentSet") == "'DSK'") {
+                setDSK();
+            } else if (getCookie("currentSet") == "'FIN'") {
+                setFIN();
+            } else {
+                setFDN();
+            }
+        } else {
+            setFDN();
+        }
+
         function initializeCAD() {
             currencyMode = "CAD";
             toggle.classList.add("toggle-cad");
-            boosterValue = 12;
+            boosterValue = boosterValue * 1.39;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
             currentMoneyElement.classList.remove("px-3");
             console.log("Initializing cad...");
@@ -113,7 +126,6 @@ document.addEventListener(
         }
 
         function initializeUSD() {
-            boosterValue = 8;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
             currentMoneyElement.classList.remove("px-3");
         }
@@ -128,6 +140,7 @@ document.addEventListener(
                 toggle.classList.toggle("on");
             } else {
                 console.log("USA MONEY GANG");
+                initializeUSD();
                 currentMoneyElement.classList.remove("px-3");
             }
         } else {
@@ -156,7 +169,7 @@ document.addEventListener(
             } else {
                 initializeUSD();
                 document.cookie = "currencyMode = 'USD'";
-                boosterValue = 8;
+                document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
                 window.location.reload();
             }
             toggle.classList.toggle("on");
@@ -165,26 +178,11 @@ document.addEventListener(
         toggle.addEventListener("click", () => {
             initializeMoney();
         });
-
-        if (getCookie("currentSet")) {
-            if (getCookie("currentSet") == "'MH3'") {
-                setMH3();
-            } else if (getCookie("currentSet") == "'DSK'") {
-                setDSK();
-            } else if (getCookie("currentSet") == "'FIN'") {
-                setFIN();
-            } else {
-                setFDN();
-            }
-        } else {
-            setFDN();
-        }
     },
     false
 );
 
 // Card maker
-
 function clearMoney() {
     currentSetElement = document.getElementById("current-set");
     currentMoneyElement = document.getElementById("current-money");
@@ -235,7 +233,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         "</div>" +
         '<div id="' +
         id +
-        '-price" class="pr-3 font-bold"></div>' +
+        '-price" class="price pr-3 font-bold"></div>' +
         '<div id="' +
         id +
         '-roll" class="hidden"></div>';
@@ -353,6 +351,7 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
+    console.log("runnign setGhostData()");
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -406,9 +405,6 @@ function setGhostData() {
         ghostTreatment = "";
     }
 
-    const ghostTreatmentElement = document.getElementById("ghost-treatment");
-    ghostTreatmentElement.innerText = ghostTreatment;
-
     // TO FIX: figure out if DFC....
     if (ghostCard.layout == "transform" || ghostCard.layout == "modal_dfc") {
         ghostImagePrimary = ghostCard.card_faces[0].image_uris.normal;
@@ -416,25 +412,26 @@ function setGhostData() {
         ghostImagePrimary = ghostCard.image_uris.normal;
     }
 
-    //  Flipping
-    document.getElementById("ghost-card").parentElement.classList.remove("flipped");
+    console.log(ghostImagePrimary);
 
-    //  Replace Img Source
-    ghostImageElement = document.getElementById("ghost-image");
+    const ghostTreatmentElement = document.getElementById("ghost-treatment");
+    ghostTreatmentElement.innerText = ghostTreatment;
+}
 
-    //  When Ghost Image has loaded...Flip and wait accordingly
-    const ghostStack = ghostImageElement.closest(".both-cards");
-    ghostImageElement.addEventListener("load", cardImageLoaded(ghostImageElement, ghostImagePrimary, ghostStack));
+function ghostSlide() {
+    let ghostElement = document.getElementById("single-holder");
+    ghostElement.classList.remove("opacity-0");
+    ghostElement.classList.add("opacity-100");
 
-    //  Insert Price
-    const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice;
+    const ghostStack = document.getElementById("ghost-card").parentElement;
+    ghostStack.classList.add("flipped");
 
-    //  Insert Name
-    const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName;
+    ghostElement.addEventListener("click", function (e) {
+        ghostClick_FIN();
+    });
+}
 
-    //  Reveal snark
-    const snarkBox = document.getElementById("snark");
-    snarkBox.classList.remove("hidden");
+function ghostClick_FIN() {
+    let ghostElement = document.getElementById("single-holder");
+    ghostElement.classList.add("single-view");
 }

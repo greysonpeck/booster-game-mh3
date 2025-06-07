@@ -1,6 +1,10 @@
 function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
+    boosterValue = 60;
+
+    priceCutActive = true;
+    priceCut = 0.5;
 
     document.getElementById("set-header").innerText = "FINAL FANTASY";
 
@@ -24,7 +28,7 @@ function setFIN() {
 }
 
 function makeFINSlots() {
-    makeSlot("fchoco", "Foil Rare/Mythic or Chocobo", true);
+    makeSlot("fchoco", "Foil R, M, or Chocobo", true);
     makeSlot("fca", "Through the Ages", true);
     makeSlot("bfr-1", "B.F. Rare or Mythic #1", true);
     makeSlot("bfr-2", "B.F. Rare or Mythic #2", true);
@@ -35,6 +39,8 @@ function makeFINSlots() {
     makeSlot("basicland", "Foil Basic Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 3);
     makeSlot("common", "Foil Commons", true, 3);
+
+    ghostDataGrab_FIN();
 }
 
 function pullFIN() {
@@ -46,7 +52,7 @@ function pullFIN() {
         const slider = document.querySelector("#sound-slider");
         slider.value = 10;
 
-        ghostPull_FIN();
+        // ghostPull_FIN();
 
         commonPull_FIN();
 
@@ -71,103 +77,10 @@ function pullFIN() {
     }
 }
 
-function rollForWildcard() {
-    // Wildcard roll
-    const getRandomNumber = (min, max) => {
-        return Math.random() * (max - min) + min;
-    };
-    // Random number between 0 and 100
-    wildcardRoll = getRandomNumber(0, 100);
-
-    wildcardLink = "";
-
-    // Override roll
-    // wildcardRoll = 95.1;
-
-    let wildcardType = "unknown";
-    if (wildcardRoll <= 41.7) {
-        wildcardType = "Wildcard Common";
-        // Common (41.7%)
-        // rarity:c, is:firstprinting
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+is%3Afirstprinting+rarity%3Ac";
-    } else if (wildcardRoll <= 75.1) {
-        // Uncommon, not DFC (33.4%)
-        // rarity:u, is:first-printing not:dfc
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Au+is%3Afirst-printing+not%3Adfc";
-        wildcardType = "Wildcard Uncommon non-DFC";
-    } else if (wildcardRoll <= 83.4) {
-        // Uncommon DFC (8.3%)
-        // rarity:u is:first-printing is:dfc
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Au+is%3Afirst-printing+is%3Adfc";
-        wildcardType = "Wildcard Uncommon DFC";
-    } else if (wildcardRoll <= 90.1) {
-        // Rare (6.7%)
-        // rarity:r (is:first-printing OR is:fetchland)
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ar+%28is%3Afirst-printing+OR+is%3Afetchland%29";
-        wildcardType = "Wildcard Rare";
-    } else if (wildcardRoll <= 91.2) {
-        // Mythic (1.1%)
-        // rarity:u is:first-printing is:dfc
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Am+is%3Afirst-printing";
-        wildcardType = "Wildcard Mythic";
-    } else if (wildcardRoll <= 91.6) {
-        // Borderless (0.4%)
-
-        //  Borderless roll
-        const getWildcardBorderlessRandom = () => {
-            return Math.random() * (57 - 0);
-        };
-        // Random number between 0 and 100
-        wildcardBorderlessRandom = getWildcardBorderlessRandom();
-        if (wildcardBorderlessRandom <= 23) {
-            // is Borderless Frame Break, 23 cards
-            // (rarity:r or rarity:m) is:first-printing (type:creature OR type:instant OR type:sorcery OR type:enchantment) is:borderless -type:legendary
-            wildcardLink =
-                "https://api.scryfall.com/cards/random?q=set%3Amh3+is%3Afirstprinting+%28type%3Acreature+OR+type%3Ainstant+OR+type%3Asorcery+OR+type%3Aenchantment%29+is%3Aborderless+-type%3Alegendary";
-            wildcardType = "Wildcard Borderless Frame Break";
-        } else if (wildcardBorderlessRandom <= 39) {
-            // is Other Borderless including DFC and fetchlands
-            // (rarity:r or rarity:m) (is:borderless OR frame:extendedart) (is:dfc or is:fetchland or name="Ugin's Labyrinth") unique:art
-            wildcardLink =
-                'https://api.scryfall.com/cards/random?q=set%3Amh3+%28rarity%3Ar+or+rarity%3Am%29+%28is%3Aborderless+OR+frame%3Aextendedart%29+%28is%3Adfc+or+is%3Afetchland+or+name%3D"Ugin%27s+Labyrinth"%29+unique%3Aart';
-            wildcardType = "Wildcard Other Borderless (DFC, Fetchland, Ugin's Labyrinth)";
-        } else if (wildcardBorderlessRandom <= 54) {
-            // is Borderless Profile
-            // (rarity:r or rarity:m) is:first-printing -is:DFC is:borderless (type:creature AND type:legendary AND -is:concept AND -name="emrakul")
-            wildcardLink =
-                'https://api.scryfall.com/cards/random?q=set%3Amh3+%28rarity%3Ar+or+rarity%3Am%29+is%3Afirst-printing+-is%3ADFC+is%3Aborderless+%28type%3Acreature+AND+type%3Alegendary+AND+-is%3Aconcept+AND+-name%3D"emrakul"%29';
-            wildcardType = "Wildcard Borderless Profile";
-        } else {
-            // is Concept Eldrazi
-            // is:concept
-            wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+is%3Aconcept";
-            wildcardType = "Wildcard Concept Eldrazi";
-        }
-    } else if (wildcardRoll <= 95.8) {
-        // Retro frame including new-to-Modern uncommons (4.2%)
-        // frame:old ((is:firstprinting  and is:fetchland) or (rarity:c or rarity:r or rarity:m) or (rarity:u and is:firstprinting))
-        // In other words, all old-borders, *including* five Rare fetches, *including* four new-to-modern Uncommons, *excluding* Mythic Recruiter of the Guard (not new)
-        wildcardLink =
-            "https://api.scryfall.com/cards/random?q=set%3Amh3+frame%3Aold+%28%28is%3Afirstprinting++and+is%3Afetchland%29+or+%28rarity%3Ac+or+rarity%3Ar+or+rarity%3Am%29+or+%28rarity%3Au+and+is%3Afirstprinting%29%29";
-        wildcardType = "Wildcard Retro Frame";
-    } else if (wildcardRoll <= 99.5) {
-        // Commander Mythic Rare (8 cards)
-        // set:m3c rarity:m is:firstprinting
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Am3c+rarity%3Am+is%3Afirstprinting";
-        wildcardType = "Wildcard Commander Mythic";
-    } else {
-        //  Snow-Covered Waste, < 0.1%
-        //  type:snow
-        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+type%3Asnow";
-        wildcardType = "Wildcard Snow-Covered Wastes";
-    }
-
-    return wildcardLink;
-}
-
-function ghostPull_FIN() {
+async function ghostDataGrab_FIN() {
+    console.log("starting ghostDataGrab_FIN()");
     // Set prices and link
-    totalBoosterSpend = (boostersBought + 1) * boosterValue;
+    totalBoosterSpend = boostersBought + 1 * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
 
@@ -189,9 +102,9 @@ function ghostPull_FIN() {
             ghostCard = data.data[0];
 
             if (ghostCard.prices.usd == !null) {
-                ghostPrice = ghostCard.prices.usd;
+                ghostPrice = ghostCard.prices.usd * priceCut;
             } else {
-                ghostPrice = ghostCard.prices.usd_foil;
+                ghostPrice = ghostCard.prices.usd_foil * priceCut;
             }
 
             if (totalBoosterSpend <= ghostPrice) {
@@ -204,9 +117,7 @@ function ghostPull_FIN() {
                     })
                     .then((data) => {
                         ghostCard = data;
-
                         ghostName = data.name;
-
                         setGhostData();
                     });
             } else {
@@ -217,6 +128,29 @@ function ghostPull_FIN() {
             }
         })
         .catch((error) => console.error(error));
+
+    //  Flipping
+    document.getElementById("ghost-card").parentElement.classList.remove("flipped");
+
+    //  Replace Img Source
+    ghostImageElement = document.getElementById("ghost-image");
+
+    //  When Ghost Image has loaded...Flip and wait accordingly
+    await waitforme(800);
+    const ghostStack = document.getElementById("ghost-image").parentElement;
+    ghostImageElement.addEventListener("load", cardImageLoaded(ghostImageElement, ghostImagePrimary, ghostStack));
+
+    //  Insert Price
+    const ghostPriceElement = document.getElementById("ghost-price");
+    ghostPriceElement.innerText = ghostPrice;
+
+    //  Insert Name
+    const ghostNameElement = document.getElementById("ghost-name");
+    ghostNameElement.innerText = ghostName;
+
+    //  Reveal snark
+    const snarkBox = document.getElementById("snark");
+    snarkBox.classList.remove("hidden");
 }
 
 async function commonPull_FIN() {
@@ -225,7 +159,7 @@ async function commonPull_FIN() {
         let response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ac+-type%3Abasic");
         let commonCard = await response.json();
         commonName = commonCard.name;
-        commonPrice = convertCurrency(commonCard.prices.usd);
+        commonPrice = convertCurrency(commonCard.prices.usd * priceCut);
 
         //  Replace Img Source, check for DFC
         commonImage = commonCard.image_uris.normal;
@@ -234,7 +168,7 @@ async function commonPull_FIN() {
         commonImageElement = document.getElementById(commonImageId);
         commonImageElement.src = commonImage;
 
-        var commonPrice = Number(commonCard.prices.usd);
+        var commonPrice = Number(commonCard.prices.usd * priceCut);
         if (currencyMode == "CAD") {
             commonPrice = Number(fx(commonPrice).from("USD").to("CAD"));
         } else {
@@ -274,7 +208,7 @@ async function uncommonPull_FIN() {
         let uncommonCard = await response.json();
 
         uncommonName = uncommonCard.name;
-        uncommonPrice = convertCurrency(uncommonCard.prices.usd);
+        uncommonPrice = convertCurrency(uncommonCard.prices.usd * priceCut);
 
         //  Replace Img Source, check for DFC
         if (uncommonCard.layout == "transform" || uncommonCard.layout == "modal_dfc") {
@@ -290,7 +224,7 @@ async function uncommonPull_FIN() {
         const uncommonStack = document.getElementById("uncommon-image-" + k).parentElement;
         uncommonImageElement.addEventListener("load", cardImageLoaded(uncommonImageElement, uncommonImage, uncommonStack));
 
-        var uncommonPrice = Number(uncommonCard.prices.usd);
+        var uncommonPrice = Number(uncommonCard.prices.usd * priceCut);
         if (currencyMode == "CAD") {
             uncommonPrice = Number(fx(uncommonPrice).from("USD").to("CAD"));
         } else {
@@ -310,73 +244,6 @@ async function uncommonPull_FIN() {
     uncommonSumElement.innerText = "$" + uncommonSum.toFixed(2);
     uncommonSum = 0;
 }
-
-// async function rarePull_FIN() {
-//     //Rare roll
-//     const getRandomNumber = (min, max) => {
-//         return Math.random() * (max - min) + min;
-//     };
-//     // Random number between 0 and 100
-//     rareRoll = getRandomNumber(0, 100);
-//     var rareLink = "";
-
-//     // Override roll
-//     // rareRoll = 91;
-
-//     if (rareRoll <= 79.8) {
-//         rareType = "Normal Rare";
-//         // rarity:r (is:first-printing OR is:fetchland)
-//         rareLink = "https://api.scryfall.com/cards/random?q=set%3Amh3+%28game%3Apaper%29+rarity%3Ar+%28is%3Afirst-printing+OR+is%3Afetchland%29";
-//     } else if (rareRoll <= 92.8) {
-//         // Mythics include DFC Planeswalkers
-//         // rarity:m  is:first-printing
-//         rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+rarity%3Am+is%3Afirst-printing";
-//         rareType = "Mythic Rare";
-//     } else if (rareRoll <= 94.9) {
-//         // Retro frames include 24 Rares, 8 Mythics
-//         // (rarity:r OR rarity:m) frame:old
-//         rareLink = "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+frame%3Aold";
-//         rareType = "Retro Frame";
-//     } else {
-//         // Borderless, fetch lands, concept Eldrazi, DFC planeswalkers, frame break, profile, other borderless rares or mythic rares.
-//         //  (rarity:r OR rarity:m) (frame:extendedart OR is:concept OR type:planeswalker OR border:borderless)
-//         rareLink =
-//             "https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+set%3Amh3+%28rarity%3Ar+OR+rarity%3Am%29+%28frame%3Aextendedart+OR+is%3Aconcept+OR+type%3Aplaneswalker+OR+border%3Aborderless%29";
-//         rareType = "Booster Fun";
-//     }
-
-//     let response = await fetch(rareLink);
-
-//     // waits until Scryfall fetch completes...
-//     let card = await response.json();
-//     rareName = card.name;
-//     rarePrice = convertCurrency(card.prices.usd);
-
-//     // TO FIX: figure out if DFC....
-//     if (card.layout == "transform" || card.layout == "modal_dfc") {
-//         rareImagePrimary = card.card_faces[0].image_uris.normal;
-//     } else {
-//         rareImagePrimary = card.image_uris.normal;
-//     }
-
-//     //   Replace Img Source
-//     rareImageElement = document.getElementById("rare-image");
-
-//     //  When Rare Image has loaded...Flip and wait accordingly
-//     const rareStack = document.getElementById("rare-image").closest(".both-cards");
-//     rareImageElement.addEventListener("load", cardImageLoaded(rareImageElement, rareImagePrimary, rareStack));
-
-//     //  Insert Price
-//     const rarePriceElement = document.getElementById("rare-price");
-//     rarePriceElement.innerText = USDollar.format(rarePrice);
-
-//     //  Insert Roll
-//     const rareRollElement = document.getElementById("rare-roll");
-//     rareRollElement.innerText = "Roll: " + rareRoll.toFixed(0);
-
-//     //  Push price to price array
-//     myPrices.push(rarePrice);
-// }
 
 async function defaultRarePull_FIN() {
     defaultRareRoll = getRandomNumber(0, 100);
@@ -403,7 +270,7 @@ async function defaultRarePull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     defaultRareName = card.name;
-    defaultRarePrice = Number(card.prices.usd);
+    defaultRarePrice = Number(card.prices.usd * priceCut);
 
     // TO FIX: figure out if DFC....
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -462,7 +329,7 @@ async function nfBFCUPull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     nfBFCUName = card.name;
-    nfBFCUdPrice = Number(card.prices.usd);
+    nfBFCUdPrice = Number(card.prices.usd * priceCut);
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -479,7 +346,7 @@ async function nfBFCUPull_FIN() {
     nfBFCUImageElement.addEventListener("load", cardImageLoaded(nfBFCUImageElement, nfBFCUImagePrimary, nfBFCUStack));
 
     //  Insert Price
-    nfBFCUPrice = Number(card.prices.usd) ? Number(card.prices.usd) : 0;
+    nfBFCUPrice = Number(card.prices.usd * priceCut) ? Number(card.prices.usd * priceCut) : 0;
     const nfBFCUPriceElement = document.getElementById("nfbfcu-price");
     nfBFCUPriceElement.innerText = USDollar.format(nfBFCUPrice);
 
@@ -497,19 +364,19 @@ async function foilBFCU_FIN() {
     let foilBFCULink = "";
 
     // Override roll
-    // foilBFCURoll = 99;
+    foilBFCURoll = 99;
 
     let foilBFCUType = "unknown";
     if (foilBFCURoll <= 13.75) {
         //  1 of 3 Main set Booster Fun commons (13.75%)
         //  set:fin is:boosterfun rarity:c -type:basic
-        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Common";
-        foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Ac+-type%3Abasic";
+        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Common (13.75%, 3 cards)";
+        foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+%28CN%3D369+OR+CN%3D358+OR+CN%3D371%29";
     } else if (foilBFCURoll <= 86.5) {
         //  1 of 13 Main set Booster Fun Uncommons (72.75%)
-        //  set:fin is:boosterfun rarity:u (CN>=324 AND CN<=373)
-        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Uncommon";
-        foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Au+%28CN>%3D324+AND+CN<%3D373%29";
+        //  set:fin rarity:u (CN>=324 AND CN<=373)
+        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Uncommon (72.75%, 13 cards)";
+        foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Au+%28CN>%3D324+AND+CN<%3D373%29";
     } else if (foilBFCURoll <= 91) {
         //  1 of 3 Alternate-art Secret Rendezvous uncommons (4.5%)
         //  set:fic (CN>=217 AND CN<=219) unique:art
@@ -527,7 +394,7 @@ async function foilBFCU_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     foilBFCUName = card.name;
-    foilBFCUPrice = Number(card.prices.usd_foil) ? Number(card.prices.usd_foil) : 0;
+    foilBFCUPrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -578,7 +445,7 @@ async function basicLandPull_FIN() {
     basicLandName = card.name;
 
     // Set price
-    basicLandPrice = Number(card.prices.usd_foil);
+    basicLandPrice = Number(card.prices.usd_foil * priceCut);
 
     basicLandImagePrimary = card.image_uris.normal;
 
@@ -722,14 +589,14 @@ async function threeBFRaresPull_FIN() {
 
         if (thisBFRarePull[2] === "trad") {
             // Set price
-            bfRarePrice = Number(card.prices.usd_foil);
+            bfRarePrice = Number(card.prices.usd_foil * priceCut);
             bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
         } else if (thisBFRarePull[2] === "surge") {
             bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
             bfRareImageElement.previousElementSibling.classList.add("surge-gradient");
-            bfRarePrice = Number(card.prices.usd_foil);
+            bfRarePrice = Number(card.prices.usd_foil * priceCut);
         } else {
-            bfRarePrice = Number(card.prices.usd);
+            bfRarePrice = Number(card.prices.usd * priceCut);
         }
 
         //  Insert Price
@@ -785,10 +652,10 @@ async function fcaPull_FIN() {
     //  Apply foil in 50% of rolls
     if (getRandomInt(1, 2) === 2) {
         fcaImageElement.previousElementSibling.classList.add("foil-gradient");
-        fcaPrice = Number(card.prices.usd_foil) ? Number(card.prices.usd_foil) : 0;
+        fcaPrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
     } else {
         // Non-foil
-        fcaPrice = Number(card.prices.usd) ? Number(card.prices.usd) : 0;
+        fcaPrice = Number(card.prices.usd * priceCut) ? Number(card.prices.usd * priceCut) : 0;
     }
 
     const fcaStack = document.getElementById("fca-image").closest(".both-cards");
@@ -812,7 +679,7 @@ async function foilOrChocoPull_FIN() {
     let chocoRareLink = "";
 
     // Override roll
-    // chocoRareRoll = 99;
+    chocoRareRoll = 99.6;
 
     let chocoRareType = "unknown";
     if (chocoRareRoll <= 1.9) {
@@ -828,7 +695,7 @@ async function foilOrChocoPull_FIN() {
         chocoRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28a%3A'yoshitaka+amano'+or+a%3A'toshiyuki+itahana'+or+a%3A'tetsuya+nomura'+or+a%3A'isamu+kamikokuryo+or+a%3A'kazuya+takahashi'+or+a%3A'yusuke+mogi'%29";
     } else if (chocoRareRoll <= 40.6) {
-        //  Traditional foil borderles woodblock Rare (36.5%, 29 cards)
+        //  Traditional foil borderless woodblock Rare (36.5%, 29 cards)
         //  set:fin rarity:r (CN>=324 AND CN<=373)
         chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D324+AND+CN<%3D373%29";
@@ -837,11 +704,31 @@ async function foilOrChocoPull_FIN() {
         //  set:fin rarity:m (CN>=334 AND CN<=359)
         chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D334+AND+CN<%3D359%29";
-    } else if (chocoRareRoll <= 44.4) {
-        //  Traditional foil borderles Woodblock Mythic (3.8%, 6 cards)
-        //  set:fin rarity:m (CN>=334 AND CN<=359)
-        chocoRareType = "(Traditional Foil) Borderless Woodblock Rare";
-        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D334+AND+CN<%3D359%29";
+    } else if (chocoRareRoll <= 76.0) {
+        //  Traditional foil main set borderless Rare (31.6%, 26 cards)
+        //  set:fin rarity:r is:borderless (CN<320 OR CN>373)
+        chocoRareType = "(Traditional Foil) Borderless Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+is%3Aborderless+%28CN<320+OR+CN>373%29";
+    } else if (chocoRareRoll <= 81.6) {
+        //  Traditional foil main set borderless Mythic (5.6%, 9 cards)
+        //  set:fin rarity:m is:borderless (CN>=375 AND CN<=406)
+        chocoRareType = "(Traditional Foil) Borderless Mythic";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+is%3Aborderless+%28CN>%3D375+AND+CN<%3D406%29";
+    } else if (chocoRareRoll <= 96.7) {
+        //  Surge foil borderless character Rare (15.1%, 20 cards)
+        //  set:fin rarity:r (CN>=374 AND CN<=405)
+        chocoRareType = "(Surge Foil) Borderless Character Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D374+AND+CN<%3D405%29";
+    } else if (chocoRareRoll <= 99.7) {
+        //  Surge foil borderless character Mythic (3.0%, 1 cards)
+        //  set:fin rarity:m (CN>=519 AND CN<=550)
+        chocoRareType = "(Surge Foil) Borderless Character Rare";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D519+AND+CN<%3D550%29";
+    } else {
+        //  Traveling Chocobo in one of five colors
+        //  set:fin CN="551b"
+        chocoRareType = "Colorful Travelling Chocobo";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551b'";
     }
 
     let response = await fetch(chocoRareLink);
@@ -849,7 +736,7 @@ async function foilOrChocoPull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     chocoRareUName = card.name;
-    chocoRarePrice = Number(card.prices.usd_foil) ? Number(card.prices.usd_foil) : 0;
+    chocoRarePrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -865,7 +752,7 @@ async function foilOrChocoPull_FIN() {
     const chocoRareStack = document.getElementById("fchoco-image").closest(".both-cards");
     chocoRareImageElement.addEventListener("load", cardImageLoaded(chocoRareImageElement, chocoRareImagePrimary, chocoRareStack));
 
-    if (chocoRareType == "Surge Foil Uncommon Borderless Character Card") {
+    if (chocoRareType.includes("Surge Foil")) {
         chocoRareImageElement.previousElementSibling.classList.add("surge-gradient");
     } else {
         chocoRareImageElement.previousElementSibling.classList.remove("surge-gradient");
@@ -876,11 +763,11 @@ async function foilOrChocoPull_FIN() {
     chocoRarePriceElement.innerText = USDollar.format(chocoRarePrice);
 
     //  Insert Roll
-    const foilBFCURollElement = document.getElementById("foilbfcu-roll");
-    foilBFCURollElement.innerText = "Roll: " + foilBFCURoll.toFixed(0);
+    const chocoRareRollElement = document.getElementById("fchoco-roll");
+    chocoRareRollElement.innerText = "Roll: " + chocoRareRoll.toFixed(0);
 
     //  Push price to price array
-    myPrices.push(foilBFCUPrice);
+    myPrices.push(chocoRarePrice);
 }
 
 function sumTotals_FIN() {
@@ -928,6 +815,8 @@ function sumTotals_FIN() {
             myPrices = [];
             activeCheck = false;
             rareFirstFlip = false;
+
+            ghostSlide();
         }
     }, 100);
 }

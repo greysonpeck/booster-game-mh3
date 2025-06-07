@@ -1,6 +1,7 @@
 function setFDN() {
     currentSet = "FDN";
     document.cookie = "currentSet = 'FDN'";
+    boosterValue = 8;
 
     document.getElementById("set-header").innerText = "FOUNDATIONS";
     document.getElementById("set-toggle-1").innerText = "go modern horizons 3";
