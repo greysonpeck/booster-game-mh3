@@ -397,7 +397,8 @@ input:checked + .slider:before {
     backface-visibility: hidden;
 }
 
-.both-cards {
+.both-cards,
+.both-cards-single {
     position: relative;
     width: 240px;
     transform-style: preserve-3d;

@@ -93,11 +93,35 @@ let USDollar = new Intl.NumberFormat("en-US", {
     currency: "USD",
 });
 
+function ghostSlide() {
+    console.log("SLIDING");
+    const singleHolder = document.getElementById("single-holder");
+    singleHolder.classList.add("opacity-100");
+}
+
 // Load DOM content, then execute
 document.addEventListener(
     "DOMContentLoaded",
 
     function init() {
+        const singleHolder = document.getElementById("single-holder");
+        const singleStack = document.querySelector(".both-cards-single");
+
+        //  Action on Single Click
+        singleHolder.addEventListener("click", () => {
+            singleHolder.classList.add("single-view");
+            singleStack.classList.remove("flipped");
+        });
+
+        //  Action on Clicking Outside
+        document.addEventListener("click", function (event) {
+            singleHolder;
+            if (!singleHolder.contains(event.target)) {
+                singleHolder.classList.remove("single-view");
+                singleStack.classList.add("flipped");
+            }
+        });
+
         currentMoneyElement = document.getElementById("current-money");
         const toggle = document.getElementById("currency");
 
@@ -416,22 +440,4 @@ function setGhostData() {
 
     const ghostTreatmentElement = document.getElementById("ghost-treatment");
     ghostTreatmentElement.innerText = ghostTreatment;
-}
-
-function ghostSlide() {
-    let ghostElement = document.getElementById("single-holder");
-    ghostElement.classList.remove("opacity-0");
-    ghostElement.classList.add("opacity-100");
-
-    const ghostStack = document.getElementById("ghost-card").parentElement;
-    ghostStack.classList.add("flipped");
-
-    ghostElement.addEventListener("click", function (e) {
-        ghostClick_FIN();
-    });
-}
-
-function ghostClick_FIN() {
-    let ghostElement = document.getElementById("single-holder");
-    ghostElement.classList.add("single-view");
 }

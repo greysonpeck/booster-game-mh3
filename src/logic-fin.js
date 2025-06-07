@@ -129,16 +129,12 @@ async function ghostDataGrab_FIN() {
         })
         .catch((error) => console.error(error));
 
-    //  Flipping
-    document.getElementById("ghost-card").parentElement.classList.remove("flipped");
-
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
 
-    //  When Ghost Image has loaded...Flip and wait accordingly
+    //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
-    const ghostStack = document.getElementById("ghost-image").parentElement;
-    ghostImageElement.addEventListener("load", cardImageLoaded(ghostImageElement, ghostImagePrimary, ghostStack));
+    ghostImageElement.src = ghostImagePrimary;
 
     //  Insert Price
     const ghostPriceElement = document.getElementById("ghost-price");
@@ -679,7 +675,7 @@ async function foilOrChocoPull_FIN() {
     let chocoRareLink = "";
 
     // Override roll
-    chocoRareRoll = 99.6;
+    // chocoRareRoll = 99.6;
 
     let chocoRareType = "unknown";
     if (chocoRareRoll <= 1.9) {
