@@ -462,7 +462,7 @@ async function newModernPull_MH3() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     newModernName = card.name;
-    newModernPrice = Number(card.prices.usd);
+    newModernPrice = convertCurrency(card.prices.usd);
 
     // TO FIX: figure out if DFC....
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -498,7 +498,7 @@ async function wildcardPull_MH3() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     wildcardName = card.name;
-    wildcardPrice = Number(card.prices.usd);
+    wildcardPrice = convertCurrency(card.prices.usd);
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -564,7 +564,7 @@ async function foilPull_MH3() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     foilName = card.name;
-    foilPrice = Number(card.prices.usd_foil);
+    foilPrice = convertCurrency(card.prices.usd_foil);
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -650,9 +650,9 @@ async function landcommonPull_MH3() {
 
     // Set price, foil price if foil
     if (landcommonType == "Foil Land" || landcommonType == "Foil Full-Art Land") {
-        landcommonPrice = Number(card.prices.usd_foil);
+        landcommonPrice = convertCurrency(card.prices.usd_foil);
     } else {
-        landcommonPrice = Number(card.prices.usd);
+        landcommonPrice = convertCurrency(card.prices.usd);
     }
 
     landcommonImagePrimary = card.image_uris.normal;

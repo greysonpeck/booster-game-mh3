@@ -77,7 +77,6 @@ function pullFIN() {
 }
 
 async function ghostDataGrab_FIN() {
-    console.log("starting ghostDataGrab_FIN()");
     // Set prices and link
 
     // Add Boosters Bought
@@ -107,7 +106,7 @@ async function ghostDataGrab_FIN() {
             ghostCard = data.data[0];
 
             if (ghostCard.prices.usd == !null) {
-                ghostPrice = ghostCard.prices.usd * priceCut;
+                ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
             } else {
                 ghostPrice = ghostCard.prices.usd_foil * priceCut;
             }
@@ -271,7 +270,7 @@ async function defaultRarePull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     defaultRareName = card.name;
-    defaultRarePrice = Number(card.prices.usd * priceCut);
+    defaultRarePrice = convertCurrency(card.prices.usd * priceCut);
 
     // TO FIX: figure out if DFC....
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -330,7 +329,7 @@ async function nfBFCUPull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     nfBFCUName = card.name;
-    nfBFCUdPrice = Number(card.prices.usd * priceCut);
+    nfBFCUdPrice = convertCurrency(card.prices.usd * priceCut);
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -347,7 +346,7 @@ async function nfBFCUPull_FIN() {
     nfBFCUImageElement.addEventListener("load", cardImageLoaded(nfBFCUImageElement, nfBFCUImagePrimary, nfBFCUStack));
 
     //  Insert Price
-    nfBFCUPrice = Number(card.prices.usd * priceCut) ? Number(card.prices.usd * priceCut) : 0;
+    nfBFCUPrice = convertCurrency(card.prices.usd * priceCut) ? convertCurrency(card.prices.usd * priceCut) : 0;
     const nfBFCUPriceElement = document.getElementById("nfbfcu-price");
     nfBFCUPriceElement.innerText = USDollar.format(nfBFCUPrice);
 
@@ -395,7 +394,7 @@ async function foilBFCU_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     foilBFCUName = card.name;
-    foilBFCUPrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
+    foilBFCUPrice = convertCurrency(card.prices.usd_foil * priceCut) ? convertCurrency(card.prices.usd_foil * priceCut) : 0;
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -446,7 +445,7 @@ async function basicLandPull_FIN() {
     basicLandName = card.name;
 
     // Set price
-    basicLandPrice = Number(card.prices.usd_foil * priceCut);
+    basicLandPrice = convertCurrency(card.prices.usd_foil * priceCut);
 
     basicLandImagePrimary = card.image_uris.normal;
 
@@ -470,14 +469,14 @@ function bfRareSingleRoll(allowFoil = true) {
     let hitFoil = false;
     if (allowFoil) {
         bfRareRoll = getRandomNumber(0, 100);
-        console.log("full rolling");
+        // console.log("full rolling");
     } else {
         bfRareRoll = getRandomNumber(0, 91.0);
-        console.log("no-foil rolling");
+        // console.log("no-foil rolling");
     }
 
     if (bfRareRoll > 91.0) {
-        console.log("WE HIT FOIL");
+        // console.log("WE HIT FOIL");
         hitFoil = true;
     }
 
@@ -549,7 +548,6 @@ function bfRareSingleRoll(allowFoil = true) {
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Asurge+rarity%3Am+%28CN>%3D209+AND+CN<%3D217%29";
         foilType = "surge";
     }
-    console.log("bfRareRoll: " + bfRareRoll);
     return [bfRareLink, hitFoil, foilType];
 }
 
@@ -590,14 +588,14 @@ async function threeBFRaresPull_FIN() {
 
         if (thisBFRarePull[2] === "trad") {
             // Set price
-            bfRarePrice = Number(card.prices.usd_foil * priceCut);
+            bfRarePrice = convertCurrency(card.prices.usd_foil * priceCut);
             bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
         } else if (thisBFRarePull[2] === "surge") {
             bfRareImageElement.previousElementSibling.classList.add("foil-gradient");
             bfRareImageElement.previousElementSibling.classList.add("surge-gradient");
-            bfRarePrice = Number(card.prices.usd_foil * priceCut);
+            bfRarePrice = convertCurrency(card.prices.usd_foil * priceCut);
         } else {
-            bfRarePrice = Number(card.prices.usd * priceCut);
+            bfRarePrice = convertCurrency(card.prices.usd * priceCut);
         }
 
         //  Insert Price
@@ -607,8 +605,6 @@ async function threeBFRaresPull_FIN() {
         //  Push price to price array
         myPrices.push(bfRarePrice);
     }
-
-    console.log("results: " + results);
 }
 
 async function fcaPull_FIN() {
@@ -653,10 +649,10 @@ async function fcaPull_FIN() {
     //  Apply foil in 50% of rolls
     if (getRandomInt(1, 2) === 2) {
         fcaImageElement.previousElementSibling.classList.add("foil-gradient");
-        fcaPrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
+        fcaPrice = convertCurrency(card.prices.usd_foil * priceCut) ? convertCurrency(card.prices.usd_foil * priceCut) : 0;
     } else {
         // Non-foil
-        fcaPrice = Number(card.prices.usd * priceCut) ? Number(card.prices.usd * priceCut) : 0;
+        fcaPrice = convertCurrency(card.prices.usd * priceCut) ? convertCurrency(card.prices.usd * priceCut) : 0;
     }
 
     const fcaStack = document.getElementById("fca-image").closest(".both-cards");
@@ -737,7 +733,7 @@ async function foilOrChocoPull_FIN() {
     // waits until Scryfall fetch completes...
     let card = await response.json();
     chocoRareUName = card.name;
-    chocoRarePrice = Number(card.prices.usd_foil * priceCut) ? Number(card.prices.usd_foil * priceCut) : 0;
+    chocoRarePrice = convertCurrency(card.prices.usd_foil * priceCut) ? convertCurrency(card.prices.usd_foil * priceCut) : 0;
 
     //  Replace Img Source
     if (card.layout == "transform" || card.layout == "modal_dfc") {
@@ -783,7 +779,6 @@ function sumTotals_FIN() {
     var timeout = setInterval(function () {
         const loadingOverlay = document.getElementById("data-loading");
         if (checkIfFinished()) {
-            console.log("checking if finished");
             clearInterval(timeout);
             isFinished = true;
 

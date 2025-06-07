@@ -73,6 +73,7 @@ function getCookie(cname) {
 function convertCurrency(value) {
     if (currencyMode == "CAD") {
         value = fx(value).from("USD").to("CAD").toFixed(2);
+        console.log("VALUE: " + value);
         return Number(value);
     } else {
         return Number(value);
@@ -94,7 +95,6 @@ let USDollar = new Intl.NumberFormat("en-US", {
 });
 
 function ghostSlide() {
-    console.log("SLIDING");
     const singleHolder = document.getElementById("single-holder");
     singleHolder.classList.add("opacity-100");
 }
