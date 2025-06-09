@@ -37,12 +37,24 @@ body {
 
 .single-view:hover {
     filter: none !important;
+    cursor: default !important;
 }
 
 #single-holder:hover {
     filter: brightness(1.3);
     bottom: -140px;
     cursor: pointer;
+}
+
+.shade {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    left: 0;
+    top: 0;
+    transition-property: opacity;
+    transition-duration: 1000ms;
 }
 
 h2 {
@@ -271,7 +283,6 @@ input:checked + .slider:before {
 
 .effect-block {
     position: relative;
-    /* width: 240px; */
     height: auto;
 }
 
@@ -409,6 +420,44 @@ input:checked + .slider:before {
     transition: transform 1s;
 }
 
+.card-default,
+.foil-hold {
+    width: 240px;
+}
+
 .flipped {
     transform: rotateY(180deg);
+}
+
+/* Mobile sizing stuff  */
+@media (max-width: 480px) {
+    .both-cards,
+    .both-cards-single,
+    .card-face,
+    .card-default,
+    .foil-hold {
+        width: 300px;
+    }
+
+    .total-card {
+        @apply mb-28;
+    }
+
+    .card-info {
+        @apply text-sm;
+    }
+
+    #single-holder {
+        margin-left: -150px;
+        scale: 0.8;
+    }
+
+    #single-holder.single-view {
+        scale: 1.15 !important;
+    }
+
+    .shine-holder {
+        height: 426px;
+        top: unset;
+    }
 }

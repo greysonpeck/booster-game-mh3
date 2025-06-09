@@ -147,10 +147,6 @@ async function ghostDataGrab_FIN() {
     //  Insert Name
     const ghostNameElement = document.getElementById("ghost-name");
     ghostNameElement.innerText = ghostName;
-
-    //  Reveal snark
-    const snarkBox = document.getElementById("snark");
-    snarkBox.classList.remove("hidden");
 }
 
 async function commonPull_FIN() {

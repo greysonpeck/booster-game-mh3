@@ -106,19 +106,35 @@ document.addEventListener(
     function init() {
         const singleHolder = document.getElementById("single-holder");
         const singleStack = document.querySelector(".both-cards-single");
+        const shade = document.querySelector(".shade");
+        let singleClicked = false;
+
+        function dimBackground() {
+            shade.classList.remove("opacity-0", "-z-10");
+            // document.querySelector("body").append(shade);
+        }
 
         //  Action on Single Click
         singleHolder.addEventListener("click", () => {
+            singleClicked = true;
+            document.querySelector("body").classList.add("cursor-pointer");
             singleHolder.classList.add("single-view");
             singleStack.classList.remove("flipped");
+            dimBackground();
+
+            //  Reveal snark
+            const snarkBox = document.getElementById("snark");
+            snarkBox.classList.remove("hidden");
         });
 
         //  Action on Clicking Outside
         document.addEventListener("click", function (event) {
             singleHolder;
-            if (!singleHolder.contains(event.target)) {
+            if (!singleHolder.contains(event.target) && singleClicked) {
                 singleHolder.classList.remove("single-view");
                 singleStack.classList.add("flipped");
+                shade.classList.add("opacity-0", "-z-10");
+                document.querySelector("body").classList.remove("cursor-pointer");
             }
         });
 
@@ -277,7 +293,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // old stuff
         ' <div class="foil-hold foil-gradient"></div><img id="' +
         id +
-        '-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />' +
+        '-image" class="card-default -z-10 rounded-xl" height="auto" src="./img/card_default.jpeg" alt="some" />' +
         // close div
         "</div>" +
         // hardcode card back
