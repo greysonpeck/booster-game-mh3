@@ -135,6 +135,7 @@ document.addEventListener(
                 singleStack.classList.add("flipped");
                 shade.classList.add("opacity-0", "-z-10");
                 document.querySelector("body").classList.remove("cursor-pointer");
+                document.getElementById("snark").classList.add("hidden");
             }
         });
 

@@ -461,3 +461,9 @@ input:checked + .slider:before {
         top: unset;
     }
 }
+
+#snark {
+    text-shadow: 0px 1px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 100%)),
+        0px 3px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 80%));
+    /* 0px 4px 8px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 100%)); */
+}
