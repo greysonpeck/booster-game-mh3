@@ -3,7 +3,7 @@ boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
-currentSet = "MH3";
+currentSet = "FIN";
 
 function waitforme(millisec) {
     return new Promise((resolve) => {
@@ -452,8 +452,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     // Set prices and link
 
     // Add Boosters Bought
-    boostersBought++;
-
     totalBoosterSpend = boostersBought * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
@@ -540,6 +538,8 @@ const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
 };
 
 async function sumTotals() {
+    boostersBought++;
+
     const loadingOverlay = document.getElementById("data-loading");
     const cardsLoadingNumber = document.getElementById("cards-loading");
 
