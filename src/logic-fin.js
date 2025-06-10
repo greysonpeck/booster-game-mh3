@@ -28,7 +28,7 @@ function setFIN() {
     document.getElementById("set-toggle-3").addEventListener("click", () => {
         setDSK();
     });
-    document.body.style.backgroundImage = "url(img/FIN_bg2.jpg)";
+    document.body.style.backgroundImage = "url(img/FIN_bg2_dark.jpg)";
 
     clearSlots();
     makeFINSlots();

@@ -210,6 +210,9 @@
   .absolute {
     position: absolute;
   }
+  .fixed {
+    position: fixed;
+  }
   .relative {
     position: relative;
   }
@@ -219,14 +222,14 @@
   .top-2\/5 {
     top: calc(2/5 * 100%);
   }
-  .top-\[44px\] {
-    top: 44px;
-  }
   .-bottom-40 {
     bottom: calc(var(--spacing) * -40);
   }
   .-left-2 {
     left: calc(var(--spacing) * -2);
+  }
+  .left-1\/2 {
+    left: calc(1/2 * 100%);
   }
   .-z-10 {
     z-index: calc(10 * -1);
@@ -273,6 +276,12 @@
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
   }
+  .-ml-\[16px\] {
+    margin-left: calc(16px * -1);
+  }
+  .-ml-\[120px\] {
+    margin-left: calc(120px * -1);
+  }
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
@@ -297,6 +306,9 @@
   .h-\[356px\] {
     height: 356px;
   }
+  .w-\[255px\] {
+    width: 255px;
+  }
   .w-\[300px\] {
     width: 300px;
   }
@@ -308,6 +320,9 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-\[240px\] {
+    max-width: 240px;
   }
   .max-w-\[1080px\] {
     max-width: 1080px;
@@ -565,9 +580,6 @@ body {
   background-color: rgba(255, 212, 212, 0.79);
 }
 #single-holder {
-  position: fixed;
-  left: 50vw;
-  margin-left: -120px;
   z-index: 1;
   box--webkit-box-shadow: 0px 0px 24px 5px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 24px 5px rgba(0, 0, 0, 0.8);
@@ -576,6 +588,8 @@ body {
 .single-view {
   scale: 1.5;
   bottom: 200px !important;
+  top: 100px;
+  position: relative;
 }
 .single-view:hover {
   filter: none !important;

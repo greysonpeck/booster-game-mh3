@@ -4,6 +4,7 @@ commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
 currentSet = "FIN";
+cardBack_URL = "img/card_default4.png";
 
 function waitforme(millisec) {
     return new Promise((resolve) => {
@@ -35,6 +36,7 @@ function pullBooster() {
     } else if (currentSet === "FIN") {
         pullFIN();
     } else {
+        console.log("htere it is");
         pullFDN();
     }
 }
@@ -108,6 +110,7 @@ document.addEventListener(
             singleClicked = true;
             document.querySelector("body").classList.add("cursor-pointer");
             singleHolder.classList.add("single-view");
+
             singleStack.classList.remove("flipped");
             dimBackground();
 
@@ -142,7 +145,8 @@ document.addEventListener(
                 setFDN();
             }
         } else {
-            setFDN();
+            // In the case of no cookie, set FIN
+            setFIN();
         }
 
         function initializeCAD() {
@@ -241,7 +245,7 @@ function clearSlots() {
 
     // Clear Ghost Card and associated material
     document.getElementById("snark").classList.add("hidden");
-    document.getElementById("ghost-image").src = "img/card_default.jpeg";
+    document.getElementById("ghost-image").src = cardBack_URL;
     document.getElementById("foil-holder").style.display = "none";
 }
 
@@ -272,8 +276,8 @@ function makeSlot(id, label, hasFoil, quantity) {
     bothCards.classList.add("both-cards", "flipped");
 
     const cardBack = document.createElement("img");
-    cardBack.classList.add("card", "card-back", "card-face", "rounded-xl", "backface-hidden", "rotate-y-180");
-    cardBack.src = "./img/card_default.jpeg";
+    cardBack.classList.add("card", "card-back", "card-face", "rounded-lg", "backface-hidden", "rotate-y-180");
+    cardBack.src = cardBack_URL;
 
     const foilBlock = document.createElement("div");
     foilBlock.classList.add("card-container", "perspective-midrange");
@@ -283,11 +287,15 @@ function makeSlot(id, label, hasFoil, quantity) {
         // old stuff
         ' <div class="foil-hold foil-gradient"></div><img id="' +
         id +
-        '-image" class="card-default -z-10 rounded-xl" height="auto" src="./img/card_default.jpeg" alt="some" />' +
+        '-image" class="card-default -z-10 rounded-lg" height="auto" src="' +
+        cardBack_URL +
+        '" alt="some" />' +
         // close div
         "</div>" +
         // hardcode card back
-        '<img class="card-back card card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg">';
+        '<img class="card-back card card-face rounded-lg backface-hidden rotate-y-180" src="' +
+        cardBack_URL +
+        '">';
 
     if (quantity) {
         // Quantity stuff
@@ -326,13 +334,13 @@ function makeSlot(id, label, hasFoil, quantity) {
 
             const cardImg = document.createElement("img");
             cardImg.id = id + "-image-" + (i + 1);
-            cardImg.classList.add("card-face", "card-default", "rounded-xl", topVar);
-            cardImg.src = "./img/card_default.jpeg";
+            cardImg.classList.add("card-face", "card-default", "rounded-lg", topVar);
+            cardImg.src = cardBack_URL;
             cardImg.alt = "Default Magic card back";
 
             const card = document.createElement("img");
-            card.classList.add("card", "card-back", "card-face", "rounded-xl", "backface-hidden", "rotate-y-180", topVar);
-            card.src = "./img/card_default.jpeg";
+            card.classList.add("card", "card-back", "card-face", "rounded-lg", "backface-hidden", "rotate-y-180", topVar);
+            card.src = cardBack_URL;
             card.id = id + "-" + (i + 1);
 
             // Nest elements
@@ -371,8 +379,8 @@ function makeSlot(id, label, hasFoil, quantity) {
 
         const cardImg = document.createElement("img");
         cardImg.id = id + "-image";
-        cardImg.classList.add("card-face", "card-default", "rounded-xl");
-        cardImg.src = "./img/card_default.jpeg";
+        cardImg.classList.add("card-face", "card-default", "rounded-lg");
+        cardImg.src = cardBack_URL;
         cardImg.alt = "Default Magic card back";
 
         bothCards.append(cardImg);

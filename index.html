@@ -25,7 +25,7 @@
     <script src="./src/money.js"></script>
     <script src="./src/slider_logic.js"></script>
     <title>Buy Singles</title>
-    <div class="flex flex-col">
+    <div id="set-selector" class="flex flex-col hidden">
       <a href="#" id="set-toggle-1"></a>
       <a href="#" id="set-toggle-2"></a>
       <a href="#" id="set-toggle-3"></a>
@@ -38,8 +38,6 @@
       <!-- BLOCK THING -->
 
       <div class="top-content items-center mx-auto flex flex-col md:flex-row">
-        <div id="snark" class="hidden z-10 mx-auto text-base text-center absolute -inset-x-3 top-[44px] w-[300px] rounded-md font-bold py-3 px-2 text-shadow-lg/100">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-foil"></span><span id="ghost-treatment"></span><span id="ghost-name"></span>.</div>
-
         <div class="mb-6">
           <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">The Booster Game</h1>
           <h2 id="set-header" class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-8 text-center">MODERN HORIZONS 3</h1>
@@ -90,30 +88,34 @@
       </div>
 
                       <!-- Single you didn't buy slot -->
-                      <div id="single-holder" class="text-center h-[335px] shrink-0 relative rounded-xl -bottom-40 opacity-0">
-                        <div class="shine-holder h-[347px]">
-                        <!-- <div class="slot-label">The single</div> -->
-                            <div class="perspective-midrange">
-                                <div class="both-cards-single flipped">
-                                    <div id="ghost-card" class="effect-block absolute card-face" height="auto">
-                                        <div id="ghost-blank" class="effect-block" width="240px" height="auto">
-                                            <img id="ghost-textured" class="absolute hidden" src="./img/textured-foil.png" alt="">
-                                            <div id="foil-holder" class=""></div>
-                                            <img id="ghost-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default.jpeg" alt="some" />
+                       <div id="snark-and-single" class="z-10 fixed left-1/2 w-[255px] -ml-[120px]">
+                        <div id="snark" class="hidden z-10 w-[300px] mx-auto -ml-[16px] text-base text-center relative -inset-x-3  rounded-md font-bold py-3 px-2 text-shadow-lg/100">For $<span id="ghost-price"></span>, you could have just bought this <span id="ghost-foil"></span><span id="ghost-treatment"></span><span id="ghost-name"></span>.</div>
+                        <div id="single-holder" class="fixed text-center h-[335px] max-w-[240px] shrink-0 rounded-xl -bottom-40 opacity-0">
+                            <div class="shine-holder h-[347px]">
+                            <!-- <div class="slot-label">The single</div> -->
+                                <div class="perspective-midrange">
+                                    <div class="both-cards-single flipped">
+                                        <div id="ghost-card" class="effect-block absolute card-face" height="auto">
+                                            <div id="ghost-blank" class="effect-block" width="240px" height="auto">
+                                                <img id="ghost-textured" class="absolute hidden" src="./img/textured-foil.png" alt="">
+                                                <div id="foil-holder" class=""></div>
+                                                <img id="ghost-image" class="card-default -z-10 rounded-xl" width="240px" height="auto" src="./img/card_default4.png" alt="some" />
+                                            </div>
+                                            
+                                            
                                         </div>
-                                        
-                                        
+                                        <img class="card card-back card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default4.png" />
                                     </div>
-                                    <img class="card card-back card-face rounded-xl backface-hidden rotate-y-180" src="./img/card_default.jpeg" />
-                                </div>
-                                </div>
+                                    </div>
+    
+                                <div class="shine"></div>
+                            </div>
+                
+                            <!-- <div id="ghost-price" class=""></div> -->
+                          <div id="--" class=""></div>
+                        </div>  
+                       </div>
 
-                            <div class="shine"></div>
-                        </div>
-            
-                        <!-- <div id="ghost-price" class=""></div> -->
-                      <div id="--" class=""></div>
-                    </div>  
 
       <!-- CARD SECTION STARTS HERE -->
       <div id="card-section" class="flex flex-wrap gap-2 sm:gap-6 mx-auto mb-12 justify-center text-sm sm:text-base max-w-[1080px]">
