@@ -1,5 +1,10 @@
 let rareFirstFlip = true;
 
+window.setName = "MH3";
+window.MH3 = {
+    totalCards: 12,
+};
+
 function setMH3() {
     currentSet = "MH3";
     document.cookie = "currentSet = 'MH3'";

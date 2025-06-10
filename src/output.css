@@ -216,6 +216,9 @@
   .-inset-x-3 {
     inset-inline: calc(var(--spacing) * -3);
   }
+  .top-2\/5 {
+    top: calc(2/5 * 100%);
+  }
   .top-\[44px\] {
     top: 44px;
   }
@@ -257,9 +260,6 @@
   }
   .my-2 {
     margin-block: calc(var(--spacing) * 2);
-  }
-  .mt-14 {
-    margin-top: calc(var(--spacing) * 14);
   }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
@@ -473,6 +473,9 @@
   }
   .opacity-75 {
     opacity: 75%;
+  }
+  .opacity-80 {
+    opacity: 80%;
   }
   .opacity-100 {
     opacity: 100%;
@@ -695,6 +698,7 @@ input:checked + .slider:before {
 }
 .loader-blur-effect {
   background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
 }
 .slot-label {
   font-optical-sizing: auto;

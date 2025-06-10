@@ -184,6 +184,7 @@ input:checked + .slider:before {
 
 .loader-blur-effect {
     background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
     /* backdrop-filter: blur(2px); */
 }
 

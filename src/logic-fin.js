@@ -1,3 +1,11 @@
+const ghostLinkHalf = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
+const topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afin+unique%3Aprints+USD%3E%3D15";
+
+window.setName = "FIN";
+window.FIN = {
+    totalCards: 15,
+};
+
 function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
@@ -51,7 +59,6 @@ function pullFIN() {
         slider.value = 10;
 
         // ghostPull_FIN();
-        ghostDataGrab_FIN();
 
         commonPull_FIN();
 
@@ -71,82 +78,9 @@ function pullFIN() {
 
         foilOrChocoPull_FIN();
 
-        sumTotals_FIN();
+        sumTotals();
     } else {
     }
-}
-
-async function ghostDataGrab_FIN() {
-    // Set prices and link
-
-    // Add Boosters Bought
-    boostersBought++;
-
-    totalBoosterSpend = boostersBought * boosterValue;
-    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
-    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
-
-    console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
-
-    ghostLinkHalf = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
-    ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
-
-    topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afin+unique%3Aprints+USD%3E%3D15";
-
-    fetch(topOutLink)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Could not fetch resource");
-            }
-            return response.json();
-        })
-
-        // First we set the Ghost Card to the TOP PRICE card
-        .then((data) => {
-            ghostCard = data.data[0];
-
-            if (ghostCard.prices.usd == !null) {
-                ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
-            } else {
-                ghostPrice = ghostCard.prices.usd_foil * priceCut;
-            }
-
-            if (totalBoosterSpend <= ghostPrice) {
-                ghostLink = ghostLinkConstructed;
-
-                // Get the non-top card
-                ghostCard = fetch(ghostLinkConstructed)
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
-                        ghostCard = data;
-                        ghostName = data.name;
-                        setGhostData();
-                    });
-            } else {
-                ghostLink = ghostCard;
-                ghostName = ghostCard.name;
-
-                setGhostData();
-            }
-        })
-        .catch((error) => console.error(error));
-
-    //  Replace Img Source
-    ghostImageElement = document.getElementById("ghost-image");
-
-    //  Wait for manually Ghost Image to load, then set image.
-    await waitforme(800);
-    ghostImageElement.src = ghostImagePrimary;
-
-    //  Insert Price
-    const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice;
-
-    //  Insert Name
-    const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName;
 }
 
 async function commonPull_FIN() {
@@ -761,52 +695,4 @@ async function foilOrChocoPull_FIN() {
 
     //  Push price to price array
     myPrices.push(chocoRarePrice);
-}
-
-function sumTotals_FIN() {
-    boosterTotalValue = boostersBought * boosterValue;
-    const boostersBoughtElement = document.getElementById("boosters-bought");
-    boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
-
-    function checkIfFinished() {
-        return myPrices.length >= 15;
-    }
-
-    var timeout = setInterval(function () {
-        const loadingOverlay = document.getElementById("data-loading");
-        if (checkIfFinished()) {
-            clearInterval(timeout);
-            isFinished = true;
-
-            loadingOverlay.classList.remove("z-10", "loader-blur-effect");
-            loadingOverlay.classList.add("-z-10", "opacity-0");
-
-            const commonSumElement = document.getElementById("common-sum");
-            commonSumElement.innerText = "$" + commonSum.toFixed(2);
-            commonSum = 0;
-
-            //  Sum up all prices in array
-            myPrices.forEach((num) => {
-                newTotal += num;
-            });
-            newTotal = newTotal - boosterValue;
-            currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
-            currentMoneyElement.classList.add("px-3");
-
-            if (newTotal > 0) {
-                currentMoneyElement.classList.remove("bg-rose-500");
-                currentMoneyElement.classList.add("bg-emerald-500");
-            } else {
-                currentMoneyElement.classList.remove("bg-emerald-500");
-                currentMoneyElement.classList.add("bg-rose-500");
-            }
-
-            // Clear array
-            myPrices = [];
-            activeCheck = false;
-            rareFirstFlip = false;
-
-            ghostSlide();
-        }
-    }, 100);
 }

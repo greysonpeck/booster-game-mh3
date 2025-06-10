@@ -13,22 +13,6 @@ function waitforme(millisec) {
     });
 }
 
-const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
-    cardStack.classList.add("flipped");
-    if (!rareFirstFlip) {
-        // Not the first flip
-        // console.log("Waiting 1400ms before flipping the stack");
-        await waitforme(1400);
-    } else {
-        // first flip
-    }
-
-    //  Flipping
-    cardStack.classList.remove("flipped");
-
-    cardType.src = cardImagePrimary;
-};
-
 const getRandomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
 };
@@ -97,6 +81,7 @@ let USDollar = new Intl.NumberFormat("en-US", {
 function ghostSlide() {
     const singleHolder = document.getElementById("single-holder");
     singleHolder.classList.add("opacity-100");
+    ghostDataGrab(ghostLinkHalf, topOutLink);
 }
 
 // Load DOM content, then execute
@@ -108,6 +93,10 @@ document.addEventListener(
         const singleStack = document.querySelector(".both-cards-single");
         const shade = document.querySelector(".shade");
         let singleClicked = false;
+
+        let cardsRemaining = setName.totalCards;
+        const cardsLoadingNumber = document.getElementById("cards-loading");
+        cardsLoadingNumber.innerText = cardsRemaining;
 
         function dimBackground() {
             shade.classList.remove("opacity-0", "-z-10");
@@ -457,4 +446,154 @@ function setGhostData() {
 
     const ghostTreatmentElement = document.getElementById("ghost-treatment");
     ghostTreatmentElement.innerText = ghostTreatment;
+}
+
+async function ghostDataGrab(ghostLinkHalf, topOutLink) {
+    // Set prices and link
+
+    // Add Boosters Bought
+    boostersBought++;
+
+    totalBoosterSpend = boostersBought * boosterValue;
+    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
+    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
+
+    console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
+
+    ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
+
+    fetch(topOutLink)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Could not fetch resource");
+            }
+            return response.json();
+        })
+
+        // First we set the Ghost Card to the TOP PRICE card
+        .then((data) => {
+            ghostCard = data.data[0];
+
+            if (ghostCard.prices.usd == !null) {
+                ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
+            } else {
+                ghostPrice = ghostCard.prices.usd_foil * priceCut;
+            }
+
+            if (totalBoosterSpend <= ghostPrice) {
+                ghostLink = ghostLinkConstructed;
+
+                // Get the non-top card
+                ghostCard = fetch(ghostLinkConstructed)
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        ghostCard = data;
+                        ghostName = data.name;
+                        setGhostData();
+                    });
+            } else {
+                ghostLink = ghostCard;
+                ghostName = ghostCard.name;
+
+                setGhostData();
+            }
+        })
+        .catch((error) => console.error(error));
+
+    //  Replace Img Source
+    ghostImageElement = document.getElementById("ghost-image");
+
+    //  Wait for manually Ghost Image to load, then set image.
+    await waitforme(800);
+    ghostImageElement.src = ghostImagePrimary;
+
+    //  Insert Price
+    const ghostPriceElement = document.getElementById("ghost-price");
+    ghostPriceElement.innerText = ghostPrice;
+
+    //  Insert Name
+    const ghostNameElement = document.getElementById("ghost-name");
+    ghostNameElement.innerText = ghostName;
+}
+
+const setName = window[window.setName];
+let cardsRemaining = setName.totalCards;
+
+const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
+    cardsRemaining--;
+    console.log("remaining: " + cardsRemaining);
+
+    cardStack.classList.add("flipped");
+    if (!rareFirstFlip) {
+        // Not the first flip
+        // console.log("Waiting 1400ms before flipping the stack");
+        await waitforme(1400);
+    } else {
+        // first flip
+    }
+
+    //  Flipping
+    cardStack.classList.remove("flipped");
+    cardType.src = cardImagePrimary;
+};
+
+async function sumTotals() {
+    const loadingOverlay = document.getElementById("data-loading");
+    const cardsLoadingNumber = document.getElementById("cards-loading");
+
+    cardsRemaining = setName.totalCards;
+    cardsLoadingNumber.innerText = cardsRemaining;
+
+    boosterTotalValue = boostersBought * boosterValue;
+    const boostersBoughtElement = document.getElementById("boosters-bought");
+    boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
+
+    function checkIfFinished() {
+        return myPrices.length >= setName.totalCards;
+    }
+
+    var timeout = setInterval(function () {
+        cardsLoadingNumber.innerText = cardsRemaining;
+
+        if (checkIfFinished()) {
+            clearInterval(timeout);
+            isFinished = true;
+
+            loadingOverlay.classList.remove("z-10", "loader-blur-effect");
+            loadingOverlay.classList.add("-z-10", "opacity-0");
+
+            const commonSumElement = document.getElementById("common-sum");
+            commonSumElement.innerText = "$" + commonSum.toFixed(2);
+            commonSum = 0;
+
+            //  Sum up all prices in array
+            myPrices.forEach((num) => {
+                newTotal += num;
+            });
+            newTotal = newTotal - boosterValue;
+            currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
+            currentMoneyElement.classList.add("px-3");
+
+            if (newTotal > 0) {
+                currentMoneyElement.classList.remove("bg-rose-500");
+                currentMoneyElement.classList.add("bg-emerald-500");
+            } else {
+                currentMoneyElement.classList.remove("bg-emerald-500");
+                currentMoneyElement.classList.add("bg-rose-500");
+            }
+
+            // Clear array
+            myPrices = [];
+            activeCheck = false;
+            rareFirstFlip = false;
+
+            ghostSlide();
+        }
+    }, 100);
+
+    // Reset "cards remaining" value a moment after the loader fades away
+    await waitforme(1000);
+    cardsLoadingNumber.innerText = setName.totalCards;
 }
