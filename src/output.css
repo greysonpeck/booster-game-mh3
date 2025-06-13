@@ -306,6 +306,9 @@
   .h-\[356px\] {
     height: 356px;
   }
+  .w-\[240px\] {
+    width: 240px;
+  }
   .w-\[255px\] {
     width: 255px;
   }
@@ -320,9 +323,6 @@
   }
   .w-full {
     width: 100%;
-  }
-  .max-w-\[240px\] {
-    max-width: 240px;
   }
   .max-w-\[1080px\] {
     max-width: 1080px;
@@ -857,8 +857,6 @@ input:checked + .slider:before {
 @media (max-width: 600px) {
   .shine-holder {
     padding: 4px;
-    left: -5px;
-    top: 30px;
     margin-right: -8px;
     border-radius: 15px;
   }
@@ -904,7 +902,7 @@ input:checked + .slider:before {
   transform: rotateY(180deg);
 }
 @media (max-width: 480px) {
-  .both-cards, .both-cards-single, .card-face, .card-default, .foil-hold {
+  .both-cards, .both-cards-single, .card-face, .card-default, .foil-hold, .snark-and-single {
     width: 300px;
   }
   .total-card {
@@ -915,15 +913,20 @@ input:checked + .slider:before {
     line-height: var(--tw-leading, var(--text-sm--line-height));
   }
   #single-holder {
-    margin-left: -150px;
+    margin-left: -23px;
     scale: 0.8;
   }
   #single-holder.single-view {
     scale: 1.15 !important;
+    margin-left: -32px;
   }
   .shine-holder {
     height: 426px;
+    width: 308px;
     top: unset;
+  }
+  #snark {
+    top: 64px;
   }
 }
 #snark {

@@ -373,10 +373,14 @@ input:checked + .slider:before {
 @media (max-width: 600px) {
     .shine-holder {
         padding: 4px;
-        left: -5px;
-        top: 30px;
+        /* left: 4px; */
+        /* top: 30px; */
         margin-right: -8px;
         border-radius: 15px;
+    }
+
+    .shine-holder .single-view {
+        /* left: -5px; */
     }
 }
 
@@ -438,7 +442,8 @@ input:checked + .slider:before {
     .both-cards-single,
     .card-face,
     .card-default,
-    .foil-hold {
+    .foil-hold,
+    .snark-and-single {
         width: 300px;
     }
 
@@ -451,17 +456,23 @@ input:checked + .slider:before {
     }
 
     #single-holder {
-        margin-left: -150px;
+        margin-left: -23px;
         scale: 0.8;
     }
 
     #single-holder.single-view {
         scale: 1.15 !important;
+        margin-left: -32px;
     }
 
     .shine-holder {
         height: 426px;
+        width: 308px;
         top: unset;
+    }
+
+    #snark {
+        top: 64px;
     }
 }
 

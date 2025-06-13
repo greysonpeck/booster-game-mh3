@@ -1,5 +1,5 @@
 const ghostLinkHalf = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
-const topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afin+unique%3Aprints+USD%3E%3D15";
+const topOutLink = "https://api.scryfall.com/cards/search?order=usd&q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+unique%3Aprints+USD%3E%3D15";
 
 window.setName = "FIN";
 window.FIN = {

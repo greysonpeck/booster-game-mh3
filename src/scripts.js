@@ -59,7 +59,6 @@ function getCookie(cname) {
 function convertCurrency(value) {
     if (currencyMode == "CAD") {
         value = fx(value).from("USD").to("CAD").toFixed(2);
-        console.log("VALUE: " + value);
         return Number(value);
     } else {
         return Number(value);
@@ -398,10 +397,16 @@ function setGhostData() {
 
     //  Set price, check for etched
     if (ghostCard.tcgplayer_etched_id) {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
+        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
+    } else if (ghostCard.prices.usd) {
+        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
+        console.log("ping 2");
     } else {
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
+        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+        console.log("ping 3");
     }
+
+    console.log("GHOST PRICE: " + ghostPrice);
 
     ghostFoilHolderElement = document.getElementById("foil-holder");
     ghostTexturedElement = document.getElementById("ghost-textured");
@@ -462,11 +467,12 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     // Add Boosters Bought
     totalBoosterSpend = boostersBought * boosterValue;
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
-    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.12);
+    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
 
     console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
     ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
+    console.log("GHOST CONSTRUCTED: " + ghostLinkConstructed);
 
     fetch(topOutLink)
         .then((response) => {
@@ -479,15 +485,17 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         // First we set the Ghost Card to the TOP PRICE card
         .then((data) => {
             ghostCard = data.data[0];
+            console.log("a bit insane: " + data.data[2].name);
 
             if (ghostCard.prices.usd == !null) {
                 ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
             } else {
-                ghostPrice = ghostCard.prices.usd_foil * priceCut;
+                ghostPrice = convertCurrency(ghostCard.prices.usd_foil * priceCut);
             }
-
+            console.log("Total Booster Spend: " + totalBoosterSpend + ". Ghost Price: " + ghostPrice);
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
+                console.log("Getting NON-TOP Card!");
 
                 // Get the non-top card
                 ghostCard = fetch(ghostLinkConstructed)
@@ -500,6 +508,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
                         setGhostData();
                     });
             } else {
+                console.log("Getting TOP Card I guess?!");
                 ghostLink = ghostCard;
                 ghostName = ghostCard.name;
 
@@ -510,6 +519,8 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
+
+    console.log("TOP OUT: " + topOutLink);
 
     //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
@@ -529,7 +540,7 @@ let cardsRemaining = setName.totalCards;
 
 const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardsRemaining--;
-    console.log("remaining: " + cardsRemaining);
+    // console.log("remaining: " + cardsRemaining);
 
     cardStack.classList.add("flipped");
     if (!rareFirstFlip) {
@@ -545,7 +556,7 @@ const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardType.src = cardImagePrimary;
 };
 
-async function sumTotals() {
+function sumTotals() {
     boostersBought++;
 
     const loadingOverlay = document.getElementById("data-loading");
@@ -602,6 +613,5 @@ async function sumTotals() {
     }, 100);
 
     // Reset "cards remaining" value a moment after the loader fades away
-    await waitforme(1000);
     cardsLoadingNumber.innerText = setName.totalCards;
 }
