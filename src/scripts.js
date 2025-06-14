@@ -1,10 +1,37 @@
-newTotal = 0;
+packTotal = 0;
 boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
 currentSet = "FIN";
 cardBack_URL = "img/card_default4.png";
+activeInvestigation = false;
+
+// const infoListeners = {};
+
+function addInfoClick(label, type) {
+    console.log("");
+    // const infoModal = document.getElementById("modal-content");
+    // const element = document.getElementById(label);
+
+    // if (!element) return;
+
+    // // Remove old listener if one exists
+    // if (infoListeners[label]) {
+    //     element.removeEventListener("click", infoListeners[label]);
+    //     delete infoListeners[label];
+    // }
+
+    // // If boostersBought condition is OK, add new listener
+    // if (boostersBought <= 2) {
+    //     const showInfo = () => infoModal.classList.remove("hidden");
+    //     infoModal.innerText = type;
+    //     infoListeners[label] = showInfo;
+    //     element.addEventListener("click", showInfo);
+    // } else {
+    //     console.log("big mad");
+    // }
+}
 
 function waitforme(millisec) {
     return new Promise((resolve) => {
@@ -61,6 +88,7 @@ function convertCurrency(value) {
         value = fx(value).from("USD").to("CAD").toFixed(2);
         return Number(value);
     } else {
+        value = value.toFixed(2);
         return Number(value);
     }
 }
@@ -82,7 +110,40 @@ let USDollar = new Intl.NumberFormat("en-US", {
 function ghostSlide() {
     const singleHolder = document.getElementById("single-holder");
     singleHolder.classList.add("opacity-100");
-    ghostDataGrab(ghostLinkHalf, topOutLink);
+    ghostDataGrab(ghostLinkHalf_FIN, topOutLink_FIN);
+
+    const investigateButton = document.getElementById("investigate");
+    console.log(investigateButton);
+    investigateButton.classList.remove("hidden");
+    investigateButton.classList.remove("opacity-0");
+
+    // Trying new
+    const infopopsText = document.querySelectorAll(".infopop-text");
+    console.log(infopopsText.length);
+
+    infopopsText.forEach((text) => {
+        let infopopID = text.closest(".card-info").id.replace("-label", "");
+        console.log(infopopID);
+        text.innerText = window.cardInfo?.[infopopID];
+    });
+}
+
+//  Toggle pop-ups on button press.
+function investigate() {
+    const infopops = document.querySelectorAll(".infopop-wrapper");
+    if (activeInvestigation) {
+        infopops.forEach((infopop) => {
+            infopop.classList.add("hidden");
+            infopop.classList.add("opacity-0");
+        });
+        activeInvestigation = false;
+    } else {
+        infopops.forEach((infopop) => {
+            infopop.classList.remove("hidden");
+            infopop.classList.remove("opacity-0");
+        });
+        activeInvestigation = true;
+    }
 }
 
 // Load DOM content, then execute
@@ -186,7 +247,7 @@ document.addEventListener(
         function initializeMoney() {
             // Initialize all values
             boostersBought = 0;
-            newTotal = 0;
+            packTotal = 0;
             commonSum = 0;
             uncommonSum = 0;
             myPrices = [];
@@ -224,7 +285,7 @@ function clearMoney() {
     function initializeMoney() {
         // Initialize all values
         boostersBought = 0;
-        newTotal = 0;
+        packTotal = 0;
         commonSum = 0;
         uncommonSum = 0;
         myPrices = [];
@@ -245,7 +306,7 @@ function clearSlots() {
     // Clear Ghost Card and associated material
     document.getElementById("snark").classList.add("hidden");
     document.getElementById("ghost-image").src = cardBack_URL;
-    document.getElementById("foil-holder").style.display = "none";
+    // document.getElementById("foil-holder").style.display = "none";
 }
 
 function makeSlot(id, label, hasFoil, quantity) {
@@ -259,9 +320,16 @@ function makeSlot(id, label, hasFoil, quantity) {
     slotContainer.classList.add("total-card", "h-[356px]", "w-fit", "text-nowrap", "mb-1", "sm:pt-0");
 
     const cardInfo = document.createElement("div");
+    cardInfo.id = id + "-label";
     cardInfo.classList.add("card-info", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
+    const infoPopWrapper =
+        '<div class="infopop-wrapper hidden w-0 justify-center align-center"> <div id="infopop-' +
+        id +
+        '" class="infopop-content bg-slate-950/70 bg-opacity-80"><p class="infopop-text"></p></div></div>';
+
     cardInfo.innerHTML =
-        '<div class="slot-label">' +
+        infoPopWrapper +
+        '<div class="slot-label hover:underline hover:cursor-pointer">' +
         label +
         "</div>" +
         '<div id="' +
@@ -300,7 +368,14 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Quantity stuff
         const cardSet = document.createElement("div");
         cardSet.id = id + "-set";
-        cardSet.classList.add("mb-1", "sm:pt-0");
+        cardSet.classList.add("mb-1", "sm:pt-0", "card-info");
+
+        // Infopops spacer
+        infoPopSpacer =
+            '<div class="infopop-wrapper hidden w-0 justify-center align-center"> <div id="infopop-' +
+            id +
+            '" class="infopop-content mb-0"><p class="infopop-text"></p></div></div>';
+        cardSet.insertAdjacentHTML("afterbegin", infoPopSpacer);
 
         // Check for dummy/spacer slot
         if (quantity && quantity < 1) {
@@ -397,12 +472,12 @@ function setGhostData() {
 
     //  Set price, check for etched
     if (ghostCard.tcgplayer_etched_id) {
-        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd_etched)).toFixed(0);
+        ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_etched))).toFixed(0);
     } else if (ghostCard.prices.usd) {
-        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
+        ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd))).toFixed(0);
         console.log("ping 2");
     } else {
-        ghostPrice = priceCut * convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+        ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_foil))).toFixed(0);
         console.log("ping 3");
     }
 
@@ -414,26 +489,44 @@ function setGhostData() {
     //  Set treatment
     const ghostFoilElement = document.getElementById("ghost-foil");
 
-    if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
-        ghostFoilElement.innerText = "textured foil ";
+    // If only foil price exists...show foil gradient
+    if (ghostCard.promo_types.includes("surgefoil") && ghostCard.prices.usd_foil) {
+        console.log("The single is Surge Foil");
+        ghostFoilElement.innerText = "surge foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostTexturedElement.classList.add("block");
-        ghostTexturedElement.classList.remove("hidden");
-        // ghostFoilHolderElement.classList.add("foil-gradient");
-    } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
+        ghostFoilHolderElement.classList.add("foil-gradient", "surge-gradient");
+    } else if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
+        console.log("The single is Foil, the first");
         ghostFoilElement.innerText = "foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        // ghostFoilHolderElement.classList.add("foil-gradient");
+        // ghostTexturedElement.classList.add("block");
+        // ghostTexturedElement.classList.remove("hidden");
+        ghostFoilHolderElement.classList.add("foil-gradient");
+
+        //  If foil price exists and it's within price range...show foil gradient.
+    } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
+        console.log("The single is Foil, the second");
+        ghostFoilElement.innerText = "foil ";
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
+        ghostFoilHolderElement.classList.add("foil-gradient");
+
+        //  If the card is foil, but the non-foil price exists and is within range..."".
     } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
+        console.log("The single is regular");
         // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
+        ghostFoilHolderElement.classList.remove("foil-gradient");
+
+        //  Otherwise, also nothing.
     } else {
+        console.log("The single is super regular and not in range.");
         // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
+        ghostFoilHolderElement.classList.remove("foil-gradient");
     }
 
     if (ghostCard.frame == "1997") {
@@ -561,6 +654,7 @@ function sumTotals() {
 
     const loadingOverlay = document.getElementById("data-loading");
     const cardsLoadingNumber = document.getElementById("cards-loading");
+    const runningSum = document.getElementById("running-sum");
 
     cardsRemaining = setName.totalCards;
     cardsLoadingNumber.innerText = cardsRemaining;
@@ -589,13 +683,16 @@ function sumTotals() {
 
             //  Sum up all prices in array
             myPrices.forEach((num) => {
-                newTotal += num;
+                packTotal += num;
             });
-            newTotal = newTotal - boosterValue;
-            currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
+            runningSum.innerText = USDollar.format(packTotal);
+            console.log("ADD THSE: " + myPrices);
+
+            let netTotal = packTotal - boosterTotalValue;
+            currentMoneyElement.innerText = "$" + netTotal.toFixed(2);
             currentMoneyElement.classList.add("px-3");
 
-            if (newTotal > 0) {
+            if (netTotal > 0) {
                 currentMoneyElement.classList.remove("bg-rose-500");
                 currentMoneyElement.classList.add("bg-emerald-500");
             } else {

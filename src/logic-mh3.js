@@ -1,3 +1,7 @@
+const ghostLinkHalf_MH3 = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
+const topOutLink_MH3 = "https://api.scryfall.com/cards/search?order=usd&q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+unique%3Aprints+USD%3E%3D15";
+const boosterType_MH3 = "Play";
+
 let rareFirstFlip = true;
 
 window.setName = "MH3";
@@ -11,6 +15,7 @@ function setMH3() {
     boosterValue = 8;
 
     document.getElementById("set-header").innerText = "MODERN HORIZONS 3";
+    document.getElementById("booster-type").innerText = boosterType_MH3;
     document.getElementById("set-toggle-1").innerText = "go foundations";
     document.getElementById("set-toggle-1").addEventListener("click", () => {
         setFDN();
