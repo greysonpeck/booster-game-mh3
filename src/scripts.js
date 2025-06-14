@@ -117,30 +117,38 @@ function ghostSlide() {
     investigateButton.classList.remove("hidden");
     investigateButton.classList.remove("opacity-0");
 
-    // Trying new
-    const infopopsText = document.querySelectorAll(".infopop-text");
-    console.log(infopopsText.length);
+    // Set Infopop Data
+    const infopopsContent = document.querySelectorAll(".infopop-content");
 
-    infopopsText.forEach((text) => {
-        let infopopID = text.closest(".card-info").id.replace("-label", "");
+    infopopsContent.forEach((content) => {
+        let infopopID = content.closest(".card-info").id.replace("-label", "");
         console.log(infopopID);
-        text.innerText = window.cardInfo?.[infopopID];
+
+        content.querySelector(".infopop-name").textContent = window.cardInfo?.[infopopID][0];
+        content.querySelector(".infopop-type").textContent = window.cardInfo?.[infopopID][1];
+        content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.[infopopID][2] + " of the time. ";
+
+        // text.innerText = window.cardInfo?.[infopopID];
     });
 }
 
 //  Toggle pop-ups on button press.
 function investigate() {
     const infopops = document.querySelectorAll(".infopop-wrapper");
+    const investigateButton = document.getElementById("investigate");
+
     if (activeInvestigation) {
         infopops.forEach((infopop) => {
             infopop.classList.add("hidden");
             infopop.classList.add("opacity-0");
+            investigateButton.innerText = "Investigate";
         });
         activeInvestigation = false;
     } else {
         infopops.forEach((infopop) => {
             infopop.classList.remove("hidden");
             infopop.classList.remove("opacity-0");
+            investigateButton.innerText = "Hide";
         });
         activeInvestigation = true;
     }
@@ -325,7 +333,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     const infoPopWrapper =
         '<div class="infopop-wrapper hidden w-0 justify-center align-center"> <div id="infopop-' +
         id +
-        '" class="infopop-content bg-slate-950/70 bg-opacity-80"><p class="infopop-text"></p></div></div>';
+        '" class="infopop-content bg-slate-950/70 bg-opacity-80"><p class="infopop-name text-lg leading-snug pb-4"></p><p class="infopop-type font-normal pb-2"></p><p class="infopop-rarity font-normal"></p></div></div>';
 
     cardInfo.innerHTML =
         infoPopWrapper +
