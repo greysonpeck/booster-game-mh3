@@ -399,7 +399,7 @@ function makeSlot(id, label, hasFoil, quantity) {
             setLabel.innerHTML = "";
         } else {
             setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
-            let stackHeightValue = quantity * 40 + 312;
+            let stackHeightValue = quantity * 40 + 412;
             cardSet.style.height = stackHeightValue + "px";
         }
         cardSet.append(setLabel);

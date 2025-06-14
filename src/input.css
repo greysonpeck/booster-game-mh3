@@ -437,6 +437,20 @@ input:checked + .slider:before {
     transform: rotateY(180deg);
 }
 
+.infopop-content {
+    padding: 20px;
+    line-height: 130%;
+    font-weight: 600;
+    font-size: 0.85rem;
+    width: 240px;
+    text-wrap: auto;
+    height: 340px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+}
+
 /* Mobile sizing stuff  */
 @media (max-width: 480px) {
     .both-cards,
@@ -475,26 +489,17 @@ input:checked + .slider:before {
     #snark {
         top: 64px;
     }
+
+    .infopop-content {
+        width: 300px;
+        height: 424px;
+    }
 }
 
 #snark {
     text-shadow: 0px 1px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 100%)),
         0px 3px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 80%));
     /* 0px 4px 8px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 100%)); */
-}
-
-.infopop-content {
-    padding: 20px;
-    line-height: 130%;
-    font-weight: 600;
-    font-size: 0.85rem;
-    width: 240px;
-    text-wrap: auto;
-    height: 340px;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 2;
-    backdrop-filter: blur(2px);
 }
 
 #investigate {

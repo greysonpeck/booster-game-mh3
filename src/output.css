@@ -52,7 +52,6 @@
       "Courier New", monospace;
     --color-red-900: oklch(39.6% 0.141 25.723);
     --color-emerald-500: oklch(69.6% 0.17 162.48);
-    --color-sky-950: oklch(29.3% 0.066 243.157);
     --color-rose-500: oklch(64.5% 0.246 16.439);
     --color-slate-950: oklch(12.9% 0.042 264.695);
     --color-gray-100: oklch(96.7% 0.003 264.542);
@@ -424,22 +423,10 @@
   .bg-rose-500 {
     background-color: var(--color-rose-500);
   }
-  .bg-sky-950\/80 {
-    background-color: color-mix(in srgb, oklch(29.3% 0.066 243.157) 80%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-sky-950) 80%, transparent);
-    }
-  }
   .bg-slate-950\/70 {
     background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-slate-950) 70%, transparent);
-    }
-  }
-  .bg-slate-950\/80 {
-    background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 80%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-slate-950) 80%, transparent);
     }
   }
   .px-1 {
@@ -1010,6 +997,19 @@ input:checked + .slider:before {
 .flipped {
   transform: rotateY(180deg);
 }
+.infopop-content {
+  padding: 20px;
+  line-height: 130%;
+  font-weight: 600;
+  font-size: 0.85rem;
+  width: 240px;
+  text-wrap: auto;
+  height: 340px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 2;
+  backdrop-filter: blur(2px);
+}
 @media (max-width: 480px) {
   .both-cards, .both-cards-single, .card-face, .card-default, .foil-hold, .snark-and-single {
     width: 300px;
@@ -1037,22 +1037,13 @@ input:checked + .slider:before {
   #snark {
     top: 64px;
   }
+  .infopop-content {
+    width: 300px;
+    height: 424px;
+  }
 }
 #snark {
   text-shadow: 0px 1px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 100%)), 0px 3px 16px var(--tw-text-shadow-color, oklab(from rgb(0 0 0 / 0.1) l a b / 80%));
-}
-.infopop-content {
-  padding: 20px;
-  line-height: 130%;
-  font-weight: 600;
-  font-size: 0.85rem;
-  width: 240px;
-  text-wrap: auto;
-  height: 340px;
-  border-radius: 6px;
-  position: absolute;
-  z-index: 2;
-  backdrop-filter: blur(2px);
 }
 #investigate {
   transition-property: opacity;
