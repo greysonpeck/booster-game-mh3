@@ -1018,8 +1018,8 @@ input:checked + .slider:before {
     margin-bottom: calc(var(--spacing) * 28);
   }
   .card-info {
-    font-size: var(--text-sm);
-    line-height: var(--tw-leading, var(--text-sm--line-height));
+    font-size: var(--text-base);
+    line-height: var(--tw-leading, var(--text-base--line-height));
   }
   #single-holder {
     margin-left: -23px;

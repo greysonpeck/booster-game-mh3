@@ -467,7 +467,7 @@ input:checked + .slider:before {
     }
 
     .card-info {
-        @apply text-sm;
+        @apply text-base;
     }
 
     #single-holder {
