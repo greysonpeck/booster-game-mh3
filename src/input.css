@@ -16,6 +16,10 @@ body {
     margin: 8px 0;
 }
 
+svg {
+    pointer-events: none;
+}
+
 .price-cut {
     background-color: rgba(255, 212, 212, 0.79);
 }
@@ -62,6 +66,11 @@ body {
 h2,
 #booster-type {
     font-family: "Oswald", sans-serif;
+}
+
+#booster-type {
+    background: #38cfdd;
+    background: linear-gradient(90deg, rgba(56, 207, 221, 0.38) 17%, rgba(255, 255, 255, 0.42) 100%);
 }
 
 .toggle {
@@ -438,14 +447,16 @@ input:checked + .slider:before {
 }
 
 .infopop-content {
+    color: #ffffffd8;
     padding: 20px;
+    margin-top: 6px;
     line-height: 130%;
     font-weight: 600;
     font-size: 0.85rem;
     width: 240px;
     text-wrap: auto;
     height: 340px;
-    border-radius: 6px;
+    border-radius: 12px;
     position: absolute;
     z-index: 2;
     backdrop-filter: blur(2px);
@@ -505,4 +516,9 @@ input:checked + .slider:before {
 #investigate {
     transition-property: opacity;
     transition-duration: 2s;
+}
+
+.h-cards-3 {
+    margin-top: -2px;
+    height: 406px;
 }

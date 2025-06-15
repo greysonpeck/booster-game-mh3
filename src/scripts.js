@@ -6,6 +6,7 @@ currencyMode = "";
 currentSet = "FIN";
 cardBack_URL = "img/card_default4.png";
 activeInvestigation = false;
+activeAbout = false;
 
 // const infoListeners = {};
 
@@ -123,10 +124,17 @@ function ghostSlide() {
     infopopsContent.forEach((content) => {
         let infopopID = content.closest(".card-info").id.replace("-label", "");
         console.log(infopopID);
-
-        content.querySelector(".infopop-name").textContent = window.cardInfo?.[infopopID][0];
-        content.querySelector(".infopop-type").textContent = window.cardInfo?.[infopopID][1];
-        content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.[infopopID][2] + " of the time. ";
+        if (infopopID === "uncommon-set") {
+            content.querySelector(".infopop-name").textContent = window.cardInfo?.["uncommon"][0];
+            content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.["common"][1] + " of the time. ";
+        } else if (infopopID === "common-set") {
+            content.querySelector(".infopop-name").textContent = window.cardInfo?.["common"][0];
+            content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.["uncommon"][1] + " of the time. ";
+        } else {
+            content.querySelector(".infopop-name").textContent = window.cardInfo?.[infopopID][0];
+            content.querySelector(".infopop-type").textContent = window.cardInfo?.[infopopID][1];
+            content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.[infopopID][2] + " of the time. ";
+        }
 
         // text.innerText = window.cardInfo?.[infopopID];
     });
@@ -162,6 +170,33 @@ document.addEventListener(
         const singleHolder = document.getElementById("single-holder");
         const singleStack = document.querySelector(".both-cards-single");
         const shade = document.querySelector(".shade");
+
+        const aboutContainer = document.getElementById("about-container");
+        const aboutModal = document.getElementById("about-modal");
+        const aboutButton = document.getElementById("about");
+
+        // Click info, get modal
+        aboutButton.addEventListener("click", function (e) {
+            aboutContainer.classList.remove("hidden");
+            activeAbout = true;
+            console.log("now activeAbout is true!");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!activeAbout) return;
+            if (!aboutModal.contains(event.target) && event.target !== aboutButton) {
+                aboutContainer.classList.add("hidden");
+                activeAbout = false;
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (activeAbout && event.key === "Escape") {
+                aboutContainer.classList.add("hidden");
+                activeAbout = false;
+            }
+        });
+
         let singleClicked = false;
 
         let cardsRemaining = setName.totalCards;
@@ -375,6 +410,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     if (quantity) {
         // Quantity stuff
         const cardSet = document.createElement("div");
+        let stackHeightValue = quantity * 40 + 412;
         cardSet.id = id + "-set";
         cardSet.classList.add("mb-1", "sm:pt-0", "card-info");
 
@@ -382,7 +418,9 @@ function makeSlot(id, label, hasFoil, quantity) {
         infoPopSpacer =
             '<div class="infopop-wrapper hidden w-0 justify-center align-center"> <div id="infopop-' +
             id +
-            '" class="infopop-content mb-0"><p class="infopop-text"></p></div></div>';
+            '" class="infopop-content mb-0 bg-slate-950/70 bg-opacity-80 top-8 rounded-md h-cards-' +
+            quantity +
+            '"><p class="infopop-name"></p><p class="infopop-rarity font-normal"></p></div></div>';
         cardSet.insertAdjacentHTML("afterbegin", infoPopSpacer);
 
         // Check for dummy/spacer slot
@@ -399,7 +437,6 @@ function makeSlot(id, label, hasFoil, quantity) {
             setLabel.innerHTML = "";
         } else {
             setLabel.innerHTML = '<div class="slot-label">' + label + " (" + quantity + ")</div>" + '<div id="' + id + '-sum" class="pr-3 font-bold"></div>';
-            let stackHeightValue = quantity * 40 + 412;
             cardSet.style.height = stackHeightValue + "px";
         }
         cardSet.append(setLabel);
@@ -471,7 +508,6 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
-    console.log("runnign setGhostData()");
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -483,13 +519,9 @@ function setGhostData() {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_etched))).toFixed(0);
     } else if (ghostCard.prices.usd) {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd))).toFixed(0);
-        console.log("ping 2");
     } else {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_foil))).toFixed(0);
-        console.log("ping 3");
     }
-
-    console.log("GHOST PRICE: " + ghostPrice);
 
     ghostFoilHolderElement = document.getElementById("foil-holder");
     ghostTexturedElement = document.getElementById("ghost-textured");
@@ -556,8 +588,6 @@ function setGhostData() {
         ghostImagePrimary = ghostCard.image_uris.normal;
     }
 
-    console.log(ghostImagePrimary);
-
     const ghostTreatmentElement = document.getElementById("ghost-treatment");
     ghostTreatmentElement.innerText = ghostTreatment;
 }
@@ -586,7 +616,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         // First we set the Ghost Card to the TOP PRICE card
         .then((data) => {
             ghostCard = data.data[0];
-            console.log("a bit insane: " + data.data[2].name);
 
             if (ghostCard.prices.usd == !null) {
                 ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);

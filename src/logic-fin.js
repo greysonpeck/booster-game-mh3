@@ -111,6 +111,8 @@ async function commonPull_FIN() {
         commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
     }
 
+    window.cardInfo.common = ["3 Main-set Commons", "100%"];
+
     const commonSumElement = document.getElementById("common-sum");
     commonSumElement.innerText = commonSum;
 
@@ -157,6 +159,8 @@ async function uncommonPull_FIN() {
         //  Push price to price array
         myPrices.push(uncommonPrice);
     }
+
+    window.cardInfo.uncommon = ["3 Main-set Uncommons", "100%"];
 
     const uncommonSumElement = document.getElementById("uncommon-sum");
     uncommonSumElement.innerText = uncommonSum;
