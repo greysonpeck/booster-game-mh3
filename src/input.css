@@ -20,6 +20,23 @@ svg {
     pointer-events: none;
 }
 
+#about-modal {
+    color: #ffffffd8;
+    background: rgba(29 166 255 / 85%);
+    background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
+    backdrop-filter: blur(8px);
+}
+
+#about-modal a {
+    /* color: rgba(0, 102, 255, 0.845); */
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+#about-modal p {
+    margin-bottom: 12px;
+}
+
 .price-cut {
     background-color: rgba(255, 212, 212, 0.79);
 }
@@ -447,7 +464,7 @@ input:checked + .slider:before {
 }
 
 .infopop-content {
-    color: #ffffffd8;
+    color: #ffffffed;
     padding: 20px;
     margin-top: 6px;
     line-height: 130%;
@@ -504,6 +521,10 @@ input:checked + .slider:before {
     .infopop-content {
         width: 300px;
         height: 424px;
+    }
+
+    #about-modal {
+        max-width: 320px;
     }
 }
 

@@ -213,6 +213,7 @@ document.addEventListener(
 
         //  Action on Single Click
         singleHolder.addEventListener("click", () => {
+            umami.track("Single reveal");
             singleClicked = true;
             document.querySelector("body").classList.add("cursor-pointer");
             singleHolder.classList.add("single-view");
@@ -423,7 +424,7 @@ function makeSlot(id, label, hasFoil, quantity) {
             id +
             '" class="infopop-content mb-0 bg-slate-950/70 bg-opacity-80 top-8 rounded-md h-cards-' +
             quantity +
-            '"><p class="infopop-name"></p><p class="infopop-rarity font-normal"></p></div></div>';
+            '"><p class="infopop-name text-lg leading-snug pb-4"></p><p class="infopop-rarity font-normal"></p></div></div>';
         cardSet.insertAdjacentHTML("afterbegin", infoPopSpacer);
 
         // Check for dummy/spacer slot

@@ -599,7 +599,7 @@ async function fcaPull_FIN() {
 
     // waits until Scryfall fetch completes...
     let card = await response.json();
-    fcaName = card.name;
+    fcaName = card.flavor_name + " (" + card.name + ")";
     window.cardInfo.fca = [fcaName, fcaType, fcaRarity];
 
     //  Replace Img Source
