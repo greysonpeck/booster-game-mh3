@@ -65,7 +65,6 @@ function pullBooster() {
     } else if (currentSet === "FIN") {
         pullFIN();
     } else {
-        console.log("htere it is");
         pullFDN();
     }
 }
@@ -115,7 +114,6 @@ function ghostSlide() {
     ghostDataGrab(ghostLinkHalf_FIN, topOutLink_FIN);
 
     const investigateButton = document.getElementById("investigate");
-    console.log(investigateButton);
     investigateButton.classList.remove("hidden");
     investigateButton.classList.remove("opacity-0");
 
@@ -124,7 +122,6 @@ function ghostSlide() {
 
     infopopsContent.forEach((content) => {
         let infopopID = content.closest(".card-info").id.replace("-label", "");
-        console.log(infopopID);
         if (infopopID === "uncommon-set") {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.["uncommon"][0];
             content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.["common"][1] + " of the time. ";
@@ -182,7 +179,6 @@ document.addEventListener(
             umami.track("About modal");
             aboutContainer.classList.remove("hidden");
             activeAbout = true;
-            console.log("now activeAbout is true!");
         });
 
         document.addEventListener("click", function (event) {

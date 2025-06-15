@@ -345,7 +345,7 @@ input:checked + .slider:before {
 }
 
 .surge-gradient {
-    background-image: url("../img/surge-2.png");
+    background-image: url("../img/surge.png");
 }
 
 .foil-in-list {
@@ -525,6 +525,11 @@ input:checked + .slider:before {
 
     #about-modal {
         max-width: 320px;
+    }
+
+    .h-cards-3 {
+        margin-top: -2px;
+        height: 492px;
     }
 }
 
