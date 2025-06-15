@@ -9,6 +9,32 @@ activeInvestigation = false;
 activeAbout = false;
 activeSubInfo = false;
 
+// const infoListeners = {};
+
+function addInfoClick(label, type) {
+    console.log("");
+    // const infoModal = document.getElementById("modal-content");
+    // const element = document.getElementById(label);
+
+    // if (!element) return;
+
+    // // Remove old listener if one exists
+    // if (infoListeners[label]) {
+    //     element.removeEventListener("click", infoListeners[label]);
+    //     delete infoListeners[label];
+    // }
+
+    // // If boostersBought condition is OK, add new listener
+    // if (boostersBought <= 2) {
+    //     const showInfo = () => infoModal.classList.remove("hidden");
+    //     infoModal.innerText = type;
+    //     infoListeners[label] = showInfo;
+    //     element.addEventListener("click", showInfo);
+    // } else {
+    //     console.log("big mad");
+    // }
+}
+
 function waitforme(millisec) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -513,7 +539,7 @@ function setGhostData() {
     if (ghostCard.tcgplayer_etched_id) {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_etched))).toFixed(0);
     } else if (isSurge) {
-        ghostPrice = (priceCut * convertCurrency(ghostCard.prices.usd_foil)).toFixed(0);
+        ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_foil))).toFixed(0);
     } else if (ghostCard.prices.usd) {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd))).toFixed(0);
     } else {
@@ -600,6 +626,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
     ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
+    console.log("GHOST CONSTRUCTED: " + ghostLinkConstructed);
 
     fetch(topOutLink)
         .then((response) => {
@@ -615,15 +642,16 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
             isSurge = ghostCard.promo_types.includes("surgefoil");
 
             if (ghostCard.prices.usd == !null) {
-                ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
+                ghostPrice = convertCurrency(Number(ghostCard.prices.usd) * priceCut);
             } else if (isSurge) {
-                ghostPrice = convertCurrency(ghostCard.prices.usd_foil * priceCut);
+                ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil) * priceCut);
             } else {
-                ghostPrice = convertCurrency(ghostCard.prices.usd_foil * priceCut);
+                ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil) * priceCut);
             }
             console.log("Total Booster Spend: " + totalBoosterSpend + ". Ghost Price: " + ghostPrice);
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
+                console.log("Getting NON-TOP Card!");
 
                 // Get the non-top card
                 ghostCard = fetch(ghostLinkConstructed)
@@ -647,6 +675,8 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
 
+    console.log("TOP OUT: " + topOutLink);
+
     //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
     ghostImageElement.src = ghostImagePrimary;
@@ -665,6 +695,7 @@ let cardsRemaining = setName.totalCards;
 
 const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardsRemaining--;
+    // console.log("remaining: " + cardsRemaining);
 
     cardStack.classList.add("flipped");
     if (!rareFirstFlip) {
@@ -717,6 +748,7 @@ function sumTotals() {
                 packTotal += num;
             });
             runningSum.innerText = USDollar.format(packTotal);
+            console.log("ADD THSE: " + myPrices);
 
             let netTotal = packTotal - boosterTotalValue;
             currentMoneyElement.innerText = "$" + netTotal.toFixed(2);
