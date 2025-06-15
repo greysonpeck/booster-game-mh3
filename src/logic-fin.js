@@ -178,16 +178,15 @@ async function defaultRarePull_FIN() {
     // defaultRareRoll = 99;
 
     if (defaultRareRoll <= 87.75) {
-        defaultRareType = "Default Frame Rare";
         //  1 Traditional foil default frame Rare (87.75%);
         //  set:fin rarity:r
-        defaultRareType = "Default Frame Rare";
+        defaultRareType = "Default Frame, Rare";
         defaultRareRarity = "87.75%";
         defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar";
     } else {
         //  1 Traditional foil default frame Mythic (12.25%)
         //  set:fin rarity:m
-        defaultRareType = "Default Frame Mythic";
+        defaultRareType = "Default Frame, Mythic";
         defaultRareRarity = "12.25%";
         defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am";
     }
@@ -234,13 +233,13 @@ async function nfBFCUPull_FIN() {
     if (nfBFCURoll <= 66.7) {
         // 1 of 40 Extended-art legendary uncommons (66.7%)
         // set:fin frame:extendedart rarity:u type:legendary
-        nfBFCUType = "Extended-art Legendary Uncommon";
+        nfBFCUType = "Extended-art Legendary,  Uncommon";
         nfBFCURarity = "66.7%";
         nfBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+rarity%3Au+type%3Alegendary";
     } else if (nfBFCURoll <= 71.7) {
         // 1 of 3 Main set Booster Fun commons (5%)
         // set:fin is:boosterfun rarity:c -type:basic
-        nfBFCUType = "Main Set Booster Fun Common";
+        nfBFCUType = "Booster Fun, Common";
         nfBFCURarity = "5.0%";
         nfBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Ac+-type%3Abasic";
     } else if (nfBFCURoll <= 98.4) {
@@ -248,11 +247,11 @@ async function nfBFCUPull_FIN() {
         // set:fin is:boosterfun rarity:u (CN>=324 AND CN<=373)
         nfBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Au+%28CN>%3D324+AND+CN<%3D373%29";
         nfBFCURarity = "26.7%";
-        nfBFCUType = "Wildcard Uncommon DFC";
+        nfBFCUType = "Booster Fun, Uncommon";
     } else {
         // 1 of 3 Alternate-art Secret Rendezvous uncommons (1.6%)
         // set:fic (CN>=217 AND CN<=219) unique:art
-        nfBFCUType = "Alternate-art Secret Rendezvous Uncommon";
+        nfBFCUType = "Alternate-art Secret Rendezvous, Uncommon";
         nfBFCURarity = "1.6%";
         nfBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afic+%28CN>%3D217+AND+CN<%3D219%29+unique%3Aart";
     }
@@ -305,25 +304,25 @@ async function foilBFCU_FIN() {
     if (foilBFCURoll <= 13.75) {
         //  1 of 3 Main set Booster Fun commons (13.75%)
         //  set:fin is:boosterfun rarity:c -type:basic
-        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Common (13.75%, 3 cards)";
+        foilBFCUType = "Booster Fun, Common (Foil)";
         foilBFCURarity = "13.75%";
         foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+%28CN%3D369+OR+CN%3D358+OR+CN%3D371%29";
     } else if (foilBFCURoll <= 86.5) {
         //  1 of 13 Main set Booster Fun Uncommons (72.75%)
         //  set:fin rarity:u (CN>=324 AND CN<=373)
-        foilBFCUType = "(Traditional Foil) Main Set Booster Fun Uncommon (72.75%, 13 cards)";
+        foilBFCUType = "Booster Fun, Uncommon (Foil)";
         foilBFCURarity = "72.75%";
         foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Au+%28CN>%3D324+AND+CN<%3D373%29";
     } else if (foilBFCURoll <= 91) {
         //  1 of 3 Alternate-art Secret Rendezvous uncommons (4.5%)
         //  set:fic (CN>=217 AND CN<=219) unique:art
-        foilBFCUType = "(Traditional Foil) Alternate-art Secret Rendezvous Uncommon";
+        foilBFCUType = "Alternate-art Secret Rendezvous, Uncommon (Foil)";
         foilBFCURarity = "4.5%";
         foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afic+%28CN>%3D217+AND+CN<%3D219%29+unique%3Aart";
     } else {
         //  1 of 4 Surge Foil Uncommon Borderless Character Cards (9%)
         //  set:fin rarity:u (CN>=519 AND CN<=550) -CN=526b
-        foilBFCUType = "Surge Foil Uncommon Borderless Character Card";
+        foilBFCUType = "Borderless Character Card, Uncommon (Surge Foil)";
         foilBFCURarity = "9.0%";
         foilBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Au+%28CN>%3D519+AND+CN<%3D550%29+-CN%3D526b+";
     }
@@ -428,77 +427,76 @@ function bfRareSingleRoll(allowFoil = true) {
 
     if (bfRareRoll <= 23.1) {
         //  set:fin is:boosterfun rarity:r unique:art
-        bfRareType = "Non-foil main set Booster Fun Rare";
+        bfRareType = "Booster Fun, Rare";
         bfRareRarity = "23.1%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Ar+unique%3Aart&unique=cards";
     } else if (bfRareRoll <= 26.9) {
         //  set:fin is:boosterfun rarity:m unique:art (-CN=551 AND -CN=551a AND -CN=551b AND -CN=551c AND -CN=551d AND -CN=551e AND -CN=551f)
         //  Ignore colorful Chocobos!
-        bfRareType = "Non-foil main set Booster Fun Mythic";
+        bfRareType = "Booster Fun, Mythic";
         bfRareRarity = "3.8%";
         bfRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Am+unique%3Aart+%28-CN%3D551+AND+-CN%3D551a+AND+-CN%3D551b+AND+-CN%3D551c+AND+-CN%3D551d+AND+-CN%3D551e+AND+-CN%3D551f%29&unique=cards";
     } else if (bfRareRoll <= 45.1) {
         //  set:fin frame:extendedart type:legendary rarity:r unique:art
-        bfRareType = "Non-foil extended-art legendary Rare";
+        bfRareType = "Extended-art Legendary Creature, Rare";
         bfRareRarity = "18.2%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+type%3Alegendary+rarity%3Ar+unique%3Aart";
     } else if (bfRareRoll <= 48.0) {
         //  set:fin frame:extendedart type:legendary rarity:r unique:art
-        bfRareType = "Non-foil extended-art legendary Mythic";
+        bfRareType = "Extended-art Legendary Creature, Mythic";
         bfRareRarity = "2.9%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+type%3Alegendary+rarity%3Am+unique%3Aart";
     } else if (bfRareRoll <= 50.9) {
         //  set:fic is:boosterfun rarity:m unique:art (CN>=194 AND CN<=200)
-        bfRareType = "Non-foil Booster Fun Commander Rare";
+        bfRareType = "Commander Set Booster Fun, Rare";
         bfRareRarity = "2.9%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Ar+unique%3Aart+%28CN>%3D194+AND+CN<%3D200%29&unique=cards";
     } else if (bfRareRoll <= 54.2) {
         //  set:fic is:boosterfun rarity:m unique:art
-        bfRareType = "Non-foil Booster Fun Commander Mythic";
+        bfRareType = "Commander Set Booster Fun, Mythic";
         bfRareRarity = "3.3%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Am+unique%3Aart&unique=cards";
     } else if (bfRareRoll <= 65.8) {
         //  set:fic rarity:r frame:extendedart -CN:228 (-type:"legendary creature" AND -type:"legendary artifact creature")
         //  !! Custom query, excludes Legendary Creatures and Herald's Horn, Buy-a-Box Promo
-        bfRareType = "Non-foil extended-art non-Legendary Creature Commander Rare";
+        bfRareType = "Commander Set Extended-art Non-Legendary, Rare";
         bfRareRarity = "11.6%";
         bfRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Ar+frame%3Aextendedart+-CN%3A228+%28-type%3A'legendary+creature'+AND+-type%3A'legendary+artifact+creature'%29";
     } else if (bfRareRoll <= 89.4) {
         //  set:fic frame:extendedart rarity:r (type:legendary and type:creature)
-        bfRareType = "Non-foil extended-art Legendary Creature Commander Rare";
+        bfRareType = "Commander Set Extended-art Legendary Creature, Rare";
         bfRareRarity = "23.6%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+frame%3Aextendedart+rarity%3Ar+%28type%3Alegendary+and+type%3Acreature%29";
     } else if (bfRareRoll <= 91.0) {
         //  set:fic frame:extendedart rarity:m (type:legendary and type:creature)
-        bfRareType = "Non-foil extended-art Legendary Creature Commander Mythic";
+        bfRareType = "Commander Set Extended-art Legendary Creature, Mythic";
         bfRareRarity = "1.6%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+frame%3Aextendedart+rarity%3Am+%28type%3Alegendary+and+type%3Acreature%29";
     } else if (bfRareRoll <= 92.4) {
         //  set:fic is:boosterfun rarity:r CN>=194
         //  !!! Assuming the Commander set is implied, and that the group of 7 is 7 Summons
-        bfRareType = "Foil Booster Fun Rare";
+        bfRareType = "Booster Fun, Rare (Foil)";
         bfRareRarity = "1.4%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Ar+CN>%3D194";
         foilType = "trad";
     } else if (bfRareRoll <= 98.2) {
-        //  set:fic rarity:r frame:extendedart -CN:228 (-type:"legendary creature" AND -type:"legendary artifact creature")
-        //  !! Custom query, excludes Legendary Creatures and Herald's Horn, Buy-a-Box Promo
-        bfRareType = "Foil extended-art Commander Rare";
+        //  set:fic rarity:r frame:extendedart -CN:228 (-type:'legendary creature' AND -type:'legendary artifact creature')
+        bfRareType = "Commander Set Extended-art Booster Fun, Rare (Foil)";
         bfRareRarity = "5.8%";
         bfRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Ar+frame%3Aextendedart+-CN%3A228+%28-type%3A'legendary+creature'+AND+-type%3A'legendary+artifact+creature'%29";
         foilType = "trad";
     } else if (bfRareRoll <= 99) {
         //  set:fic is:boosterfun rarity:m
-        bfRareType = "Foil extended-art Commander Mythic";
+        bfRareType = "Commander Set Extended-art , Mythic (Foil)";
         bfRareRarity = "0.8%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+frame%3Aextendedart";
         foilType = "trad";
     } else {
         //  set:fic is:surge rarity:m (CN>=209 AND CN<=217)
-        bfRareType = "Surge Foil extended-art Commander Mythic";
+        bfRareType = "Commander Set Extended-art, Mythic (Surge Foil)";
         bfRareRarity = "1%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Asurge+rarity%3Am+%28CN>%3D209+AND+CN<%3D217%29";
         foilType = "surge";
@@ -578,19 +576,19 @@ async function fcaPull_FIN() {
     if (fcaRoll <= 68.3) {
         //  Uncommon (68.3%, 17 cards)
         //  set:fca rarity:u
-        fcaType = "Through the Ages — Uncommon";
+        fcaType = "Through the Ages, Uncommon";
         fcaRarity = "68.3%";
         fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Au";
     } else if (fcaRoll <= 94) {
         //  Rare (25.7%, 32 cards)
         //  set:fca rarity:r
-        fcaType = "Through the Ages — Rare";
+        fcaType = "Through the Ages, Rare";
         fcaRarity = "25.7%";
         fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Ar";
     } else {
         //  Mythic (6%, 15 cards)
         //  set:fca rarity:m
-        fcaType = "Through the Ages — Mythic";
+        fcaType = "Through the Ages, Mythic";
         fcaRarity = "6.0%";
         fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Am";
     }
@@ -652,50 +650,50 @@ async function foilOrChocoPull_FIN() {
     } else if (chocoRareRoll <= 4.1) {
         //  1 of 7 Traditional foil Artist Mythics (2.2%, 7 cards)
         //  set:fin rarity:m (a:"yoshitaka amano" or a:"toshiyuki itahana" or a:"tetsuya nomura" or a:"isamu kamikokuryo" or a:"kazuya takahashi" or a:"yusuke mogi")
-        fchocoType = "(Traditional Foil) Artist Rare";
+        fchocoType = "Featured Artist, Rare (Foil)";
         fchocoRarity = "2.2%";
         chocoRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28a%3A'yoshitaka+amano'+or+a%3A'toshiyuki+itahana'+or+a%3A'tetsuya+nomura'+or+a%3A'isamu+kamikokuryo+or+a%3A'kazuya+takahashi'+or+a%3A'yusuke+mogi'%29";
     } else if (chocoRareRoll <= 40.6) {
         //  Traditional foil borderless woodblock Rare (36.5%, 29 cards)
         //  set:fin rarity:r (CN>=324 AND CN<=373)
-        fchocoType = "(Traditional Foil) Borderless Woodblock Rare";
+        fchocoType = "Borderless Woodblock, Rare (Foil)";
         fchocoRarity = "36.5%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D324+AND+CN<%3D373%29";
     } else if (chocoRareRoll <= 44.4) {
         //  Traditional foil borderless Woodblock Mythic (3.8%, 6 cards)
         //  set:fin rarity:m (CN>=334 AND CN<=359)
-        fchocoType = "(Traditional Foil) Borderless Woodblock Rare";
+        fchocoType = "Borderless Woodblock, Rare (Foil) ";
         fchocoRarity = "3.8%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D334+AND+CN<%3D359%29";
     } else if (chocoRareRoll <= 76.0) {
         //  Traditional foil main set borderless Rare (31.6%, 26 cards)
         //  set:fin rarity:r is:borderless (CN<320 OR CN>373)
-        fchocoType = "(Traditional Foil) Borderless Rare";
+        fchocoType = "Borderless, Rare (Foil)";
         fchocoRarity = "31.6%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+is%3Aborderless+%28CN<320+OR+CN>373%29";
     } else if (chocoRareRoll <= 81.6) {
         //  Traditional foil main set borderless Mythic (5.6%, 9 cards)
         //  set:fin rarity:m is:borderless (CN>=375 AND CN<=406)
-        fchocoType = "(Traditional Foil) Borderless Mythic";
+        fchocoType = "Borderless, Mythic (Foil)";
         fchocoRarity = "5.6%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+is%3Aborderless+%28CN>%3D375+AND+CN<%3D406%29";
     } else if (chocoRareRoll <= 96.7) {
         //  Surge foil borderless character Rare (15.1%, 20 cards)
         //  set:fin rarity:r (CN>=374 AND CN<=405)
-        fchocoType = "(Surge Foil) Borderless Character Rare";
+        fchocoType = "Borderless Character, Rare (Surge Foil)";
         fchocoRarity = "15.1%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D374+AND+CN<%3D405%29";
     } else if (chocoRareRoll <= 99.7) {
         //  Surge foil borderless character Mythic (3.0%, 1 cards)
         //  set:fin rarity:m (CN>=519 AND CN<=550)
-        fchocoType = "(Surge Foil) Borderless Character Rare";
+        fchocoType = "Borderless Character, Rare (Surge Foil)";
         fchocoRarity = "3.0%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D519+AND+CN<%3D550%29";
     } else {
         //  Traveling Chocobo in one of five colors
         //  set:fin CN="551b"
-        fchocoType = "Colorful Travelling Chocobo";
+        fchocoType = "Colorful Traveling Chocobo";
         fchocoRarity = "< 1%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551b'";
     }
