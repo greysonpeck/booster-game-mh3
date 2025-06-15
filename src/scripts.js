@@ -9,32 +9,6 @@ activeInvestigation = false;
 activeAbout = false;
 activeSubInfo = false;
 
-// const infoListeners = {};
-
-function addInfoClick(label, type) {
-    console.log("");
-    // const infoModal = document.getElementById("modal-content");
-    // const element = document.getElementById(label);
-
-    // if (!element) return;
-
-    // // Remove old listener if one exists
-    // if (infoListeners[label]) {
-    //     element.removeEventListener("click", infoListeners[label]);
-    //     delete infoListeners[label];
-    // }
-
-    // // If boostersBought condition is OK, add new listener
-    // if (boostersBought <= 2) {
-    //     const showInfo = () => infoModal.classList.remove("hidden");
-    //     infoModal.innerText = type;
-    //     infoListeners[label] = showInfo;
-    //     element.addEventListener("click", showInfo);
-    // } else {
-    //     console.log("big mad");
-    // }
-}
-
 function waitforme(millisec) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -274,8 +248,9 @@ document.addEventListener(
 
         function initializeCAD() {
             currencyMode = "CAD";
+            umami.track("Convert to CAD");
             toggle.classList.add("toggle-cad");
-            boosterValue = boosterValue * 1.39;
+            boosterValue = CAN_boosterValue;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
             currentMoneyElement.classList.remove("px-3");
             console.log("Initializing cad...");
@@ -537,6 +512,8 @@ function setGhostData() {
     //  Set price, check for etched
     if (ghostCard.tcgplayer_etched_id) {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_etched))).toFixed(0);
+    } else if (isSurge) {
+        ghostPrice = (priceCut * convertCurrency(ghostCard.prices.usd_foil)).toFixed(0);
     } else if (ghostCard.prices.usd) {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd))).toFixed(0);
     } else {
@@ -617,13 +594,12 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     // Add Boosters Bought
     totalBoosterSpend = boostersBought * boosterValue;
-    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.12);
+    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
 
     console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
     ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
-    console.log("GHOST CONSTRUCTED: " + ghostLinkConstructed);
 
     fetch(topOutLink)
         .then((response) => {
@@ -636,16 +612,18 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         // First we set the Ghost Card to the TOP PRICE card
         .then((data) => {
             ghostCard = data.data[0];
+            isSurge = ghostCard.promo_types.includes("surgefoil");
 
             if (ghostCard.prices.usd == !null) {
                 ghostPrice = convertCurrency(ghostCard.prices.usd * priceCut);
+            } else if (isSurge) {
+                ghostPrice = convertCurrency(ghostCard.prices.usd_foil * priceCut);
             } else {
                 ghostPrice = convertCurrency(ghostCard.prices.usd_foil * priceCut);
             }
             console.log("Total Booster Spend: " + totalBoosterSpend + ". Ghost Price: " + ghostPrice);
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
-                console.log("Getting NON-TOP Card!");
 
                 // Get the non-top card
                 ghostCard = fetch(ghostLinkConstructed)
@@ -658,7 +636,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
                         setGhostData();
                     });
             } else {
-                console.log("Getting TOP Card I guess?!");
                 ghostLink = ghostCard;
                 ghostName = ghostCard.name;
 
@@ -669,8 +646,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
-
-    console.log("TOP OUT: " + topOutLink);
 
     //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
@@ -690,7 +665,6 @@ let cardsRemaining = setName.totalCards;
 
 const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardsRemaining--;
-    // console.log("remaining: " + cardsRemaining);
 
     cardStack.classList.add("flipped");
     if (!rareFirstFlip) {
@@ -743,7 +717,6 @@ function sumTotals() {
                 packTotal += num;
             });
             runningSum.innerText = USDollar.format(packTotal);
-            console.log("ADD THSE: " + myPrices);
 
             let netTotal = packTotal - boosterTotalValue;
             currentMoneyElement.innerText = "$" + netTotal.toFixed(2);
