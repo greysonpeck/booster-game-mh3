@@ -76,6 +76,7 @@ svg {
     background: rgba(0, 0, 0, 0.5);
     left: 0;
     top: 0;
+    backdrop-filter: blur(3px);
     transition-property: opacity;
     transition-duration: 1000ms;
 }
