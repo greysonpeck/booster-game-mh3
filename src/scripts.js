@@ -57,6 +57,7 @@ myPrices = [];
 var activeCheck = false;
 
 function pullBooster() {
+    umami.track("Pull " + currentSet + " booster");
     if (currentSet === "DSK") {
         pullDSK();
     } else if (currentSet === "MH3") {
@@ -154,6 +155,7 @@ function investigate() {
         activeInvestigation = false;
     } else {
         infopops.forEach((infopop) => {
+            umami.track("Investigate");
             infopop.classList.remove("hidden");
             infopop.classList.remove("opacity-0");
             investigateButton.innerText = "Hide";
@@ -177,6 +179,7 @@ document.addEventListener(
 
         // Click info, get modal
         aboutButton.addEventListener("click", function (e) {
+            umami.track("About modal");
             aboutContainer.classList.remove("hidden");
             activeAbout = true;
             console.log("now activeAbout is true!");
