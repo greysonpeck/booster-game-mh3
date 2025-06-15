@@ -155,11 +155,11 @@ function investigate() {
         activeInvestigation = false;
     } else {
         infopops.forEach((infopop) => {
-            umami.track("Investigate");
             infopop.classList.remove("hidden");
             infopop.classList.remove("opacity-0");
             investigateButton.innerText = "Hide";
         });
+        umami.track("Investigate");
         activeInvestigation = true;
     }
 }
