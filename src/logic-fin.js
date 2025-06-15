@@ -15,7 +15,7 @@ function setFIN() {
     CAN_boosterValue = 80;
 
     priceCutActive = true;
-    priceCut = 0.5;
+    priceCut = 1;
 
     document.getElementById("set-header").innerText = "FINAL FANTASY";
     document.getElementById("booster-type").innerText = boosterType_FIN + " Booster";
