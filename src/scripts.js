@@ -7,6 +7,7 @@ currentSet = "FIN";
 cardBack_URL = "img/card_default4.png";
 activeInvestigation = false;
 activeAbout = false;
+activeSubInfo = false;
 
 // const infoListeners = {};
 
@@ -173,6 +174,10 @@ document.addEventListener(
         const aboutContainer = document.getElementById("about-container");
         const aboutModal = document.getElementById("about-modal");
         const aboutButton = document.getElementById("about");
+        const mainInfo = document.getElementById("main-info");
+        const subInfo = document.getElementById("sub-info");
+        const getSubInfo = document.getElementById("explainer");
+        const backToMainInfo = document.getElementById("back-to-main");
 
         // Click info, get modal
         aboutButton.addEventListener("click", function (e) {
@@ -181,11 +186,26 @@ document.addEventListener(
             activeAbout = true;
         });
 
+        // Click details, get hide main info, reveal sub info
+        getSubInfo.addEventListener("click", function (e) {
+            umami.track("Read sub-info");
+            subInfo.classList.remove("hidden");
+            mainInfo.classList.add("hidden");
+            getSubInfo = true;
+        });
+
+        // Click back, show main info, hide sub
+        backToMainInfo.addEventListener("click", function (e) {
+            subInfo.classList.add("hidden");
+            mainInfo.classList.remove("hidden");
+            getSubInfo = false;
+        });
+
         document.addEventListener("click", function (event) {
             if (!activeAbout) return;
             if (!aboutModal.contains(event.target) && event.target !== aboutButton) {
                 aboutContainer.classList.add("hidden");
-                activeAbout = false;
+                subI = false;
             }
         });
 

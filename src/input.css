@@ -37,6 +37,12 @@ svg {
     margin-bottom: 12px;
 }
 
+#about-modal .small {
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+    text-align: right;
+}
+
 .price-cut {
     background-color: rgba(255, 212, 212, 0.79);
 }

@@ -41,9 +41,9 @@ function setFIN() {
 function makeFINSlots() {
     makeSlot("fchoco", "Foil R, M, or Chocobo", true);
     makeSlot("fca", "Through the Ages", true);
-    makeSlot("bfr-1", "B.F. Rare or Mythic #1", true);
-    makeSlot("bfr-2", "B.F. Rare or Mythic #2", true);
-    makeSlot("bfr-3", "B.F. Rare or Mythic #3", true);
+    makeSlot("bfr-1", "Booster Fun (R/M) #1", true);
+    makeSlot("bfr-2", "Booster Fun (R/M) #2", true);
+    makeSlot("bfr-3", "Booster Fun (R/M) #3", true);
     makeSlot("defaultrare", "Foil Rare or Mythic", true);
     makeSlot("nfbfcu", "Booster Fun (C/U)");
     makeSlot("foilbfcu", "Foil Booster Fun (C/U)", true);

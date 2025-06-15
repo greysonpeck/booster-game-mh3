@@ -37,17 +37,28 @@
       <div id="current-set"></div>
     <button id="about" class="fixed flex gap-2 items-center cursor-pointer top-0 right-0 m-2 hover:underline">
         What is this?
-        <!-- <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M13.5 25V24.9027L14.7941 24.0757V15.8784C14.7941 15.3432 14.7706 14.9054 14.7235 14.5649C14.6922 14.2243 14.6294 13.9486 14.5353 13.7378C14.4412 13.527 14.3078 13.3649 14.1353 13.2514C13.9784 13.1378 13.7667 13.0324 13.5 12.9351V12.8378H18.2059V22.1297C18.2059 22.6162 18.2216 23.0135 18.2529 23.3216C18.3 23.6297 18.3706 23.8892 18.4647 24.1C18.5588 24.3108 18.6843 24.473 18.8412 24.5865C19.0137 24.7 19.2333 24.8054 19.5 24.9027V25H13.5ZM16.4647 11.6703C16.3863 11.4919 16.2529 11.2892 16.0647 11.0622C15.8922 10.8189 15.6882 10.5838 15.4529 10.3568C15.2333 10.1297 15.0137 9.92703 14.7941 9.74865C14.5745 9.57027 14.3784 9.44865 14.2059 9.38378V9.28649L16.4647 7H16.5588L18.8176 9.28649V9.38378C18.6608 9.44865 18.4647 9.57027 18.2294 9.74865C18.0098 9.92703 17.7824 10.1297 17.5471 10.3568C17.3275 10.5838 17.1235 10.8189 16.9353 11.0622C16.7627 11.2892 16.6373 11.4919 16.5588 11.6703H16.4647Z" fill="white" fill-opacity="0.8"/>
         <circle cx="16.5" cy="16.5" r="15" stroke="white" stroke-opacity="0.8" stroke-width="3"/>
-        </svg> -->
+        </svg>
     </button>
     <div id="about-container" class="hidden fixed bg-gray-900/50 top-0 left-0 w-full h-lvh z-20">
         <div id="about-modal" class="mx-auto p-6 pb-4 max-w-[560px] min-w-[300px] mt-16 bg-emerald-800 rounded-lg shadow-2xl ring-2 ring-white/80">
-            <h3 class="text-xl mb-2 font-bold">This is a booster pack simulator.</h3>
-                <p>Detailed pull rates for Magic booster packs are <a target="#" href="https://magic.wizards.com/en/news/feature/collecting-final-fantasy">published here</a>, and this tool uses that information to generate a “realistic” pack.</p>
-                <p>I’ve done my best to translate WotC’s descriptions to accurate Scryfall queries, but things may not be 100% perfect.</p>
-                <p>If you think this is cool or have any feedback, say hi <a target="#" href="https://bsky.app/profile/gpwaltz.bsky.social">on bluesky.</a></p>
+            <div id="main-info">
+                <h3 class="text-2xl mb-2 font-bold">Ripping packs is fun.</h3>
+                <p>It’s a lot less fun when you get totally wrecked and add a new stack of expensive draft chaff to your “to sort” pile. And odds are, you’re gonna get wrecked.</p>
+                <p>This website tries to provide some of that lever-pulling dopamine, with added detail on exactly how it’s a losing game. At least until you hit big.             The cycle of “it’s so over” and “we’re so back” goes on...</p>
+                <p>Good luck on your packs!</p>
+                <p class="small mt-8">Here’s <span id="explainer" class="font-bold underline cursor-pointer">an explainer</span> on how this all works.</p>
+                <p class="small">If you have any feedback or just this this is neat, say hi <a target="#" href="https://bsky.app/profile/gpwaltz.bsky.social">on bluesky</a>!</p>
+            </div>
+            <div id="sub-info" class="hidden">
+<p>Detailed pull rates for Magic booster packs are <a target="#" href="https://magic.wizards.com/en/news/feature/collecting-final-fantasy">published here</a>. This website uses that information to generate a “realistic” pack, with randomization that matches the published pull rates for each card slot.</p>
+<p>Each card is generated from a unique query to Scryfall <a target="#" href="https://scryfall.com/search?q=set%3Afin+rarity%3Am+is%3Aborderless">like this</a>. I’ve done my best to translate WotC’s descriptions into accurate Scryfall queries, but things may not be 100% perfect.</p>
+<!-- <p>Also, this site is a mess!! It started as a project to help me learn Javascript, and I've since written a ton of terrible code.</p> -->
+
+                <p id="back-to-main" class="font-bold cursor-pointer underline">Back</p>
+            </div>  
         </div>
     </div>
     <main class="mx-auto px-1 pt-8 sm:pt-20 flex flex-col">
@@ -58,7 +69,7 @@
         <div class="mb-6">
           <h1 class="text-3xl md:text-5xl font-bold text-nowrap pb-3">Just Buy Singles</h1>
           <h2 id="set-header" class="text-xl md:text-3xl text-nowrap font-light tracking-[.3em] sm:pb-2 text-center">MODERN HORIZONS 3</h1>
-            <p id="booster-type" class="text-md font-light uppercase tracking-widest text-center w-fit px-8 mx-auto py-1.5">PLAY BOOSTER</p>
+            <p id="booster-type" class="mt-2 text-md font-light uppercase tracking-widest text-center w-fit px-8 mx-auto py-1.5">PLAY BOOSTER</p>
         </div>
 
         <!-- DATA BLOCK -->
