@@ -12,7 +12,7 @@ function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
     boosterValue = 80;
-    CAN_boosterValue = 80;
+    CAN_boosterValue = 110;
 
     priceCutActive = true;
     priceCut = 1;
