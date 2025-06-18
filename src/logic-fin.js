@@ -11,7 +11,7 @@ window.cardInfo = window.cardInfo || {};
 function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
-    boosterValue = 60;
+    boosterValue = 80;
     CAN_boosterValue = 80;
 
     priceCutActive = true;
