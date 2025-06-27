@@ -638,7 +638,7 @@ async function foilOrChocoPull_FIN() {
     let chocoRareLink = "";
 
     // Override roll
-    // chocoRareRoll = 99.6;
+    // chocoRareRoll = 99;
 
     let fchocoType = "unknown";
     if (chocoRareRoll <= 1.9) {
@@ -684,11 +684,11 @@ async function foilOrChocoPull_FIN() {
         //  set:fin rarity:r (CN>=374 AND CN<=405)
         fchocoType = "Borderless Character, Rare (Surge Foil)";
         fchocoRarity = "15.1%";
-        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28CN>%3D374+AND+CN<%3D405%29";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+has%3Asurge+is%3Aborderless+rarity%3Ar&unique=cards";
     } else if (chocoRareRoll <= 99.7) {
-        //  Surge foil borderless character Mythic (3.0%, 1 cards)
+        //  Surge foil borderless character Mythic (3.0%, 8 cards)
         //  set:fin rarity:m (CN>=519 AND CN<=550)
-        fchocoType = "Borderless Character, Rare (Surge Foil)";
+        fchocoType = "Borderless Character, Mythic (Surge Foil)";
         fchocoRarity = "3.0%";
         chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28CN>%3D519+AND+CN<%3D550%29";
     } else {
@@ -705,6 +705,8 @@ async function foilOrChocoPull_FIN() {
     let card = await response.json();
     fchocoName = card.name;
     window.cardInfo.fchoco = [fchocoName, fchocoType, fchocoRarity];
+
+    // Set Price
     chocoRarePrice = convertCurrency(card.prices.usd_foil * priceCut) ? convertCurrency(card.prices.usd_foil * priceCut) : 0;
 
     //  Replace Img Source
