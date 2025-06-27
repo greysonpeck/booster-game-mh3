@@ -132,7 +132,7 @@ async function uncommonPull_FIN() {
         if (cidRoll == 109) {
             response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afin+cn>%3D407+and+cn<%3D416+unique%3Aart");
         } else {
-            response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Au");
+            response = await fetch("https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Au+-name%3D%27Ragnarok%27&unique=cards");
         }
 
         let uncommonCard = await response.json();
