@@ -35,6 +35,14 @@ function addInfoClick(label, type) {
     // }
 }
 
+function umamiAnalytics(umamiEvent) {
+    try {
+        umami.track(umamiEvent);
+    } catch (error) {
+        console.error("Error with tracking, skipping (maybe uBlock Origin?) Error: ", error);
+    }
+}
+
 function waitforme(millisec) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -58,7 +66,8 @@ myPrices = [];
 var activeCheck = false;
 
 function pullBooster() {
-    umami.track("Pull " + currentSet + " booster");
+    umamiAnalytics("Pull " + currentSet + " booster");
+
     if (currentSet === "DSK") {
         pullDSK();
     } else if (currentSet === "MH3") {
@@ -157,7 +166,7 @@ function investigate() {
             infopop.classList.remove("opacity-0");
             investigateButton.innerText = "Hide";
         });
-        umami.track("Investigate");
+        umamiAnalytics("Investigate");
         activeInvestigation = true;
     }
 }
@@ -182,14 +191,14 @@ document.addEventListener(
 
         // Click info, get modal
         aboutButton.addEventListener("click", function (e) {
-            umami.track("About modal");
+            umamiAnalytics("About modal");
             aboutContainer.classList.remove("hidden");
             activeAbout = true;
         });
 
         // Click details, get hide main info, reveal sub info
         getSubInfo.addEventListener("click", function (e) {
-            umami.track("Read sub-info");
+            umamiAnalytics("Read sub-info");
             subInfo.classList.remove("hidden");
             mainInfo.classList.add("hidden");
             getSubInfo = true;
@@ -197,7 +206,7 @@ document.addEventListener(
 
         // Add umami tracking to Kofi
         kofi.addEventListener("click", function (e) {
-            umami.track("Kofi link");
+            umamiAnalytics("Kofi link");
         });
 
         // Click back, show main info, hide sub
@@ -235,7 +244,7 @@ document.addEventListener(
 
         //  Action on Single Click
         singleHolder.addEventListener("click", () => {
-            umami.track("Single reveal");
+            umamiAnalytics("Single reveal");
             singleClicked = true;
             document.querySelector("body").classList.add("cursor-pointer");
             singleHolder.classList.add("single-view");
@@ -280,7 +289,7 @@ document.addEventListener(
 
         function initializeCAD() {
             currencyMode = "CAD";
-            umami.track("Convert to CAD");
+            umamiAnalytics("Convert to CAD");
             toggle.classList.add("toggle-cad");
             boosterValue = CAN_boosterValue;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
@@ -303,7 +312,6 @@ document.addEventListener(
                 initializeCAD();
                 toggle.classList.toggle("on");
             } else {
-                console.log("USA MONEY GANG");
                 initializeUSD();
                 currentMoneyElement.classList.remove("px-3");
             }
