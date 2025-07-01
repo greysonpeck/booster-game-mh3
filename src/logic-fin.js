@@ -421,7 +421,7 @@ function bfRareSingleRoll(allowFoil = true) {
     }
 
     // Override roll
-    // bfRareRoll = 99.6;
+    bfRareRoll = 53;
 
     var bfRareLink = "";
     let foilType = "";
@@ -457,7 +457,7 @@ function bfRareSingleRoll(allowFoil = true) {
         //  set:fic is:boosterfun rarity:m unique:art
         bfRareType = "Commander Set Booster Fun, Mythic";
         bfRareRarity = "3.3%";
-        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Am+unique%3Aart&unique=cards";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+is%3Aboosterfun+rarity%3Am+CN<215+unique%3Aart&unique=cards";
     } else if (bfRareRoll <= 65.8) {
         //  set:fic rarity:r frame:extendedart -CN:228 (-type:"legendary creature" AND -type:"legendary artifact creature")
         //  !! Custom query, excludes Legendary Creatures and Herald's Horn, Buy-a-Box Promo
