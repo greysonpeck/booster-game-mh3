@@ -571,7 +571,7 @@ async function fcaPull_FIN() {
     let fcaLink = "";
 
     // Override roll
-    fcaRoll = 93;
+    // fcaRoll = 93;
 
     let fcaType = "unknown";
     if (fcaRoll <= 68.3) {
