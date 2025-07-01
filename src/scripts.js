@@ -170,6 +170,7 @@ document.addEventListener(
         const singleHolder = document.getElementById("single-holder");
         const singleStack = document.querySelector(".both-cards-single");
         const shade = document.querySelector(".shade");
+        const kofi = document.getElementById("kofi");
 
         const aboutContainer = document.getElementById("about-container");
         const aboutModal = document.getElementById("about-modal");
@@ -192,6 +193,11 @@ document.addEventListener(
             subInfo.classList.remove("hidden");
             mainInfo.classList.add("hidden");
             getSubInfo = true;
+        });
+
+        // Add umami tracking to Kofi
+        kofi.addEventListener("click", function (e) {
+            umami.track("Kofi link");
         });
 
         // Click back, show main info, hide sub
@@ -621,11 +627,11 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     // Add Boosters Bought
     totalBoosterSpend = boostersBought * boosterValue;
-    // boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
-    // boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
+    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
+    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
 
-    boosterSpendTop = 400;
-    boosterSpendBottom = 401;
+    // boosterSpendTop = 400;
+    // boosterSpendBottom = 401;
 
     try {
         const result = await fetch(topOutLink); // assume this returns an object or undefined
