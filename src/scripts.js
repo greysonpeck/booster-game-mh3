@@ -529,6 +529,7 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
+    console.log("the ghost name" + ghostName);
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -620,8 +621,27 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     // Add Boosters Bought
     totalBoosterSpend = boostersBought * boosterValue;
-    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
-    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
+    // boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
+    // boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
+
+    boosterSpendTop = 400;
+    boosterSpendBottom = 401;
+
+    try {
+        const result = await fetch(topOutLink); // assume this returns an object or undefined
+    } catch (error) {
+        if (1 === 1) {
+            // 🔥 This code runs ONLY when that specific error happens
+            console.warn("Caught undefined access99999:", error);
+
+            // Your custom response
+            //   handleMissingData();
+            console.log("my custom RESPONSE" + result);
+        } else {
+            // Re-throw or handle other errors
+            throw error;
+        }
+    }
 
     console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
@@ -633,6 +653,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
             if (!response.ok) {
                 throw new Error("Could not fetch resource");
             }
+
             return response.json();
         })
 

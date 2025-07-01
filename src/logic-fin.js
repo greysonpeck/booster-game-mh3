@@ -11,8 +11,8 @@ window.cardInfo = window.cardInfo || {};
 function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
-    boosterValue = 140;
-    CAN_boosterValue = 170;
+    boosterValue = 110;
+    CAN_boosterValue = 160;
 
     priceCutActive = true;
     priceCut = 1;
@@ -421,7 +421,7 @@ function bfRareSingleRoll(allowFoil = true) {
     }
 
     // Override roll
-    // bfRareRoll = 99;
+    // bfRareRoll = 99.6;
 
     var bfRareLink = "";
     let foilType = "";
@@ -571,7 +571,7 @@ async function fcaPull_FIN() {
     let fcaLink = "";
 
     // Override roll
-    // fcaRoll = 99;
+    fcaRoll = 93;
 
     let fcaType = "unknown";
     if (fcaRoll <= 68.3) {
@@ -610,6 +610,8 @@ async function fcaPull_FIN() {
 
     //  Apply foil in 50% of rolls
     if (getRandomInt(1, 2) === 2) {
+        fcaType = fcaType + " (Foil)";
+        window.cardInfo.fca = [fcaName, fcaType, fcaRarity];
         fcaImageElement.previousElementSibling.classList.add("foil-gradient");
         fcaPrice = convertCurrency(card.prices.usd_foil * priceCut) ? convertCurrency(card.prices.usd_foil * priceCut) : 0;
     } else {
@@ -638,20 +640,20 @@ async function foilOrChocoPull_FIN() {
     let chocoRareLink = "";
 
     // Override roll
-    // chocoRareRoll = 99;
+    // chocoRareRoll = 99.8;
 
     let fchocoType = "unknown";
     if (chocoRareRoll <= 1.9) {
         //  1 of 3 Traditional foil Artist Rares (1.9%, 3 cards)
         //  set:fin rarity:r (a:"akihiko yoshida" or a:"toshitaka matsuda" or a:"roberto ferrari")
-        fchocoType = "(Traditional Foil) Artist Rare";
+        fchocoType = "Featured Artist, Rare (Foil) ";
         fchocoRarity = "1.9%";
         chocoRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+%28a%3A'akihiko+yoshida'+or+a%3A'toshitaka+matsuda'+or+a%3A'roberto+ferrari'%29";
     } else if (chocoRareRoll <= 4.1) {
         //  1 of 7 Traditional foil Artist Mythics (2.2%, 7 cards)
         //  set:fin rarity:m (a:"yoshitaka amano" or a:"toshiyuki itahana" or a:"tetsuya nomura" or a:"isamu kamikokuryo" or a:"kazuya takahashi" or a:"yusuke mogi")
-        fchocoType = "Featured Artist, Rare (Foil)";
+        fchocoType = "Featured Artist, Mythic (Foil)";
         fchocoRarity = "2.2%";
         chocoRareLink =
             "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am+%28a%3A'yoshitaka+amano'+or+a%3A'toshiyuki+itahana'+or+a%3A'tetsuya+nomura'+or+a%3A'isamu+kamikokuryo+or+a%3A'kazuya+takahashi'+or+a%3A'yusuke+mogi'%29";

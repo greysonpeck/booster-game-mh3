@@ -20,7 +20,8 @@ svg {
     pointer-events: none;
 }
 
-#about-modal {
+#about-modal,
+#kofi {
     color: #ffffffd8;
     background: rgba(29 166 255 / 85%);
     background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
