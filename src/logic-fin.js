@@ -421,7 +421,7 @@ function bfRareSingleRoll(allowFoil = true) {
     }
 
     // Override roll
-    bfRareRoll = 53;
+    // bfRareRoll = 53;
 
     var bfRareLink = "";
     let foilType = "";
