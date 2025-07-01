@@ -354,6 +354,7 @@ input:checked + .slider:before {
 
 .surge-gradient {
     background-image: url("../img/surge.png");
+    background-size: cover;
 }
 
 .foil-in-list {
