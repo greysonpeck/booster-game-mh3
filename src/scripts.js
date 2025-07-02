@@ -9,32 +9,6 @@ activeInvestigation = false;
 activeAbout = false;
 activeSubInfo = false;
 
-// const infoListeners = {};
-
-function addInfoClick(label, type) {
-    console.log("");
-    // const infoModal = document.getElementById("modal-content");
-    // const element = document.getElementById(label);
-
-    // if (!element) return;
-
-    // // Remove old listener if one exists
-    // if (infoListeners[label]) {
-    //     element.removeEventListener("click", infoListeners[label]);
-    //     delete infoListeners[label];
-    // }
-
-    // // If boostersBought condition is OK, add new listener
-    // if (boostersBought <= 2) {
-    //     const showInfo = () => infoModal.classList.remove("hidden");
-    //     infoModal.innerText = type;
-    //     infoListeners[label] = showInfo;
-    //     element.addEventListener("click", showInfo);
-    // } else {
-    //     console.log("big mad");
-    // }
-}
-
 function umamiAnalytics(umamiEvent) {
     try {
         umami.track(umamiEvent);
@@ -543,7 +517,6 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
-    console.log("the ghost name" + ghostName);
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -569,12 +542,10 @@ function setGhostData() {
 
     // If only foil price exists...show foil gradient
     if (ghostCard.promo_types.includes("surgefoil") && ghostCard.prices.usd_foil) {
-        console.log("The single is Surge Foil");
         ghostFoilElement.innerText = "surge foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
         ghostFoilHolderElement.classList.add("foil-gradient", "surge-gradient");
     } else if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
-        console.log("The single is Foil, the first");
         ghostFoilElement.innerText = "foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
         // ghostTexturedElement.classList.add("block");
@@ -583,14 +554,13 @@ function setGhostData() {
 
         //  If foil price exists and it's within price range...show foil gradient.
     } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
-        console.log("The single is Foil, the second");
         ghostFoilElement.innerText = "foil ";
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
         ghostFoilHolderElement.classList.add("foil-gradient");
 
         //  If the card is foil, but the non-foil price exists and is within range..."".
     } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
-        console.log("The single is regular");
+        // console.log("The single is regular");
         // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
@@ -600,7 +570,6 @@ function setGhostData() {
         //  Otherwise, also nothing.
     } else {
         console.log("The single is super regular and not in range.");
-        // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
@@ -710,8 +679,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
 
-    console.log("TOP OUT: " + topOutLink);
-
     //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
     ghostImageElement.src = ghostImagePrimary;
@@ -783,7 +750,6 @@ function sumTotals() {
                 packTotal += num;
             });
             runningSum.innerText = USDollar.format(packTotal);
-            console.log("ADD THSE: " + myPrices);
 
             let netTotal = packTotal - boosterTotalValue;
             currentMoneyElement.innerText = "$" + netTotal.toFixed(2);

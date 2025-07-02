@@ -7,15 +7,28 @@ window.onload = function () {
     const slider = document.querySelector("#sound-slider");
     const sliderContainer = document.querySelector("#sound-slider__container");
     const loadingOverlay = document.getElementById("data-loading");
+    let isLocked = false;
+
+    // Unlock when user releases the mouse
+    slider.addEventListener("mouseup", () => {
+        // volume.innerHTML = 5;
+        isLocked = false;
+    });
+
+    // Also unlock for touch devices
+    slider.addEventListener("touchend", () => {
+        isLocked = false;
+    });
 
     function handleRangeUpdate(el) {
         if (el.target) {
             el = el.target;
         }
-        volume.innerHTML = el.value;
+
         root.style.setProperty("--percentage", `${(el.value * 100) / (el.max - el.min)}%`);
 
-        if (volume.innerHTML >= 97) {
+        if (volume.innerHTML >= 97 && !isLocked) {
+            isLocked = true;
             loadingOverlay.classList.remove("-z-10", "opacity-0");
             loadingOverlay.classList.add("z-10", "loader-blur-effect");
             setTimeout(function () {
@@ -27,17 +40,17 @@ window.onload = function () {
     handleRangeUpdate(slider);
 
     //toggle the volume
-    let lastVolume = 30;
-    function toggleMute() {
-        if (slider.value > 0) {
-            lastVolume = slider.value;
-            slider.value = 0;
-            handleRangeUpdate(slider);
-        } else {
-            slider.value = lastVolume;
-            handleRangeUpdate(slider);
-        }
-    }
+    // let lastVolume = 30;
+    // function toggleMute() {
+    //     if (slider.value > 0) {
+    //         lastVolume = slider.value;
+    //         slider.value = 0;
+    //         handleRangeUpdate(slider);
+    //     } else {
+    //         slider.value = lastVolume;
+    //         handleRangeUpdate(slider);
+    //     }
+    // }
 
     slider.addEventListener("input", handleRangeUpdate);
 
