@@ -24,7 +24,7 @@ window.onload = function () {
         if (el.target) {
             el = el.target;
         }
-
+        volume.innerHTML = el.value;
         root.style.setProperty("--percentage", `${(el.value * 100) / (el.max - el.min)}%`);
 
         if (volume.innerHTML >= 97 && !isLocked) {
