@@ -236,7 +236,8 @@ async function nfBFCUPull_FIN() {
         // set:fin frame:extendedart rarity:u type:legendary
         nfBFCUType = "Extended-art Legendary,  Uncommon";
         nfBFCURarity = "66.7%";
-        nfBFCULink = "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+rarity%3Au+type%3Alegendary";
+        nfBFCULink =
+            "https://api.scryfall.com/cards/random?q=set%3Afin+frame%3Aextendedart+rarity%3Au+type%3Alegendary+-name%3D'Ragnarok%2C+Divine+Deliverance'&unique=cards";
     } else if (nfBFCURoll <= 71.7) {
         // 1 of 3 Main set Booster Fun commons (5%)
         // set:fin is:boosterfun rarity:c -type:basic
