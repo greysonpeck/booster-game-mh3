@@ -586,7 +586,7 @@ async function fcaPull_FIN() {
         //  set:fca rarity:r
         fcaType = "Through the Ages, Rare";
         fcaRarity = "25.7%";
-        fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca+rarity%3Ar";
+        fcaLink = "https://api.scryfall.com/cards/random?q=set%3Afca++rarity%3Ar+-cn%3A'A-19'";
     } else {
         //  Mythic (6%, 15 cards)
         //  set:fca rarity:m
