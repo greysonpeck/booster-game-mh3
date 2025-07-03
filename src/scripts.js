@@ -154,6 +154,7 @@ document.addEventListener(
         const singleStack = document.querySelector(".both-cards-single");
         const shade = document.querySelector(".shade");
         const kofi = document.getElementById("kofi");
+        const kofiSingle = document.getElementById("kofi-single");
 
         const aboutContainer = document.getElementById("about-container");
         const aboutModal = document.getElementById("about-modal");
@@ -168,6 +169,14 @@ document.addEventListener(
             umamiAnalytics("About modal");
             aboutContainer.classList.remove("hidden");
             activeAbout = true;
+        });
+
+        // Hover kofi link, show single
+        kofi.addEventListener("mouseover", function (e) {
+            kofiSingle.classList.remove("hidden");
+        });
+        kofi.addEventListener("mouseout", function (e) {
+            kofiSingle.classList.add("hidden");
         });
 
         // Click details, get hide main info, reveal sub info
