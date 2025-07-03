@@ -761,7 +761,7 @@ function sumTotals() {
             runningSum.innerText = USDollar.format(packTotal);
 
             let netTotal = packTotal - boosterTotalValue;
-            currentMoneyElement.innerText = "$" + netTotal.toFixed(2);
+            currentMoneyElement.innerText = USDollar.format(netTotal);
             currentMoneyElement.classList.add("px-3");
 
             if (netTotal > 0) {

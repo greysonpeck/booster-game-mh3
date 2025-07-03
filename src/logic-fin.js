@@ -699,7 +699,25 @@ async function foilOrChocoPull_FIN() {
         //  set:fin CN="551b"
         fchocoType = "Colorful Traveling Chocobo";
         fchocoRarity = "< 1%";
-        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551b'";
+
+        let colorChocoRoll = getRandomInt(1, 5);
+        switch (colorChocoRoll) {
+            case 1:
+                chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551a'";
+                break;
+            case 2:
+                chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551b'";
+                break;
+            case 3:
+                chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551c'";
+                break;
+            case 4:
+                chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551d'";
+                break;
+            default:
+                chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+cn%3A'551'";
+                break;
+        }
     }
 
     let response = await fetch(chocoRareLink);
