@@ -40,7 +40,7 @@ myPrices = [];
 var activeCheck = false;
 
 function pullBooster() {
-    umamiAnalytics("Pull " + currentSet + " booster");
+    // umamiAnalytics("Pull " + currentSet + " booster");
 
     if (currentSet === "DSK") {
         pullDSK();
