@@ -181,13 +181,13 @@ async function defaultRarePull_FIN() {
     if (defaultRareRoll <= 87.75) {
         //  1 Traditional foil default frame Rare (87.75%);
         //  set:fin rarity:r
-        defaultRareType = "Default Frame, Rare";
+        defaultRareType = "Default Frame, Rare (Foil)";
         defaultRareRarity = "87.75%";
         defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar";
     } else {
         //  1 Traditional foil default frame Mythic (12.25%)
         //  set:fin rarity:m
-        defaultRareType = "Default Frame, Mythic";
+        defaultRareType = "Default Frame, Mythic (Foil)";
         defaultRareRarity = "12.25%";
         defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Am";
     }
@@ -199,7 +199,7 @@ async function defaultRarePull_FIN() {
     defaultRareName = card.name;
     window.cardInfo.defaultrare = [defaultRareName, defaultRareType, defaultRareRarity];
 
-    defaultRarePrice = convertCurrency(card.prices.usd * priceCut);
+    defaultRarePrice = convertCurrency(card.prices.usd_foil * priceCut);
 
     // TO FIX: figure out if DFC....
     if (card.layout == "transform" || card.layout == "modal_dfc") {
