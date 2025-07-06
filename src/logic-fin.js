@@ -422,7 +422,7 @@ function bfRareSingleRoll(allowFoil = true) {
     }
 
     // Override roll
-    // bfRareRoll = 98;
+    // bfRareRoll = 98.9;
 
     var bfRareLink = "";
     let foilType = "";
@@ -492,7 +492,7 @@ function bfRareSingleRoll(allowFoil = true) {
         foilType = "trad";
     } else if (bfRareRoll <= 99) {
         //  set:fic is:boosterfun rarity:m
-        bfRareType = "Commander Set Extended-art , Mythic (Foil)";
+        bfRareType = "Commander Set Extended-art, Mythic (Foil)";
         bfRareRarity = "0.8%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+is%3Aboosterfun+-is%3Aextendedart";
         foilType = "trad";
