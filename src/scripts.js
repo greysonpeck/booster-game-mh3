@@ -291,7 +291,6 @@ document.addEventListener(
             toggle.classList.add("toggle-cad");
             boosterValue = CAN_boosterValue;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
-            document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
             currentMoneyElement.classList.remove("px-3");
             console.log("Initializing cad...");
             console.log("currency mode = " + currencyMode);
