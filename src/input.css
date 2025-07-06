@@ -50,6 +50,17 @@ svg {
     text-align: right;
 }
 
+.top-nav {
+    top: 0;
+    bottom: auto;
+}
+
+.bottom-nav {
+    top: auto;
+    bottom: 0;
+    background-color: #101828d6;
+}
+
 .price-cut {
     background-color: rgba(255, 212, 212, 0.79);
 }

@@ -164,6 +164,21 @@ document.addEventListener(
         const getSubInfo = document.getElementById("explainer");
         const backToMainInfo = document.getElementById("back-to-main");
 
+        // Top actions scroll, reposition
+        window.addEventListener("scroll", function () {
+            const topActions = document.getElementById("top-actions");
+            const scrollThreshold = 50; // pixels
+            console.log(window.scrollY);
+
+            if (window.scrollY > scrollThreshold) {
+                topActions.classList.remove("top-nav");
+                topActions.classList.add("bottom-nav");
+            } else {
+                topActions.classList.remove("bottom-nav");
+                topActions.classList.add("top-nav");
+            }
+        });
+
         // Click info, get modal
         aboutButton.addEventListener("click", function (e) {
             umamiAnalytics("About modal");
@@ -276,6 +291,7 @@ document.addEventListener(
             toggle.classList.add("toggle-cad");
             boosterValue = CAN_boosterValue;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+            document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
             currentMoneyElement.classList.remove("px-3");
             console.log("Initializing cad...");
             console.log("currency mode = " + currencyMode);
@@ -283,6 +299,7 @@ document.addEventListener(
 
         function initializeUSD() {
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+            document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
             currentMoneyElement.classList.remove("px-3");
         }
 

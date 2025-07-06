@@ -13,6 +13,7 @@ function setFIN() {
     document.cookie = "currentSet = 'FIN'";
     boosterValue = 100;
     CAN_boosterValue = 160;
+    msrp = 37.99;
 
     priceCutActive = true;
     priceCut = 1;
