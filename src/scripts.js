@@ -150,7 +150,6 @@ function investigate() {
     const investigateButton = document.getElementById("investigate");
 
     if (activeInvestigation) {
-        console.log("think it's active, making it false");
         infopops.forEach((infopop) => {
             infopop.classList.add("hidden");
             infopop.classList.add("opacity-0");
@@ -158,7 +157,6 @@ function investigate() {
         investigateButton.innerText = "Investigate";
         activeInvestigation = false;
     } else {
-        console.log("think it's false, making it active");
         infopops.forEach((infopop) => {
             infopop.classList.remove("hidden");
             infopop.classList.remove("opacity-0");
@@ -441,9 +439,8 @@ document.addEventListener(
 );
 
 function changeSet() {
-    // umamiAnalytics("Loaded set: " + currentSet);
     //  Why is this triggering multiple times?
-    // console.log("I am loading set: " + currentSet);
+    umamiAnalytics("Select set: " + currentSet);
 
     if (currencyMode === "CAD") {
         boosterValue = CAN_boosterValue;
@@ -693,13 +690,11 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
-    console.log("setting ghost data");
     ghostFoilHolderElement = document.getElementById("foil-holder");
     ghostTexturedElement = document.getElementById("ghost-textured");
     snarkError = document.getElementById("snark-error");
 
     if (failSwitch) {
-        console.log("it is error");
         snarkError.innerText = "Tried to find a single for close to the dollar amount you sunk into packs...but came up empty!";
         document.getElementById("ghost-price").innerText = "";
         document.getElementById("ghost-foil").innerText = "";
@@ -710,7 +705,7 @@ function setGhostData() {
         return;
     } else {
         snarkError.innerText = "";
-        console.log("no error");
+        // No error
     }
 
     if (ghostName.includes(",")) {
@@ -831,7 +826,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         .then((data) => {
             ghostCard = data.data[0];
             isSurge = ghostCard.promo_types.includes("surgefoil");
-            console.log("promos: " + ghostCard.promo_types);
 
             if (ghostCard.prices.usd == !null) {
                 ghostPrice = convertCurrency(Number(ghostCard.prices.usd) * priceCut);
@@ -840,18 +834,18 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
             } else {
                 ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil) * priceCut);
             }
-            console.log("Total Booster Spend: " + totalBoosterSpend + ". Top of the set: " + ghostPrice);
+            // console.log("Total Booster Spend: " + totalBoosterSpend + ". Top of the set: " + ghostPrice);
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
-                console.log("Getting NON-TOP Card!");
+                // console.log("Getting NON-TOP Card!");
 
                 // Get the non-top card
-                console.log("Ghost link: " + ghostLinkConstructed);
+                // console.log("Ghost link: " + ghostLinkConstructed);
 
                 ghostCard = fetch(ghostLinkConstructed)
                     .then((response) => {
                         if (response.status === 404) {
-                            console.log("FAILING NOW");
+                            // console.log("FAILING NOW");
                             failSwitch = true;
                             setGhostData();
                             return;
@@ -861,14 +855,14 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
                     })
                     .then((data) => {
                         if (failSwitch) {
-                            console.log("fail detected, clearing Card and Name. failSwitch turning false.");
+                            // console.log("fail detected, clearing Card and Name. failSwitch turning false.");
                             ghostCard = "";
                             ghostName = "";
                             ghostPrice = "";
                             setGhostData();
                             failSwitch = false;
                         } else {
-                            console.log("no fail detected. Setting Card and Name");
+                            // console.log("no fail detected. Setting Card and Name");
                             ghostCard = data;
                             ghostName = data.name;
                             setGhostData();
