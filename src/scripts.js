@@ -441,7 +441,7 @@ document.addEventListener(
 );
 
 function changeSet() {
-    umamiAnalytics("Loaded set: " + window.setName);
+    umamiAnalytics("Loaded set: " + currentSet);
 
     if (currencyMode === "CAD") {
         boosterValue = CAN_boosterValue;
