@@ -13,17 +13,18 @@ body {
     background-position: center;
     font-family: "Raleway", sans-serif;
     color: #ffffff;
-    margin: 8px 0;
+    margin: 0;
 }
 
 svg {
     pointer-events: none;
 }
 
-#about-modal {
+#about-modal,
+#feedback-modal {
     color: #ffffffd8;
     background: rgba(70, 70, 70, 0.85);
-    background: linear-gradient(142deg, rgba(92, 91, 92, 0.38) 0%, rgba(40, 40, 40, 0.85) 100%);
+    background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
     backdrop-filter: blur(8px);
 }
 
@@ -34,13 +35,29 @@ svg {
     backdrop-filter: blur(8px);
 }
 
+#set-list {
+    background: rgba(70, 70, 70, 0.85);
+
+    background: linear-gradient(142deg, rgba(90, 83, 101, 0.7) 0%, rgba(44, 31, 47, 0.95) 100%);
+}
+
+.set-button:hover {
+    background-color: #ffffff22;
+}
+
+.set-button:last-child:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
 #about-modal a {
     /* color: rgba(0, 102, 255, 0.845); */
     text-decoration: underline;
     font-weight: 700;
 }
 
-#about-modal p {
+#about-modal p,
+#feedback-modal p {
     margin-bottom: 12px;
 }
 
@@ -48,17 +65,6 @@ svg {
     font-size: 0.875rem;
     margin-bottom: 4px;
     text-align: right;
-}
-
-.top-nav {
-    top: 0;
-    bottom: auto;
-}
-
-.bottom-nav {
-    top: auto;
-    bottom: 0;
-    background-color: #101828d6;
 }
 
 .price-cut {
@@ -102,7 +108,7 @@ svg {
     top: 0;
     backdrop-filter: blur(3px);
     transition-property: opacity;
-    transition-duration: 1000ms;
+    transition-duration: 500ms;
 }
 
 h2,
@@ -110,10 +116,10 @@ h2,
     font-family: "Oswald", sans-serif;
 }
 
-#booster-type {
+/* #booster-type {
     background: #38cfdd;
     background: linear-gradient(90deg, rgba(56, 207, 221, 0.38) 17%, rgba(255, 255, 255, 0.42) 100%);
-}
+} */
 
 .toggle {
     display: inline-block;
@@ -217,12 +223,20 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
+@media (max-width: 766px) {
+    .data-area {
+        margin: 0px 0px 32px 0px;
+        padding: 0px;
+    }
+}
+
 .data-loader {
+    margin: -16px -16px;
     position: absolute;
     /* Sit on top of the page content */
-    width: 100%;
+    /* width: 100%; */
     /* Full width (cover the whole page) */
-    height: 100%;
+    /* height: 100%; */
     /* Full height (cover the whole page) */
     top: 0;
     left: 0;
@@ -312,22 +326,22 @@ input:checked + .slider:before {
 }
 
 .top-pos-1 {
-    top: 34px;
+    top: 38px;
 }
 .top-pos-2 {
-    top: 74px;
+    top: 76px;
 }
 .top-pos-3 {
     top: 114px;
 }
 .top-pos-4 {
-    top: 154px;
+    top: 152px;
 }
 .top-pos-5 {
-    top: 194px;
+    top: 190px;
 }
 .top-pos-6 {
-    top: 234px;
+    top: 228px;
 }
 
 /* Hiding all text in the extra commons */
@@ -374,9 +388,22 @@ input:checked + .slider:before {
     background-size: cover;
 }
 
+.mana-gradient {
+    background-image: url("../img/manafoil.png");
+    background-size: cover;
+}
+
 .foil-in-list {
     width: 240px;
     height: 335px;
+}
+
+.foil-height-3 {
+    height: 418px;
+}
+
+.foil-height-5 {
+    height: 494px;
 }
 
 .ghost-effect {
@@ -510,6 +537,16 @@ input:checked + .slider:before {
     height: 406px;
 }
 
+.h-cards-4 {
+    margin-top: -2px;
+    height: 448px;
+}
+
+.h-cards-5 {
+    margin-top: -2px;
+    height: 486px;
+}
+
 /* Mobile sizing stuff  */
 @media (max-width: 480px) {
     .both-cards,
@@ -554,13 +591,39 @@ input:checked + .slider:before {
         height: 424px;
     }
 
-    #about-modal {
+    #about-modal,
+    #feedback-modal {
         max-width: 320px;
+    }
+
+    .top-nav {
+        top: 0;
+        bottom: auto;
+    }
+
+    .bottom-nav {
+        top: auto;
+        bottom: 0;
+        background-color: #101828d6;
+    }
+
+    .foil-in-list {
+        height: 418px;
     }
 
     .h-cards-3 {
         margin-top: -2px;
         height: 492px;
+    }
+
+    .h-cards-4 {
+        margin-top: -2px;
+        height: 532px;
+    }
+
+    .h-cards-5 {
+        margin-top: -2px;
+        height: 569px;
     }
 }
 
@@ -572,5 +635,5 @@ input:checked + .slider:before {
 
 #investigate {
     transition-property: opacity;
-    transition-duration: 2s;
+    transition-duration: 1s;
 }

@@ -21,23 +21,11 @@ function setFIN() {
     document.getElementById("set-header").innerText = "FINAL FANTASY";
     document.getElementById("booster-type").innerText = boosterType_FIN + " Booster";
 
-    document.getElementById("set-toggle-1").innerText = "go foundations";
-    document.getElementById("set-toggle-1").addEventListener("click", () => {
-        setFDN();
-    });
-    document.getElementById("set-toggle-2").innerText = "go duskmourn";
-    document.getElementById("set-toggle-2").addEventListener("click", () => {
-        setDSK();
-    });
-    document.getElementById("set-toggle-3").innerText = "go modern horizons 3";
-    document.getElementById("set-toggle-3").addEventListener("click", () => {
-        setDSK();
-    });
     document.body.style.backgroundImage = "url(img/FIN_bg2_dark.jpg)";
-
     clearSlots();
     makeFINSlots();
     clearMoney();
+    changeSet();
 }
 
 function makeFINSlots() {
@@ -113,7 +101,7 @@ async function commonPull_FIN() {
         commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
     }
 
-    window.cardInfo.common = ["3 Main-set Commons", "100%"];
+    window.cardInfo.common = ["3 Main-set Commons", "Appears 100% of the time."];
 
     const commonSumElement = document.getElementById("common-sum");
     commonSumElement.innerText = commonSum;
@@ -162,7 +150,7 @@ async function uncommonPull_FIN() {
         myPrices.push(uncommonPrice);
     }
 
-    window.cardInfo.uncommon = ["3 Main-set Uncommons", "100%"];
+    window.cardInfo.uncommon = ["3 Main-set Uncommons", "Appears 100% of the time."];
 
     const uncommonSumElement = document.getElementById("uncommon-sum");
     uncommonSumElement.innerText = uncommonSum;
@@ -423,7 +411,7 @@ function bfRareSingleRoll(allowFoil = true) {
     }
 
     // Override roll
-    // bfRareRoll = 98.9;
+    // bfRareRoll = 53;
 
     var bfRareLink = "";
     let foilType = "";
@@ -493,7 +481,7 @@ function bfRareSingleRoll(allowFoil = true) {
         foilType = "trad";
     } else if (bfRareRoll <= 99) {
         //  set:fic is:boosterfun rarity:m
-        bfRareType = "Commander Set Extended-art, Mythic (Foil)";
+        bfRareType = "Commander Set Extended-art , Mythic (Foil)";
         bfRareRarity = "0.8%";
         bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afic+rarity%3Am+is%3Aboosterfun+-is%3Aextendedart";
         foilType = "trad";

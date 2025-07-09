@@ -1,4 +1,4 @@
-packTotal = 0;
+packsTotal = 0;
 boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
@@ -8,6 +8,19 @@ cardBack_URL = "img/card_default4.png";
 activeInvestigation = false;
 activeAbout = false;
 activeSubInfo = false;
+activeFeedback = false;
+firstLoad = true;
+failSwitch = false;
+
+const ghostLinkHalf = {
+    FIN: ghostLinkHalf_FIN,
+    FDN: ghostLinkHalf_FDN,
+};
+
+const topOutLink = {
+    FIN: topOutLink_FIN,
+    FDN: topOutLink_FDN,
+};
 
 function umamiAnalytics(umamiEvent) {
     try {
@@ -94,12 +107,20 @@ let USDollar = new Intl.NumberFormat("en-US", {
 
 function ghostSlide() {
     const singleHolder = document.getElementById("single-holder");
+    document.getElementById("single-holder").classList.remove("hidden");
     singleHolder.classList.add("opacity-100");
-    ghostDataGrab(ghostLinkHalf_FIN, topOutLink_FIN);
+    ghostDataGrab(ghostLinkHalf[currentSet], topOutLink[currentSet]);
 
     const investigateButton = document.getElementById("investigate");
-    investigateButton.classList.remove("hidden");
-    investigateButton.classList.remove("opacity-0");
+    investigateButton.classList.remove("hidden", "opacity-0", "cursor-default");
+    investigateButton.classList.add("cursor-pointer");
+
+    if (firstLoad === true) {
+        investigateButton.addEventListener("click", () => {
+            investigate();
+        });
+        firstLoad = false;
+    }
 
     // Set Infopop Data
     const infopopsContent = document.querySelectorAll(".infopop-content");
@@ -108,10 +129,10 @@ function ghostSlide() {
         let infopopID = content.closest(".card-info").id.replace("-label", "");
         if (infopopID === "uncommon-set") {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.["uncommon"][0];
-            content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.["common"][1] + " of the time. ";
+            content.querySelector(".infopop-rarity").textContent = window.cardInfo?.["uncommon"][1];
         } else if (infopopID === "common-set") {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.["common"][0];
-            content.querySelector(".infopop-rarity").textContent = "Appears " + window.cardInfo?.["uncommon"][1] + " of the time. ";
+            content.querySelector(".infopop-rarity").textContent = window.cardInfo?.["common"][1];
         } else {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.[infopopID][0];
             content.querySelector(".infopop-type").textContent = window.cardInfo?.[infopopID][1];
@@ -123,24 +144,27 @@ function ghostSlide() {
 }
 
 //  Toggle pop-ups on button press.
+
 function investigate() {
     const infopops = document.querySelectorAll(".infopop-wrapper");
     const investigateButton = document.getElementById("investigate");
 
     if (activeInvestigation) {
+        console.log("think it's active, making it false");
         infopops.forEach((infopop) => {
             infopop.classList.add("hidden");
             infopop.classList.add("opacity-0");
-            investigateButton.innerText = "Investigate";
         });
+        investigateButton.innerText = "Investigate";
         activeInvestigation = false;
     } else {
+        console.log("think it's false, making it active");
         infopops.forEach((infopop) => {
             infopop.classList.remove("hidden");
             infopop.classList.remove("opacity-0");
-            investigateButton.innerText = "Hide";
         });
-        umamiAnalytics("Investigate");
+        investigateButton.innerText = "Hide";
+        // umamiAnalytics("Investigate");
         activeInvestigation = true;
     }
 }
@@ -155,10 +179,16 @@ document.addEventListener(
         const shade = document.querySelector(".shade");
         const kofi = document.getElementById("kofi");
         const kofiSingle = document.getElementById("kofi-single");
+        const more = document.getElementById("more");
 
         const aboutContainer = document.getElementById("about-container");
         const aboutModal = document.getElementById("about-modal");
         const aboutButton = document.getElementById("about");
+
+        const feedbackContainer = document.getElementById("feedback-container");
+        const feedbackModal = document.getElementById("feedback-modal");
+        const feedbackButton = document.getElementById("feedback");
+
         const mainInfo = document.getElementById("main-info");
         const subInfo = document.getElementById("sub-info");
         const getSubInfo = document.getElementById("explainer");
@@ -168,7 +198,6 @@ document.addEventListener(
         window.addEventListener("scroll", function () {
             const topActions = document.getElementById("top-actions");
             const scrollThreshold = 50; // pixels
-            console.log(window.scrollY);
 
             if (window.scrollY > scrollThreshold) {
                 topActions.classList.remove("top-nav");
@@ -179,7 +208,14 @@ document.addEventListener(
             }
         });
 
-        // Click info, get modal
+        // Click Feedback, get modal
+        feedbackButton.addEventListener("click", function (e) {
+            umamiAnalytics("Feedback");
+            feedbackContainer.classList.remove("hidden");
+            activeFeedback = true;
+        });
+
+        // Click About, get modal
         aboutButton.addEventListener("click", function (e) {
             umamiAnalytics("About modal");
             aboutContainer.classList.remove("hidden");
@@ -199,7 +235,7 @@ document.addEventListener(
             umamiAnalytics("Read sub-info");
             subInfo.classList.remove("hidden");
             mainInfo.classList.add("hidden");
-            getSubInfo = true;
+            viewSubInfo = true;
         });
 
         // Add umami tracking to Kofi
@@ -211,14 +247,14 @@ document.addEventListener(
         backToMainInfo.addEventListener("click", function (e) {
             subInfo.classList.add("hidden");
             mainInfo.classList.remove("hidden");
-            getSubInfo = false;
+            viewSubInfo = false;
         });
 
         document.addEventListener("click", function (event) {
-            if (!activeAbout) return;
-            if (!aboutModal.contains(event.target) && event.target !== aboutButton) {
-                aboutContainer.classList.add("hidden");
-                subI = false;
+            if (!activeFeedback) return;
+            if (!feedbackModal.contains(event.target) && event.target !== feedbackButton) {
+                feedbackContainer.classList.add("hidden");
+                activeFeedback = false;
             }
         });
 
@@ -228,6 +264,42 @@ document.addEventListener(
                 activeAbout = false;
             }
         });
+
+        document.addEventListener("click", function (event) {
+            if (!activeAbout) return;
+            if (!aboutModal.contains(event.target) && event.target !== aboutButton) {
+                aboutContainer.classList.add("hidden");
+                viewSubInfo = false;
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (activeAbout && event.key === "Escape") {
+                aboutContainer.classList.add("hidden");
+                activeAbout = false;
+            }
+        });
+
+        // More button
+        const setList = document.getElementById("set-list");
+        let setListOpen = false;
+        more.addEventListener("click", () => {
+            setListOpen = true;
+            dimBackground();
+            setList.classList.remove("hidden");
+        });
+
+        // Clicking outside More button
+        document.addEventListener("click", function (event) {
+            if (!more.contains(event.target) && setListOpen) {
+                setList.classList.add("hidden");
+                shade.classList.add("opacity-0", "-z-10");
+                setListOpen = false;
+            }
+        });
+
+        const investigateButton = document.getElementById("investigate");
+        investigateButton.onclick = null;
 
         let singleClicked = false;
 
@@ -281,9 +353,23 @@ document.addEventListener(
                 setFDN();
             }
         } else {
-            // In the case of no cookie, set FIN
             setFIN();
         }
+
+        // Pull the set that's in the cookie
+        // const pullSet = "set" + currentSet;
+
+        // if (typeof window[pullSet] === "function") {
+        //     window[pullSet]();
+        //     document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+        // } else {
+        //     console.error(`Function ${pullSet} does not exist.`);
+        // }
+
+        // Style the set selector
+        // const currentButton = document.getElementById("set-" + currentSet);
+        // currentButton.classList.remove("bg-slate-700/50");
+        // currentButton.classList.add("bg-slate-700/20");
 
         function initializeCAD() {
             currencyMode = "CAD";
@@ -298,7 +384,6 @@ document.addEventListener(
 
         function initializeUSD() {
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
-            document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
             currentMoneyElement.classList.remove("px-3");
         }
 
@@ -324,12 +409,13 @@ document.addEventListener(
         function initializeMoney() {
             // Initialize all values
             boostersBought = 0;
-            packTotal = 0;
+            packsTotal = 0;
             commonSum = 0;
             uncommonSum = 0;
             myPrices = [];
             document.getElementById("boosters-bought").innerText = "--";
             document.getElementById("current-money").innerText = "$ --";
+
             currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
 
             // Initialize to CAD settings if toggled while on USD and vice-versa.
@@ -343,6 +429,7 @@ document.addEventListener(
                 document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
                 window.location.reload();
             }
+
             toggle.classList.toggle("on");
         }
 
@@ -353,6 +440,65 @@ document.addEventListener(
     false
 );
 
+function changeSet() {
+    umamiAnalytics("Loaded set: " + window.setName);
+
+    if (currencyMode === "CAD") {
+        boosterValue = CAN_boosterValue;
+        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+    } else {
+        // It's USD...
+    }
+
+    document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
+    // Make set selectors buttons
+    const setButtons = document.getElementsByClassName("set-button");
+    document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
+
+    // Remove single
+    if (!firstLoad) {
+        document.getElementById("single-holder").classList.add("hidden");
+    } else if (document.getElementById("single-holder").classList.contains("hidden")) {
+        document.getElementById("single-holder").classList.remove("hidden");
+    } else {
+    }
+
+    for (button of setButtons) {
+        const buttonSet = "set" + button.id.slice(-3);
+        button.classList.add("cursor-pointer");
+        button.addEventListener("click", () => {
+            window[buttonSet]();
+        });
+
+        if (currentSet === button.id.slice(-3)) {
+            button.classList.add("bg-white/20");
+        } else if (button.id.slice(-3) === "EOE") {
+            // Skip EOE, under construction
+        } else {
+            // Style non-active sets
+            button.classList.remove("bg-white/20");
+        }
+    }
+
+    // Clear Investigate
+    // const infopops = document.querySelectorAll(".infopop-wrapper");
+    const investigateButton = document.getElementById("investigate");
+    const infopops = document.querySelectorAll(".infopop-wrapper");
+
+    if (activeInvestigation) {
+        infopops.forEach((infopop) => {
+            infopop.classList.add("hidden");
+            infopop.classList.add("opacity-0");
+        });
+    } else {
+        // Do nothing
+    }
+    investigateButton.innerText = "Investigate";
+    investigateButton.classList.add("opacity-0");
+
+    activeInvestigation = false;
+}
+
 // Card maker
 function clearMoney() {
     currentSetElement = document.getElementById("current-set");
@@ -362,12 +508,14 @@ function clearMoney() {
     function initializeMoney() {
         // Initialize all values
         boostersBought = 0;
-        packTotal = 0;
+        packsTotal = 0;
         commonSum = 0;
         uncommonSum = 0;
         myPrices = [];
         document.getElementById("boosters-bought").innerText = "--";
         document.getElementById("current-money").innerText = "$ --";
+        document.getElementById("running-sum").innerText = "";
+
         currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
     }
 
@@ -376,7 +524,7 @@ function clearMoney() {
 
 function clearSlots() {
     const cardSection = document.getElementById("card-section");
-    while (cardSection.childElementCount > 1) {
+    while (cardSection.childElementCount > 0) {
         cardSection.removeChild(cardSection.lastChild);
     }
 
@@ -507,7 +655,8 @@ function makeSlot(id, label, hasFoil, quantity) {
                 card.classList.remove(topVar);
 
                 const foilMulti = document.createElement("div");
-                foilMulti.classList.add("foil-hold", "foil-gradient", "foil-in-list");
+
+                foilMulti.classList.add("foil-hold", "foil-gradient", "w-[240px]", "foil-in-list");
                 bothContainer.insertBefore(foilMulti, card);
             }
         }
@@ -542,6 +691,26 @@ function makeSlot(id, label, hasFoil, quantity) {
 }
 
 function setGhostData() {
+    console.log("setting ghost data");
+    ghostFoilHolderElement = document.getElementById("foil-holder");
+    ghostTexturedElement = document.getElementById("ghost-textured");
+    snarkError = document.getElementById("snark-error");
+
+    if (failSwitch) {
+        console.log("it is error");
+        snarkError.innerText = "Tried to find a single for close to the dollar amount you sunk into packs...but came up empty!";
+        document.getElementById("ghost-price").innerText = "";
+        document.getElementById("ghost-foil").innerText = "";
+        document.getElementById("ghost-treatment").innerText = "";
+        document.getElementById("ghost-name").innerText = "";
+        document.getElementById("ghost-image").src = "img/failed.png";
+
+        return;
+    } else {
+        snarkError.innerText = "";
+        console.log("no error");
+    }
+
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -559,29 +728,33 @@ function setGhostData() {
         ghostPrice = (priceCut * convertCurrency(Number(ghostCard.prices.usd_foil))).toFixed(0);
     }
 
-    ghostFoilHolderElement = document.getElementById("foil-holder");
-    ghostTexturedElement = document.getElementById("ghost-textured");
-
     //  Set treatment
     const ghostFoilElement = document.getElementById("ghost-foil");
 
     // If only foil price exists...show foil gradient
+
+    ghostFoilHolderElement.classList.add("foil-gradient");
+    ghostPrice = "For $" + ghostPrice + ", you could have just bought this ";
+
     if (ghostCard.promo_types.includes("surgefoil") && ghostCard.prices.usd_foil) {
         ghostFoilElement.innerText = "surge foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostFoilHolderElement.classList.add("foil-gradient", "surge-gradient");
+        ghostFoilHolderElement.classList.add("surge-gradient");
+        ghostFoilHolderElement.classList.remove("mana-gradient");
+    } else if (ghostCard.promo_types.includes("manafoil") && ghostCard.prices.usd_foil) {
+        ghostFoilElement.innerText = "mana foil ";
+        ghostFoilHolderElement.classList.add("mana-gradient");
+        ghostFoilHolderElement.classList.remove("surge-gradient");
+    } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
+        ghostFoilElement.innerText = "fracture foil ";
+        ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
     } else if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
         ghostFoilElement.innerText = "foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        // ghostTexturedElement.classList.add("block");
-        // ghostTexturedElement.classList.remove("hidden");
-        ghostFoilHolderElement.classList.add("foil-gradient");
+        ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
 
         //  If foil price exists and it's within price range...show foil gradient.
     } else if (ghostCard.foil && ghostCard.prices.usd_foil >= boosterSpendBottom && ghostCard.prices.usd_foil <= boosterSpendTop) {
         ghostFoilElement.innerText = "foil ";
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil)).toFixed(0);
-        ghostFoilHolderElement.classList.add("foil-gradient");
+        ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
 
         //  If the card is foil, but the non-foil price exists and is within range..."".
     } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
@@ -590,6 +763,7 @@ function setGhostData() {
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
+        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
         ghostFoilHolderElement.classList.remove("foil-gradient");
 
         //  Otherwise, also nothing.
@@ -609,6 +783,8 @@ function setGhostData() {
         ghostTreatment = "borderless ";
     } else if (ghostCard.finishes[0] == "etched") {
         ghostTreatment = "etched ";
+    } else if (ghostCard.frame_effects[0] == "showcase") {
+        ghostTreatment = "showcase ";
     } else {
         ghostTreatment = "";
     }
@@ -635,26 +811,10 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     // boosterSpendTop = 400;
     // boosterSpendBottom = 401;
 
-    try {
-        const result = await fetch(topOutLink); // assume this returns an object or undefined
-    } catch (error) {
-        if (1 === 1) {
-            // 🔥 This code runs ONLY when that specific error happens
-            console.warn("Caught undefined access99999:", error);
-
-            // Your custom response
-            //   handleMissingData();
-            console.log("my custom RESPONSE" + result);
-        } else {
-            // Re-throw or handle other errors
-            throw error;
-        }
-    }
-
-    console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
+    // console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
 
     ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
-    console.log("GHOST CONSTRUCTED: " + ghostLinkConstructed);
+    // console.log("GHOST LINK HALF: " + ghostLinkHalf);
 
     fetch(topOutLink)
         .then((response) => {
@@ -669,6 +829,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         .then((data) => {
             ghostCard = data.data[0];
             isSurge = ghostCard.promo_types.includes("surgefoil");
+            console.log("promos: " + ghostCard.promo_types);
 
             if (ghostCard.prices.usd == !null) {
                 ghostPrice = convertCurrency(Number(ghostCard.prices.usd) * priceCut);
@@ -677,20 +838,39 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
             } else {
                 ghostPrice = convertCurrency(Number(ghostCard.prices.usd_foil) * priceCut);
             }
-            console.log("Total Booster Spend: " + totalBoosterSpend + ". Ghost Price: " + ghostPrice);
+            console.log("Total Booster Spend: " + totalBoosterSpend + ". Top of the set: " + ghostPrice);
             if (totalBoosterSpend <= ghostPrice) {
                 ghostLink = ghostLinkConstructed;
                 console.log("Getting NON-TOP Card!");
 
                 // Get the non-top card
+                console.log("Ghost link: " + ghostLinkConstructed);
+
                 ghostCard = fetch(ghostLinkConstructed)
                     .then((response) => {
-                        return response.json();
+                        if (response.status === 404) {
+                            console.log("FAILING NOW");
+                            failSwitch = true;
+                            setGhostData();
+                            return;
+                        } else {
+                            return response.json();
+                        }
                     })
                     .then((data) => {
-                        ghostCard = data;
-                        ghostName = data.name;
-                        setGhostData();
+                        if (failSwitch) {
+                            console.log("fail detected, clearing Card and Name. failSwitch turning false.");
+                            ghostCard = "";
+                            ghostName = "";
+                            ghostPrice = "";
+                            setGhostData();
+                            failSwitch = false;
+                        } else {
+                            console.log("no fail detected. Setting Card and Name");
+                            ghostCard = data;
+                            ghostName = data.name;
+                            setGhostData();
+                        }
                     });
             } else {
                 ghostLink = ghostCard;
@@ -699,22 +879,32 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
                 setGhostData();
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+            console.error(error);
+        });
 
     //  Replace Img Source
     ghostImageElement = document.getElementById("ghost-image");
 
     //  Wait for manually Ghost Image to load, then set image.
     await waitforme(800);
-    ghostImageElement.src = ghostImagePrimary;
 
     //  Insert Price
     const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice;
+    ghostPriceElement.innerText = ghostPrice ? ghostPrice : "";
+    // ghostPriceElement.innerText = ghostPrice;
 
     //  Insert Name
     const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName;
+    ghostNameElement.innerText = ghostName ? ghostName + "." : "";
+    // ghostNameElement.innerText = ghostName;
+
+    if (ghostPrice) {
+        // We pulled a real card, set the iamge
+        ghostImageElement.src = ghostImagePrimary;
+    } else {
+        // 404'd, don't overwrte the fail image.
+    }
 }
 
 const setName = window[window.setName];
@@ -770,13 +960,43 @@ function sumTotals() {
             commonSumElement.innerText = "$" + commonSum.toFixed(2);
             commonSum = 0;
 
+            let thisPack = 0;
+
             //  Sum up all prices in array
             myPrices.forEach((num) => {
-                packTotal += num;
+                packsTotal += num;
+                thisPack += num;
             });
-            runningSum.innerText = USDollar.format(packTotal);
+            runningSum.innerText = USDollar.format(packsTotal);
 
-            let netTotal = packTotal - boosterTotalValue;
+            //  Show pack total
+            let thisBooster = document.getElementById("this-booster");
+            // thisBooster.innerText = USDollar.format(thisPack);
+
+            //  Pack commentary
+            let packRatio = thisPack / boosterValue;
+            let packComment = "";
+            if (packRatio <= 0.25) {
+                packComment = "Oh that's awful";
+            } else if (packRatio <= 0.5) {
+                packComment = "That's not good.";
+            } else if (packRatio <= 0.75) {
+                packComment = "That's pretty mid.";
+            } else if (packRatio <= 1) {
+                packComment = "It could be worse.";
+            } else if (packRatio <= 1.25) {
+                packComment = "That's alright";
+            } else if (packRatio <= 1.5) {
+                packComment = "That's actually pretty decent.";
+            } else if (packRatio <= 1.75) {
+                packComment = "That's pretty great!";
+            } else {
+                packComment = "That's incredible!!";
+            }
+
+            // document.getElementById("booster-commentary").innerText = " (" + packComment + ")";
+
+            let netTotal = packsTotal - boosterTotalValue;
             currentMoneyElement.innerText = USDollar.format(netTotal);
             currentMoneyElement.classList.add("px-3");
 
