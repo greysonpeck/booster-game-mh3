@@ -441,7 +441,9 @@ document.addEventListener(
 );
 
 function changeSet() {
-    umamiAnalytics("Loaded set: " + currentSet);
+    // umamiAnalytics("Loaded set: " + currentSet);
+    //  Why is this triggering multiple times?
+    // console.log("I am loading set: " + currentSet);
 
     if (currencyMode === "CAD") {
         boosterValue = CAN_boosterValue;
