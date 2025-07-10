@@ -51,8 +51,6 @@ function pullFIN() {
         const slider = document.querySelector("#sound-slider");
         slider.value = 10;
 
-        // ghostPull_FIN();
-
         commonPull_FIN();
 
         uncommonPull_FIN();

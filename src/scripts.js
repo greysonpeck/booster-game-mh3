@@ -15,11 +15,13 @@ failSwitch = false;
 const ghostLinkHalf = {
     FIN: ghostLinkHalf_FIN,
     FDN: ghostLinkHalf_FDN,
+    EOE: ghostLinkHalf_EOE,
 };
 
 const topOutLink = {
     FIN: topOutLink_FIN,
     FDN: topOutLink_FDN,
+    EOE: topOutLink_EOE,
 };
 
 function umamiAnalytics(umamiEvent) {
@@ -61,6 +63,8 @@ function pullBooster() {
         pullMH3();
     } else if (currentSet === "FIN") {
         pullFIN();
+    } else if (currentSet === "EOE") {
+        pullEOE();
     } else {
         pullFDN();
     }
@@ -347,6 +351,8 @@ document.addEventListener(
                 setDSK();
             } else if (getCookie("currentSet") == "'FIN'") {
                 setFIN();
+            } else if (getCookie("currentSet") == "'EOE'") {
+                setEOE();
             } else {
                 setFDN();
             }
@@ -464,18 +470,22 @@ function changeSet() {
 
     for (button of setButtons) {
         const buttonSet = "set" + button.id.slice(-3);
-        button.classList.add("cursor-pointer");
-        button.addEventListener("click", () => {
-            window[buttonSet]();
-        });
 
         if (currentSet === button.id.slice(-3)) {
             button.classList.add("bg-white/20");
+            button.classList.add("cursor-pointer");
+            button.addEventListener("click", () => {
+                window[buttonSet]();
+            });
         } else if (button.id.slice(-3) === "EOE") {
             // Skip EOE, under construction
         } else {
             // Style non-active sets
             button.classList.remove("bg-white/20");
+            button.classList.add("cursor-pointer");
+            button.addEventListener("click", () => {
+                window[buttonSet]();
+            });
         }
     }
 
@@ -733,17 +743,22 @@ function setGhostData() {
     ghostFoilHolderElement.classList.add("foil-gradient");
     ghostPrice = "For $" + ghostPrice + ", you could have just bought this ";
 
-    if (ghostCard.promo_types.includes("surgefoil") && ghostCard.prices.usd_foil) {
-        ghostFoilElement.innerText = "surge foil ";
-        ghostFoilHolderElement.classList.add("surge-gradient");
-        ghostFoilHolderElement.classList.remove("mana-gradient");
-    } else if (ghostCard.promo_types.includes("manafoil") && ghostCard.prices.usd_foil) {
-        ghostFoilElement.innerText = "mana foil ";
-        ghostFoilHolderElement.classList.add("mana-gradient");
-        ghostFoilHolderElement.classList.remove("surge-gradient");
-    } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
-        ghostFoilElement.innerText = "fracture foil ";
-        ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
+    ghostHasPromoTypes = "promo_types" in ghostCard;
+    if (ghostHasPromoTypes) {
+        if (ghostCard.promo_types.includes("surgefoil") && ghostCard.prices.usd_foil) {
+            ghostFoilElement.innerText = "surge foil ";
+            ghostFoilHolderElement.classList.add("surge-gradient");
+            ghostFoilHolderElement.classList.remove("mana-gradient");
+        } else if (ghostCard.promo_types.includes("manafoil") && ghostCard.prices.usd_foil) {
+            ghostFoilElement.innerText = "mana foil ";
+            ghostFoilHolderElement.classList.add("mana-gradient");
+            ghostFoilHolderElement.classList.remove("surge-gradient");
+        } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
+            ghostFoilElement.innerText = "fracture foil ";
+            ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
+        } else {
+            //not sure
+        }
     } else if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
         ghostFoilElement.innerText = "foil ";
         ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
@@ -883,7 +898,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     ghostImageElement = document.getElementById("ghost-image");
 
     //  Wait for manually Ghost Image to load, then set image.
-    await waitforme(800);
+    await waitforme(2400);
 
     //  Insert Price
     const ghostPriceElement = document.getElementById("ghost-price");
