@@ -718,6 +718,8 @@ function setGhostData() {
         // No error
     }
 
+    console.log("ghost linK: " + ghostLink);
+
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -791,11 +793,11 @@ function setGhostData() {
         ghostTreatment = "retro frame ";
         // } else if (ghostCard.promo_types[0]) {
         //   ghostTreatment = "borderless concept art ";
-    } else if (ghostCard.border_color == "borderless") {
+    } else if (ghostCard.border_color?.includes("borderless")) {
         ghostTreatment = "borderless ";
-    } else if (ghostCard.finishes[0] == "etched") {
+    } else if (ghostCard.finishes?.includes("etched")) {
         ghostTreatment = "etched ";
-    } else if (ghostCard.frame_effects[0] == "showcase") {
+    } else if (ghostCard.frame_effects?.includes("showcase")) {
         ghostTreatment = "showcase ";
     } else {
         ghostTreatment = "";
@@ -898,7 +900,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     ghostImageElement = document.getElementById("ghost-image");
 
     //  Wait for manually Ghost Image to load, then set image.
-    await waitforme(2400);
+    await waitforme(2000);
 
     //  Insert Price
     const ghostPriceElement = document.getElementById("ghost-price");
