@@ -50,7 +50,7 @@ function pullEOE() {
 
         commonPull_EOE();
 
-        uncommonPull_FDN();
+        uncommonPull_EOE();
 
         landCelestialPull_EOE();
 
