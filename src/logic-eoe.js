@@ -112,7 +112,7 @@ async function commonPull_EOE() {
     }
 }
 
-async function uncommonPull_FDN() {
+async function uncommonPull_EOE() {
     // Clear out all uncommon card divs, if they exist
     uncommonSet = document.getElementById("uncommon-set");
 
