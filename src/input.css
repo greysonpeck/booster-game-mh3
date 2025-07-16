@@ -36,11 +36,11 @@ svg {
 }
 
 #top-actions {
-    font-family: "MPlantin", "Raleway", sans-serif;
+    /* font-family: "MPlantin", "Raleway", sans-serif; */
 }
 
 #kofi {
-    font-family: "MPlantin", "Raleway", sans-serif;
+    /* font-family: "MPlantin", "Raleway", sans-serif; */
     color: #ffffffd8;
     background: rgba(46, 42, 60, 0.85);
     background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
