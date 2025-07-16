@@ -393,6 +393,11 @@ input:checked + .slider:before {
     background-size: cover;
 }
 
+.galaxy-gradient {
+    background-image: url("../img/galaxyfoil.png");
+    background-size: cover;
+}
+
 .foil-in-list {
     width: 240px;
     height: 335px;

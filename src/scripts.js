@@ -883,6 +883,29 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
                             ghostCard = data;
                             ghostName = data.name;
                             setGhostData();
+
+                            //  Replace Img Source
+                            ghostImageElement = document.getElementById("ghost-image");
+
+                            //  Wait for manually Ghost Image to load, then set image.
+                            // await waitforme(2000);
+
+                            //  Insert Price
+                            const ghostPriceElement = document.getElementById("ghost-price");
+                            ghostPriceElement.innerText = ghostPrice ? ghostPrice : "";
+                            // ghostPriceElement.innerText = ghostPrice;
+
+                            //  Insert Name
+                            const ghostNameElement = document.getElementById("ghost-name");
+                            ghostNameElement.innerText = ghostName ? ghostName + "." : "";
+                            // ghostNameElement.innerText = ghostName;
+
+                            if (ghostPrice) {
+                                // We pulled a real card, set the iamge
+                                ghostImageElement.src = ghostImagePrimary;
+                            } else {
+                                // 404'd, don't overwrte the fail image.
+                            }
                         }
                     });
             } else {
@@ -895,29 +918,6 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
         .catch((error) => {
             console.error(error);
         });
-
-    //  Replace Img Source
-    ghostImageElement = document.getElementById("ghost-image");
-
-    //  Wait for manually Ghost Image to load, then set image.
-    await waitforme(2000);
-
-    //  Insert Price
-    const ghostPriceElement = document.getElementById("ghost-price");
-    ghostPriceElement.innerText = ghostPrice ? ghostPrice : "";
-    // ghostPriceElement.innerText = ghostPrice;
-
-    //  Insert Name
-    const ghostNameElement = document.getElementById("ghost-name");
-    ghostNameElement.innerText = ghostName ? ghostName + "." : "";
-    // ghostNameElement.innerText = ghostName;
-
-    if (ghostPrice) {
-        // We pulled a real card, set the iamge
-        ghostImageElement.src = ghostImagePrimary;
-    } else {
-        // 404'd, don't overwrte the fail image.
-    }
 }
 
 const setName = window[window.setName];

@@ -4,7 +4,7 @@ const boosterType_EOE = "Collector";
 
 window.setName = "EOE";
 window.EOE = {
-    totalCards: 14,
+    totalCards: 15,
 };
 window.cardInfo = window.cardInfo || {};
 
@@ -30,11 +30,12 @@ function setEOE() {
 
 function makeEOESlots() {
     // makeSlot("foil", "Foil Wildcard", true);
-    makeSlot("landcelestial", "Full-Art Celestial Land", true);
-    makeSlot("raremythic", "Foil Rare/Mythic", true);
-    makeSlot("nfcommander", "Non-foil Commander");
-    makeSlot("nfboosterfun", "Non-foil Booster Fun");
+    makeSlot("boosterfun", "Foil Booster Fun", true);
     makeSlot("landstellar", "Stellar Sights Land", true);
+    makeSlot("nfboosterfun", "Non-foil Booster Fun");
+    makeSlot("nfcommander", "Non-foil Commander");
+    makeSlot("raremythic", "Foil Rare/Mythic", true);
+    makeSlot("landcelestial", "Full-Art Celestial Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 4);
     makeSlot("common", "Foil Commons", true, 5);
 }
@@ -54,13 +55,15 @@ function pullEOE() {
 
         landCelestialPull_EOE();
 
-        rareMythic_EOE();
+        rareMythicPull_EOE();
 
-        nfCommander_EOE();
+        nfCommanderPull_EOE();
+
+        nfBoosterFunPull_EOE();
 
         landStellarPull_EOE();
 
-        nfBoosterFun_EOE();
+        boosterFunPull_EOE();
 
         sumTotals();
     } else {
@@ -155,7 +158,7 @@ async function uncommonPull_EOE() {
     uncommonSum = 0;
 }
 
-async function rareMythic_EOE() {
+async function rareMythicPull_EOE() {
     // Random number between 0 and 100
     rareMythicRoll = getRandomNumber(0, 100);
     var rareMythicLink = "";
@@ -208,7 +211,7 @@ async function rareMythic_EOE() {
     myPrices.push(rareMythicPrice);
 }
 
-async function nfCommander_EOE() {
+async function nfCommanderPull_EOE() {
     // Random number between 0 and 100
     nfCommanderRoll = getRandomNumber(0, 100);
     var nfCommanderLink = "";
@@ -261,7 +264,7 @@ async function nfCommander_EOE() {
     myPrices.push(nfCommanderPrice);
 }
 
-async function nfBoosterFun_EOE() {
+async function nfBoosterFunPull_EOE() {
     // Random number between 0 and 100
     nfBoosterFunRoll = getRandomNumber(0, 100);
     var nfBoosterFunLink = "";
@@ -270,7 +273,7 @@ async function nfBoosterFun_EOE() {
     // nfBoosterFunRoll = 99.1;
 
     if (nfBoosterFunRoll <= 47) {
-        nfBoosterFunType = "Non-foil Extended-art, Rare";
+        nfBoosterFunType = "Extended-art, Rare";
         nfBoosterFunRarity = "47%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar++%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
     } else if (nfBoosterFunRoll <= 52) {
@@ -278,27 +281,27 @@ async function nfBoosterFun_EOE() {
         nfBoosterFunRarity = "5%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
     } else if (nfBoosterFunRoll <= 59) {
-        nfBoosterFunType = "Rare Borderless Viewport Land";
+        nfBoosterFunType = "Borderless Viewport Land, Rare";
         nfBoosterFunRarity = "7%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar++%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
     } else if (nfBoosterFunRoll <= 63) {
-        nfBoosterFunType = "Mythic Borderless Viewport Land";
+        nfBoosterFunType = "Borderless Viewport Land, Mythic";
         nfBoosterFunRarity = "4%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
     } else if (nfBoosterFunRoll <= 80) {
-        nfBoosterFunType = "Rare Borderless Triumphant";
+        nfBoosterFunType = "Borderless Triumphant, Rare";
         nfBoosterFunRarity = "17%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D287+AND+CN<%3D302%29&unique=cards";
     } else if (nfBoosterFunRoll <= 83) {
-        nfBoosterFunType = "Mythic Borderless Triumphant";
+        nfBoosterFunType = "Borderless Triumphant, Mythic";
         nfBoosterFunRarity = "3%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D287+AND+CN<%3D302%29&unique=cards";
     } else if (nfBoosterFunRoll <= 98) {
-        nfBoosterFunType = "Rare Borderless Surreal Space";
+        nfBoosterFunType = "Borderless Surreal Space, Rare";
         nfBoosterFunRarity = "15%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D303+AND+CN<%3D316%29&unique=cards";
     } else {
-        nfBoosterFunType = "Mythic Borderless Surreal Space";
+        nfBoosterFunType = "Borderless Surreal Space, Mythic";
         nfBoosterFunRarity = "2%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D303+AND+CN<%3D316%29&unique=cards";
     }
@@ -394,7 +397,7 @@ async function landStellarPull_EOE() {
     var landStellarLink = "";
 
     // Override roll
-    // landStellarRoll = 99.1;
+    // landStellarRoll = 100;
 
     if (landStellarRoll <= 36) {
         // Foil full-art land
@@ -408,7 +411,7 @@ async function landStellarPull_EOE() {
     } else if (landStellarRoll <= 63) {
         landStellarLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Ar+%28CN>%3D46+AND+CN<%3D90%29&unique=cards";
         landStellarType = "Poster Stellar Sights Land, Rare";
-        landStellarRarity = "18%%";
+        landStellarRarity = "18";
     } else if (landStellarRoll <= 67) {
         landStellarLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Am+%28CN>%3D46+AND+CN<%3D90%29&unique=cards";
         landStellarType = "Poster Stellar Sights Land, Mythic";
@@ -454,19 +457,17 @@ async function landStellarPull_EOE() {
     landStellarName = card.name;
     window.cardInfo.landstellar = [landStellarName, landStellarType, landStellarRarity];
 
-    var landStellarImageElement = document.getElementById("landstellar-image").previousElementSibling;
+    var landStellarImageElement = document.getElementById("landstellar-image");
 
     // Add foil effect if foil
-
-    //  Add foil effect
     if (landStellarType.includes("Galaxy Foil")) {
         landStellarImageElement.previousElementSibling.classList.add("galaxy-gradient");
     } else if (landStellarType.includes("(Foil)")) {
         landStellarImageElement.previousElementSibling.classList.remove("galaxy-gradient");
-        landStellarImageElement.classList.add("foil-gradient");
+        landStellarImageElement.previousElementSibling.classList.add("foil-gradient");
     } else {
-        landStellarImageElement.classList.remove("galaxy-gradient");
-        landStellarImageElement.classList.remove("foil-gradient");
+        landStellarImageElement.previousElementSibling.classList.remove("galaxy-gradient");
+        landStellarImageElement.previousElementSibling.classList.remove("foil-gradient");
     }
 
     // Set price, foil price if foil
@@ -494,4 +495,113 @@ async function landStellarPull_EOE() {
 
     //  Push price to price array
     myPrices.push(landStellarPrice);
+}
+
+async function boosterFunPull_EOE() {
+    // Random number between 0 and 100
+    boosterFunRoll = getRandomNumber(0, 99.5);
+    var boosterFunLink = "";
+
+    // Override roll
+    // boosterFunRoll = 100;
+
+    if (boosterFunRoll <= 38) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
+        boosterFunType = "Extended-art, Rare (Foil)";
+        boosterFunRarity = "38%";
+    } else if (boosterFunRoll <= 42) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
+        boosterFunType = "Extended-art, Mythic (Foil)";
+        boosterFunRarity = "4%";
+    } else if (boosterFunRoll <= 48) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
+        boosterFunType = "Borderless Viewport Land, Rare (Foil)";
+        boosterFunRarity = "6%";
+    } else if (boosterFunRoll <= 51) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
+        boosterFunType = "Borderless Viewport Land, Mythic (Foil)";
+        boosterFunRarity = "3%";
+    } else if (boosterFunRoll <= 64) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D287+AND+CN<%3D302%29&unique=cards";
+        boosterFunType = "Borderless Triumphant, Rare (Foil)";
+        boosterFunRarity = "13%";
+    } else if (boosterFunRoll <= 66) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D287+AND+CN<%3D302%29&unique=cards";
+        boosterFunType = "Borderless Triumphant, Mythic (Foil)";
+        boosterFunRarity = "2%";
+    } else if (boosterFunRoll <= 78) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D303AND+CN<%3D316%29&unique=cards";
+        boosterFunType = "Borderless Surreal Space, Rare (Foil)";
+        boosterFunRarity = "12%";
+    } else if (boosterFunRoll <= 80) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D303AND+CN<%3D316%29&unique=cards";
+        boosterFunType = "Borderless Surreal Space, Mythic (Foil)";
+        boosterFunRarity = "2%";
+    } else if (boosterFunRoll <= 86) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2025-08-01&unique=cards";
+        boosterFunType = "Special Guests (Foil)";
+        boosterFunRarity = "6%";
+    } else if (boosterFunRoll <= 95) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+%28CN>%3D357+AND+CN<%3D365%29&unique=cards";
+        boosterFunType = "Japan Showcase (Foil)";
+        boosterFunRarity = "9%";
+    } else if (boosterFunRoll <= 96) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+%28CN>%3D383+AND+CN<%3D392%29&unique=cards";
+        boosterFunType = "Japan Showcase (Fracture Foil)";
+        boosterFunRarity = "1%";
+    } else if (boosterFunRoll <= 98) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
+        boosterFunType = "Borderless Viewport Land, Rare (Galaxy Foil)";
+        boosterFunRarity = "2%";
+    } else if (boosterFunRoll <= 99) {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
+        boosterFunType = "Borderless Viewport Land, Mythic (Galaxy Foil)";
+        boosterFunRarity = "1%";
+    } else {
+        boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
+        boosterFunType = "Borderless Viewport Land, Mythic (Galaxy Foil)";
+        boosterFunRarity = "< 1%";
+    }
+
+    let response = await fetch(boosterFunLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    boosterFunName = card.name;
+    window.cardInfo.boosterfun = [boosterFunName, boosterFunType, boosterFunRarity];
+
+    var boosterFunImageElement = document.getElementById("boosterfun-image");
+
+    // Add foil effect if foil
+    if (boosterFunType.includes("Galaxy Foil")) {
+        boosterFunImageElement.previousElementSibling.classList.add("galaxy-gradient");
+    } else if (landStellarType.includes("(Foil)")) {
+        boosterFunImageElement.previousElementSibling.classList.remove("galaxy-gradient");
+        boosterFunImageElement.previousElementSibling.classList.add("foil-gradient");
+    } else {
+        boosterFunImageElement.previousElementSibling.classList.remove("galaxy-gradient");
+        boosterFunImageElement.previousElementSibling.classList.remove("foil-gradient");
+    }
+
+    // Set price, foil price if foil
+    boosterFunPrice = Number(card.prices.usd_foil * priceCut);
+
+    //   Replace Img Source
+    boosterFunImagePrimary = card.image_uris.normal;
+    document.getElementById("boosterfun-image").src = boosterFunImagePrimary;
+
+    //  When Image has loaded...Flip and wait accordingly
+    const boosterFunStack = boosterFunImageElement.closest(".both-cards");
+    boosterFunImageElement.addEventListener("load", cardImageLoaded(boosterFunImageElement, boosterFunImagePrimary, boosterFunStack));
+
+    //  Insert Price
+    const boosterFunPriceElement = document.getElementById("boosterfun-price");
+    boosterFunPriceElement.innerText = USDollar.format(boosterFunPrice);
+
+    //  Insert Roll
+    const boosterFunRollElement = document.getElementById("boosterfun-roll");
+    boosterFunRollElement.innerText = "N/A";
+
+    //  Push price to price array
+    myPrices.push(boosterFunPrice);
 }
