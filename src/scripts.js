@@ -756,10 +756,14 @@ function setGhostData() {
             ghostFoilHolderElement.classList.add("mana-gradient");
             ghostFoilHolderElement.classList.remove("surge-gradient");
         } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
+            console.log("caught fracture");
             ghostFoilElement.innerText = "fracture foil ";
             ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
         } else {
-            //not sure
+            //has promo types, but not the ones we're looking for....
+            console.log("has promo types, not caught");
+            ghostFoilElement.innerText = "";
+            ghostFoilHolderElement.classList.remove("foil-gradient");
         }
     } else if (ghostCard.prices.usd_foil && ghostCard.prices.usd == null) {
         ghostFoilElement.innerText = "foil ";
@@ -779,7 +783,6 @@ function setGhostData() {
         ghostTexturedElement.classList.add("hidden");
         ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
         ghostFoilHolderElement.classList.remove("foil-gradient");
-
         //  Otherwise, also nothing.
     } else {
         console.log("The single is super regular and not in range.");
