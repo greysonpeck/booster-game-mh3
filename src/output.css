@@ -264,6 +264,9 @@
   .right-0 {
     right: calc(var(--spacing) * 0);
   }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
+  }
   .-bottom-48 {
     bottom: calc(var(--spacing) * -48);
   }
@@ -327,6 +330,9 @@
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
   }
+  .mr-1 {
+    margin-right: calc(var(--spacing) * 1);
+  }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
@@ -353,6 +359,9 @@
   }
   .-ml-\[120px\] {
     margin-left: calc(120px * -1);
+  }
+  .ml-0\.5 {
+    margin-left: calc(var(--spacing) * 0.5);
   }
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
@@ -390,8 +399,8 @@
   .w-0 {
     width: calc(var(--spacing) * 0);
   }
-  .w-10 {
-    width: calc(var(--spacing) * 10);
+  .w-6 {
+    width: calc(var(--spacing) * 6);
   }
   .w-32 {
     width: calc(var(--spacing) * 32);
@@ -581,9 +590,6 @@
   }
   .pr-3 {
     padding-right: calc(var(--spacing) * 3);
-  }
-  .pb-0\.5 {
-    padding-bottom: calc(var(--spacing) * 0.5);
   }
   .pb-1\.5 {
     padding-bottom: calc(var(--spacing) * 1.5);
@@ -842,6 +848,12 @@
     --spacing: 0.25rem;
   }
 }
+@font-face {
+  font-family: "MPlantin";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./MPlantin\ Regular.ttf") format("truetype");
+}
 body {
   background-image: url("img/MH3_bg.png");
   background-attachment: fixed;
@@ -860,7 +872,11 @@ svg {
   background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
   backdrop-filter: blur(8px);
 }
+#top-actions {
+  font-family: "MPlantin", "Raleway", sans-serif;
+}
 #kofi {
+  font-family: "MPlantin", "Raleway", sans-serif;
   color: #ffffffd8;
   background: rgba(46, 42, 60, 0.85);
   background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);

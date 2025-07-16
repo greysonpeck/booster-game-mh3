@@ -226,7 +226,8 @@ document.addEventListener(
 
         // Hover kofi link, show single
         kofi.addEventListener("mouseover", function (e) {
-            kofiSingle.classList.remove("hidden");
+            // Hiding the hover for now
+            // kofiSingle.classList.remove("hidden");
         });
         kofi.addEventListener("mouseout", function (e) {
             kofiSingle.classList.add("hidden");
