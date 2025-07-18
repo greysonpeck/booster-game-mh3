@@ -11,8 +11,12 @@ window.cardInfo = window.cardInfo || {};
 function setFDN() {
     currentSet = "FDN";
     document.cookie = "currentSet = 'FDN'";
-    boosterValue = 40;
-    CAN_boosterValue = 60;
+
+    boosterValue = getCookie("boosterValue_FDN") ? getCookie("boosterValue_FDN") : 40;
+    CAN_boosterValue = getCookie("boosterValue_CAN_FDN") ? getCookie("boosterValue_CAN_FDN") : 60;
+    document.cookie = "boosterValue_FDN = " + boosterValue;
+    document.cookie = "boosterValue_CAN_FDN = " + CAN_boosterValue;
+
     msrp = 24.99;
 
     priceCutActive = true;

@@ -11,8 +11,12 @@ window.cardInfo = window.cardInfo || {};
 function setFIN() {
     currentSet = "FIN";
     document.cookie = "currentSet = 'FIN'";
-    boosterValue = 100;
-    CAN_boosterValue = 160;
+
+    boosterValue = getCookie("boosterValue_FIN") ? getCookie("boosterValue_FIN") : 100;
+    CAN_boosterValue = getCookie("boosterValue_CAN_FIN") ? getCookie("boosterValue_CAN_FIN") : 160;
+    document.cookie = "boosterValue_FIN = " + boosterValue;
+    document.cookie = "boosterValue_CAN_FIN = " + CAN_boosterValue;
+
     msrp = 37.99;
 
     priceCutActive = true;

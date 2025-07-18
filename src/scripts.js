@@ -448,10 +448,10 @@ document.addEventListener(
 function changeSet() {
     //  Why is this triggering multiple times?
     umamiAnalytics("Select set: " + currentSet);
+    boosterTotalValue = 0;
 
     if (currencyMode === "CAD") {
         boosterValue = CAN_boosterValue;
-        document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
     } else {
         // It's USD...
     }
@@ -719,8 +719,6 @@ function setGhostData() {
         // No error
     }
 
-    console.log("ghost linK: " + ghostLink);
-
     if (ghostName.includes(",")) {
         ghostName = ghostName.substring(0, ghostName.indexOf(","));
     } else {
@@ -757,12 +755,10 @@ function setGhostData() {
             ghostFoilHolderElement.classList.add("mana-gradient");
             ghostFoilHolderElement.classList.remove("surge-gradient");
         } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
-            console.log("caught fracture");
             ghostFoilElement.innerText = "fracture foil ";
             ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
         } else {
             //has promo types, but not the ones we're looking for....
-            console.log("has promo types, not caught");
             ghostFoilElement.innerText = "";
             ghostFoilHolderElement.classList.remove("foil-gradient");
         }
@@ -955,7 +951,7 @@ function sumTotals() {
     cardsRemaining = setName.totalCards;
     cardsLoadingNumber.innerText = cardsRemaining;
 
-    boosterTotalValue = boostersBought * boosterValue;
+    boosterTotalValue = Number(boosterTotalValue) + Number(boosterValue);
     const boostersBoughtElement = document.getElementById("boosters-bought");
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 

@@ -58,6 +58,7 @@
     --color-rose-500: oklch(64.5% 0.246 16.439);
     --color-slate-700: oklch(37.2% 0.044 257.287);
     --color-slate-950: oklch(12.9% 0.042 264.695);
+    --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-white: #fff;
@@ -255,11 +256,17 @@
   .top-2\/5 {
     top: calc(2/5 * 100%);
   }
+  .top-6 {
+    top: calc(var(--spacing) * 6);
+  }
   .top-8 {
     top: calc(var(--spacing) * 8);
   }
   .top-12 {
     top: calc(var(--spacing) * 12);
+  }
+  .-right-5 {
+    right: calc(var(--spacing) * -5);
   }
   .right-0 {
     right: calc(var(--spacing) * 0);
@@ -330,6 +337,9 @@
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
   }
+  .-mr-5 {
+    margin-right: calc(var(--spacing) * -5);
+  }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
@@ -378,6 +388,9 @@
   .inline {
     display: inline;
   }
+  .h-10 {
+    height: calc(var(--spacing) * 10);
+  }
   .h-\[335px\] {
     height: 335px;
   }
@@ -399,6 +412,9 @@
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
+  }
   .w-32 {
     width: calc(var(--spacing) * 32);
   }
@@ -407,6 +423,9 @@
   }
   .w-\[240px\] {
     width: 240px;
+  }
+  .w-\[250px\] {
+    width: 250px;
   }
   .w-\[255px\] {
     width: 255px;
@@ -480,8 +499,14 @@
   .items-end {
     align-items: flex-end;
   }
+  .justify-between {
+    justify-content: space-between;
+  }
   .justify-center {
     justify-content: center;
+  }
+  .gap-1 {
+    gap: calc(var(--spacing) * 1);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
@@ -506,6 +531,12 @@
   }
   .bg-emerald-800 {
     background-color: var(--color-emerald-800);
+  }
+  .bg-gray-50\/10 {
+    background-color: color-mix(in srgb, oklch(98.5% 0.002 247.839) 10%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-gray-50) 10%, transparent);
+    }
   }
   .bg-gray-100\/20 {
     background-color: color-mix(in srgb, oklch(96.7% 0.003 264.542) 20%, transparent);
@@ -545,6 +576,12 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-white) 20%, transparent);
     }
+  }
+  .p-2 {
+    padding: calc(var(--spacing) * 2);
+  }
+  .p-4 {
+    padding: calc(var(--spacing) * 4);
   }
   .p-6 {
     padding: calc(var(--spacing) * 6);
@@ -590,6 +627,9 @@
   }
   .pr-3 {
     padding-right: calc(var(--spacing) * 3);
+  }
+  .pr-4 {
+    padding-right: calc(var(--spacing) * 4);
   }
   .pb-1\.5 {
     padding-bottom: calc(var(--spacing) * 1.5);
@@ -645,6 +685,10 @@
   }
   .text-\[14px\] {
     font-size: 14px;
+  }
+  .leading-0 {
+    --tw-leading: calc(var(--spacing) * 0);
+    line-height: calc(var(--spacing) * 0);
   }
   .leading-snug {
     --tw-leading: var(--leading-snug);
@@ -702,6 +746,9 @@
   .opacity-40 {
     opacity: 40%;
   }
+  .opacity-70 {
+    opacity: 70%;
+  }
   .opacity-75 {
     opacity: 75%;
   }
@@ -752,6 +799,16 @@
       }
     }
   }
+  .hover\:bg-gray-50\/20 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: color-mix(in srgb, oklch(98.5% 0.002 247.839) 20%, transparent);
+        @supports (color: color-mix(in lab, red, red)) {
+          background-color: color-mix(in oklab, var(--color-gray-50) 20%, transparent);
+        }
+      }
+    }
+  }
   .hover\:bg-gray-100\/30 {
     &:hover {
       @media (hover: hover) {
@@ -776,6 +833,13 @@
     &:hover {
       @media (hover: hover) {
         text-decoration-line: underline;
+      }
+    }
+  }
+  .hover\:opacity-0 {
+    &:hover {
+      @media (hover: hover) {
+        opacity: 0%;
       }
     }
   }
@@ -866,17 +930,17 @@ body {
 svg {
   pointer-events: none;
 }
+.jbs-background {
+  background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
+  backdrop-filter: blur(8px);
+}
 #about-modal, #feedback-modal {
   color: #ffffffd8;
   background: rgba(70, 70, 70, 0.85);
-  background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
-  backdrop-filter: blur(8px);
 }
 #kofi {
   color: #ffffffd8;
   background: rgba(46, 42, 60, 0.85);
-  background: linear-gradient(142deg, rgba(90, 83, 101, 0.38) 0%, rgba(44, 31, 47, 0.85) 100%);
-  backdrop-filter: blur(8px);
 }
 #set-list {
   background: rgba(70, 70, 70, 0.85);
@@ -935,6 +999,14 @@ svg {
   backdrop-filter: blur(3px);
   transition-property: opacity;
   transition-duration: 500ms;
+}
+.light-shade {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  left: 0;
+  top: 0;
 }
 h2, #booster-type {
   font-family: "Oswald", sans-serif;
