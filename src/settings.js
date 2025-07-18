@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click booster price, get modal
     editPrice.addEventListener("click", function () {
+        umamiAnalytics("Price change open");
         modalPrice.innerText = USDollar.format(boosterValue);
 
         priceModal.classList.remove("hidden");
