@@ -53,10 +53,12 @@ svg {
     background-color: #ffffff22;
 }
 
-.set-button:last-child:hover {
+/* FOR UNDER CONSTRUCTION SETS */
+
+/* .set-button:last-child:hover {
     background-color: transparent;
     cursor: default;
-}
+} */
 
 #about-modal a {
     /* color: rgba(0, 102, 255, 0.845); */
@@ -75,8 +77,8 @@ svg {
     text-align: right;
 }
 
-.price-cut {
-    background-color: rgba(255, 212, 212, 0.79);
+#alert-message {
+    background-color: rgba(255, 212, 212, 0.7);
 }
 
 #single-holder {
@@ -129,14 +131,20 @@ svg {
 }
 
 h2,
-#booster-type {
+#booster-types {
     font-family: "Oswald", sans-serif;
 }
 
-/* #booster-type {
+#collector-booster,
+#play-booster {
+    font-family: "Oswald", sans-serif, Arial;
+}
+
+.booster-active {
+    /* outline: 2px solid red; */
     background: #38cfdd;
     background: linear-gradient(90deg, rgba(56, 207, 221, 0.38) 17%, rgba(255, 255, 255, 0.42) 100%);
-} */
+}
 
 .toggle {
     display: inline-block;
@@ -569,6 +577,16 @@ input:checked + .slider:before {
     height: 486px;
 }
 
+.h-cards-6 {
+    margin-top: -2px;
+    height: 524px;
+}
+
+.h-cards-7 {
+    margin-top: -2px;
+    height: 562px;
+}
+
 /* Mobile sizing stuff  */
 @media (max-width: 480px) {
     .both-cards,
@@ -645,7 +663,17 @@ input:checked + .slider:before {
 
     .h-cards-5 {
         margin-top: -2px;
-        height: 569px;
+        height: 570px;
+    }
+
+    .h-cards-6 {
+        margin-top: -2px;
+        height: 608px;
+    }
+
+    .h-cards-7 {
+        margin-top: -2px;
+        height: 646px;
     }
 }
 

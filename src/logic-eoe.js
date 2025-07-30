@@ -5,25 +5,59 @@ const boosterType_EOE = "Collector";
 window.setName = "EOE";
 window.EOE = {
     totalCards: 15,
+    totalCards_PLAY: 14,
 };
 window.cardInfo = window.cardInfo || {};
 
+function setEOE_Money() {
+    if (getCookie("currentBoosterType") === "PLAY") {
+        document.cookie = "currentBoosterType = PLAY";
+        window.EOE = {
+            totalCards: 14,
+        };
+        boosterValue = getCookie("boosterValue_EOE_PLAY") ? getCookie("boosterValue_EOE_PLAY") : 6;
+        CAD_boosterValue = getCookie("boosterValue_CAD_EOE_PLAY") ? getCookie("boosterValue_CAD_EOE_PLAY") : 8;
+        msrp = 5.49;
+
+        console.log("should be making EOE Play slots");
+        makeEOEPlaySlots();
+
+        document.cookie = "boosterValue_EOE_PLAY = " + boosterValue;
+        document.cookie = "boosterValue_CAD_EOE_PLAY = " + CAD_boosterValue;
+    } else {
+        document.cookie = "currentBoosterType = COLLECTOR";
+        window.EOE = {
+            totalCards: 15,
+        };
+        boosterValue = getCookie("boosterValue_EOE") ? getCookie("boosterValue_EOE") : 40;
+        CAD_boosterValue = getCookie("boosterValue_CAD_EOE") ? getCookie("boosterValue_CAD_EOE") : 55;
+        msrp = 24.99;
+
+        console.log("should be making EOE Collector slots");
+        makeEOESlots();
+
+        document.cookie = "boosterValue_EOE = " + boosterValue;
+        document.cookie = "boosterValue_CAD_EOE = " + CAD_boosterValue;
+    }
+}
+
 function setEOE() {
     currentSet = "EOE";
-    document.cookie = "currentSet = 'EOE'";
-    boosterValue = 40;
-    CAN_boosterValue = 60;
-    msrp = 24.99;
+    document.cookie = "currentSet = EOE";
+    window.boosterType = "both";
+
+    boosterCheck("both");
 
     priceCutActive = true;
     priceCut = 1;
 
-    document.getElementById("set-header").innerText = "UNDER CONSTRUCTION";
-    document.getElementById("booster-type").innerText = boosterType_EOE + " Booster";
+    document.getElementById("set-header").innerText = "EDGE OF ETERNITIES";
 
     document.body.style.backgroundImage = "url(img/EOE_bg_dark.jpg)";
+
     clearSlots();
-    makeEOESlots();
+    setEOE_Money();
+
     clearMoney();
     changeSet();
 }
@@ -34,10 +68,19 @@ function makeEOESlots() {
     makeSlot("landstellar", "Stellar Sights Land", true);
     makeSlot("nfboosterfun", "Non-foil Booster Fun");
     makeSlot("nfcommander", "Non-foil Commander");
-    makeSlot("raremythic", "Foil Rare/Mythic", true);
+    makeSlot("raremythic", "Foil Rare or Mythic", true);
     makeSlot("landcelestial", "Full-Art Celestial Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 4);
     makeSlot("common", "Foil Commons", true, 5);
+}
+
+function makeEOEPlaySlots() {
+    makeSlot("foilwildcard", "Foil Wildcard", true);
+    makeSlot("raremythic", "Rare or Mythic");
+    makeSlot("wildcard", "Wildcard");
+    makeSlot("basicland", "Basic Land", true);
+    makeSlot("uncommon", "Uncommons", false, 3);
+    makeSlot("common", "Commons", false, 7);
 }
 
 function pullEOE() {
@@ -71,12 +114,33 @@ function pullEOE() {
     }
 }
 
+function pullEOE_Play() {
+    // Prevent slider from triggering pulls multiple times
+    if (activeCheck == false) {
+        activeCheck = true;
+
+        // Reset the slider
+        const slider = document.querySelector("#sound-slider");
+        slider.value = 10;
+
+        commonPull_EOEPlay();
+        uncommonPull_EOEPlay();
+        basicLandPull_EOEPlay();
+        wildcardPull_EOEPlay();
+        rareMythicPull_EOEPlay();
+        foilWildcardPull_EOEPlay();
+
+        sumTotals();
+    } else {
+        console.log("already working");
+    }
+}
+
 async function commonPull_EOE() {
     //  Get card from Scryfall
     for (i = 1; i <= 5; i++) {
         // set:fdn rarity:c (cn<=253 or cn=262)
         commonType = "Main Set Common";
-        commonRarity = "87%";
         commonLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ac+-type%3Abasic";
 
         let response = await fetch(commonLink);
@@ -97,8 +161,6 @@ async function commonPull_EOE() {
         //  When card has loaded...Flip and wait accordingly
         const commonStack = document.getElementById("common-image-" + i).parentElement;
         commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
-
-        var commonPrice = convertCurrency(commonCard.prices.usd_foil * priceCut);
 
         //  Create Common Sum Element
         commonSum = commonSum + commonPrice;
@@ -365,8 +427,11 @@ async function landCelestialPull_EOE() {
 
     var landCelestialImageElement = document.getElementById("landcelestial-image").previousElementSibling;
 
-    // Add foil effect if foil
-    landCelestialImageElement.classList.add("foil-gradient");
+    if (landCelestialType.includes("Galaxy Foil")) {
+        landCelestialImageElement.classList.add("galaxy-gradient");
+    } else {
+        landCelestialImageElement.classList.remove("galaxy-gradient");
+    }
 
     // Set price, foil price if foil
     landCelestialPrice = Number(card.prices.usd_foil * priceCut);
@@ -397,7 +462,7 @@ async function landStellarPull_EOE() {
     var landStellarLink = "";
 
     // Override roll
-    // landStellarRoll = 100;
+    // landStellarRoll = 97;
 
     if (landStellarRoll <= 36) {
         // Foil full-art land
@@ -461,17 +526,16 @@ async function landStellarPull_EOE() {
 
     // Add foil effect if foil
     if (landStellarType.includes("Galaxy Foil")) {
-        landStellarImageElement.previousElementSibling.classList.add("galaxy-gradient");
+        landStellarImageElement.previousElementSibling.classList.add("galaxy-gradient", "foil-gradient");
     } else if (landStellarType.includes("(Foil)")) {
         landStellarImageElement.previousElementSibling.classList.remove("galaxy-gradient");
         landStellarImageElement.previousElementSibling.classList.add("foil-gradient");
     } else {
-        landStellarImageElement.previousElementSibling.classList.remove("galaxy-gradient");
-        landStellarImageElement.previousElementSibling.classList.remove("foil-gradient");
+        landStellarImageElement.previousElementSibling.classList.remove("galaxy-gradient", "foil-gradient");
     }
 
     // Set price, foil price if foil
-    if (!landStellarType.includes("(Foil)")) {
+    if (!landStellarType.includes("Foil")) {
         landStellarPrice = Number(card.prices.usd * priceCut);
     } else {
         landStellarPrice = Number(card.prices.usd_foil * priceCut);
@@ -503,7 +567,7 @@ async function boosterFunPull_EOE() {
     var boosterFunLink = "";
 
     // Override roll
-    // boosterFunRoll = 100;
+    // boosterFunRoll = 96;
 
     if (boosterFunRoll <= 38) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
@@ -575,7 +639,7 @@ async function boosterFunPull_EOE() {
     // Add foil effect if foil
     if (boosterFunType.includes("Galaxy Foil")) {
         boosterFunImageElement.previousElementSibling.classList.add("galaxy-gradient");
-    } else if (landStellarType.includes("(Foil)")) {
+    } else if (boosterFunType.includes("(Foil)")) {
         boosterFunImageElement.previousElementSibling.classList.remove("galaxy-gradient");
         boosterFunImageElement.previousElementSibling.classList.add("foil-gradient");
     } else {
@@ -587,7 +651,11 @@ async function boosterFunPull_EOE() {
     boosterFunPrice = Number(card.prices.usd_foil * priceCut);
 
     //   Replace Img Source
-    boosterFunImagePrimary = card.image_uris.normal;
+    if (boosterFunType.includes("Japan Showcase") && getRandomInt(1, 3) === 1) {
+        boosterFunImagePrimary = "img/EOE_JAPAN/EOE_" + card.collector_number + ".png";
+    } else {
+        boosterFunImagePrimary = card.image_uris.normal;
+    }
     document.getElementById("boosterfun-image").src = boosterFunImagePrimary;
 
     //  When Image has loaded...Flip and wait accordingly
@@ -604,4 +672,399 @@ async function boosterFunPull_EOE() {
 
     //  Push price to price array
     myPrices.push(boosterFunPrice);
+}
+
+// ...
+// Play Booster functions!
+// ...
+
+async function commonPull_EOEPlay() {
+    commonSPGRoll = getRandomNumber(0, 100);
+    // commonSPGRoll = 0.41;
+
+    //  Get card from Scryfall
+    for (i = 1; i <= 7; i++) {
+        // set:fdn rarity:c (cn<=253 or cn=262)
+        commonLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ac+-type%3Abasic";
+
+        // If Special Guest hits...
+        if (i === 7 && commonSPGRoll <= 1.8) {
+            commonLink = "https://api.scryfall.com/cards/random?q=set%3Aspg+date%3A2025-08-01";
+        }
+
+        let response = await fetch(commonLink);
+        let commonCard = await response.json();
+
+        window.cardInfo.common = ["6-7 Main-set Commons", "1 of 10 non-foil Special Guests cards will replace a common 1.8% of the time."];
+
+        commonName = commonCard.name;
+        commonPrice = convertCurrency(commonCard.prices.usd * priceCut);
+
+        //  Set img source
+        commonImage = commonCard.image_uris.normal;
+
+        var commonImageId = "common-image-" + i;
+        commonImageElement = document.getElementById(commonImageId);
+        commonImageElement.src = commonImage;
+
+        //  When card has loaded...Flip and wait accordingly
+        const commonStack = document.getElementById("common-image-" + i).parentElement;
+        commonImageElement.addEventListener("load", cardImageLoaded(commonImageElement, commonImage, commonStack));
+
+        //  Create Common Sum Element
+        commonSum = commonSum + commonPrice;
+
+        //  Push price to price array
+        myPrices.push(commonPrice);
+
+        const commonSumElement = document.getElementById("common-sum");
+        commonSumElement.innerText = commonSum;
+
+        // Set Sum on page, clear value.
+        commonSumElement.innerText = "$" + commonSum.toFixed(2);
+        // commonSum = 0;
+    }
+}
+
+async function uncommonPull_EOEPlay() {
+    // Clear out all uncommon card divs, if they exist
+    uncommonSet = document.getElementById("uncommon-set");
+
+    //  Get card from Scryfall
+    for (j = 1; j <= 3; j++) {
+        uncommonLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Au";
+
+        // set:fdn rarity:u (is:booster OR border:borderless)
+        let response = await fetch(uncommonLink);
+        let uncommonCard = await response.json();
+        uncommonName = uncommonCard.name;
+
+        //  Replace Img Source, check for DFC
+        uncommonImage = uncommonCard.image_uris.normal;
+
+        var uncommonImageId = "uncommon-image-" + j;
+        uncommonImageElement = document.getElementById(uncommonImageId);
+        uncommonImageElement.src = uncommonImage;
+
+        //  When card has loaded...Flip and wait accordingly
+        const uncommonStack = document.getElementById("uncommon-image-" + j).parentElement;
+        uncommonImageElement.addEventListener("load", cardImageLoaded(uncommonImageElement, uncommonImage, uncommonStack));
+
+        var uncommonPrice = convertCurrency(uncommonCard.prices.usd * priceCut);
+
+        //  Create Uncommon Sum Element
+        uncommonSum = uncommonSum + uncommonPrice;
+
+        //  Push price to price array
+        myPrices.push(uncommonPrice);
+    }
+
+    window.cardInfo.uncommon = ["3 Main-set Uncommons", "Appears 100% of the time."];
+
+    const uncommonSumElement = document.getElementById("uncommon-sum");
+    uncommonSumElement.innerText = uncommonSum;
+
+    // Set Sum on page, clear value.
+    uncommonSumElement.innerText = "$" + uncommonSum.toFixed(2);
+    uncommonSum = 0;
+}
+
+async function basicLandPull_EOEPlay() {
+    // Random number between 0 and 100
+    basicLandRoll = getRandomNumber(35, 100);
+    var basicLandLink = "";
+
+    // Override roll
+    // basiclandRoll = 99.1;
+
+    if (basicLandRoll <= 64) {
+        // Foil full-art land
+        basicLandLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+type%3Abasic+unique%3Aart+-is%3Afullart&unique=cards";
+        basicLandType = "Default frame Basic Land";
+        basicLandRarity = "64%";
+    } else if (basicLandRoll <= 80) {
+        basicLandLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+type%3Abasic+unique%3Aart+-is%3Afullart&unique=cards";
+        basicLandType = "Default frame Basic Land (Foil)";
+        basicLandRarity = "16%";
+    } else if (basicLandRoll <= 96) {
+        basicLandLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+type%3Abasic+is%3Afullart";
+        basicLandType = "Full-art Celestial Basic Land";
+        basicLandRarity = "16%";
+    } else {
+        basicLandLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+type%3Abasic+is%3Afullart";
+        basicLandType = "Full-art Celestial Basic Land (Foil)";
+        basicLandRarity = "4%";
+    }
+
+    let response = await fetch(basicLandLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    basicLandName = card.name;
+    window.cardInfo.basicland = [basicLandName, basicLandType, basicLandRarity];
+
+    var basicLandImageElement = document.getElementById("basicland-image").previousElementSibling;
+
+    if (basicLandType.includes("Foil")) {
+        // Add foil effect if foil
+        basicLandImageElement.classList.add("foil-gradient");
+        // Set price, foil price if foil
+        basicLandPrice = Number(card.prices.usd_foil * priceCut);
+    } else {
+        // Add foil effect if foil
+        basicLandImageElement.classList.remove("foil-gradient");
+        // Set price, foil price if foil
+        basicLandPrice = Number(card.prices.usd * priceCut);
+    }
+
+    //   Replace Img Source
+    basicLandImagePrimary = card.image_uris.normal;
+    document.getElementById("basicland-image").src = basicLandImagePrimary;
+
+    //  When Land/Common Image has loaded...Flip and wait accordingly
+    const basicLandStack = basicLandImageElement.closest(".both-cards");
+    basicLandImageElement.addEventListener("load", cardImageLoaded(basicLandImageElement, basicLandImagePrimary, basicLandStack));
+
+    //  Insert Price
+    const basicLandPriceElement = document.getElementById("basicland-price");
+    basicLandPriceElement.innerText = USDollar.format(basicLandPrice);
+
+    //  Insert Roll
+    const basicLandRollElement = document.getElementById("basicland-roll");
+    basicLandRollElement.innerText = "N/A";
+
+    //  Push price to price array
+    myPrices.push(basicLandPrice);
+}
+
+async function rareMythicPull_EOEPlay() {
+    // Random number between 0 and 100
+    rareMythicRoll = getRandomNumber(0, 100);
+    var rareMythicLink = "";
+
+    // Override roll
+    // rareMythicRoll = 94.9;
+
+    if (rareMythicRoll <= 80.4) {
+        // set:fdn is:booster rarity:r
+        rareMythicType = "Default frame, Rare";
+        rareMythicRarity = "80.4%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+CN<286&unique=cards";
+    } else if (rareMythicRoll <= 94.6) {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Default frame, Mythic";
+        rareMythicRarity = "14.2%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+CN<286&unique=cards";
+    } else if (rareMythicRoll <= 96.6) {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Borderless Triumphant, Rare";
+        rareMythicRarity = "2%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D287+AND+CN<%3D302%29";
+    } else if (rareMythicRoll <= 97.05) {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Borderless Triumphant, Mythic";
+        rareMythicRarity = "< 1%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D287+AND+CN<%3D302%29";
+    } else if (rareMythicRoll <= 99.05) {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Surreal Space, Rare";
+        rareMythicRarity = "2%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D303+AND+CN<%3D316%29";
+    } else if (rareMythicRoll <= 99.5) {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Surreal Space, Mythic";
+        rareMythicRarity = "< 1%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D303+AND+CN<%3D316%29";
+    } else {
+        // set:fdn is:booster rarity:m
+        rareMythicType = "Borderless Viewport Land, Mythic";
+        rareMythicRarity = "< 1%";
+        rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29";
+    }
+
+    let response = await fetch(rareMythicLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    rareMythicName = card.name;
+    window.cardInfo.raremythic = [rareMythicName, rareMythicType, rareMythicRarity];
+    rareMythicPrice = convertCurrency(card.prices.usd * priceCut);
+
+    // TO FIX: figure out if DFC....
+    rareMythicImagePrimary = card.image_uris.normal;
+
+    //   Replace Img Source
+    var rareMythicImageId = "raremythic-image";
+    document.getElementById(rareMythicImageId).src = rareMythicImagePrimary;
+    rareMythicImageElement = document.getElementById(rareMythicImageId);
+    rareMythicImageElement.src = rareMythicImagePrimary;
+
+    //  When card has loaded...Flip and wait accordingly
+    let rareMythicStack = document.getElementById("raremythic-image").closest(".both-cards");
+    rareMythicImageElement.addEventListener("load", cardImageLoaded(rareMythicImageElement, rareMythicImagePrimary, rareMythicStack));
+
+    //  Insert Price
+    const rarePriceElement = document.getElementById("raremythic-price");
+    rarePriceElement.innerText = USDollar.format(rareMythicPrice);
+
+    //  Insert Roll
+    const rareMythicRollElement = document.getElementById("raremythic-roll");
+    rareMythicRollElement.innerText = "Roll: " + rareMythicRoll.toFixed(0);
+
+    //  Push price to price array
+    myPrices.push(rareMythicPrice);
+}
+
+async function wildcardPull_EOEPlay() {
+    // Random number between 0 and 100.1
+    wildcardRoll = getRandomNumber(0, 100.1);
+
+    // Override roll
+    // wildcardRoll = 94.9;
+
+    if (wildcardRoll <= 12.5) {
+        wildcardType = "Default frame, Common";
+        wildcardRarity = "12.5%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ac+-type%3Abasic";
+    } else if (wildcardRoll <= 75) {
+        wildcardType = "Default frame, Uncommon";
+        wildcardRarity = "62.5%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Au";
+    } else if (wildcardRoll <= 85.6) {
+        wildcardType = "Default frame, Rare";
+        wildcardRarity = "10.6%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar";
+    } else if (wildcardRoll <= 85.85) {
+        wildcardType = "Default frame, Mythic";
+        wildcardRarity = "< 1%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+CN<262";
+    } else if (wildcardRoll <= 95.85) {
+        wildcardType = "Stellar Sights land, Rare";
+        wildcardRarity = "10%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Ar";
+    } else if (wildcardRoll <= 98.35) {
+        wildcardType = "Stellar Sights land, Mythic";
+        wildcardRarity = "2.5%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Am";
+    } else if (wildcardRoll <= 99.35) {
+        wildcardType = "Borderless Viewport land, Rare";
+        wildcardRarity = "1%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D286%29";
+    } else if (wildcardRoll <= 99.57) {
+        wildcardType = "Borderless Viewport Land, Mythic";
+        wildcardRarity = "< 1%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29";
+    } else if (wildcardRoll <= 99.79) {
+        wildcardType = "Borderless Triumphant or Surreal Space, Rare";
+        wildcardRarity = "< 1%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D287+AND+CN<%3D316%29";
+    } else {
+        wildcardType = "Borderless Triumphant or Surreal Space, Mythic";
+        wildcardRarity = "< 1%";
+        wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D287+AND+CN<%3D316%29";
+    }
+
+    let response = await fetch(wildcardLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    wildcardName = card.name;
+    window.cardInfo.wildcard = [wildcardName, wildcardType, wildcardRarity];
+    wildcardPrice = convertCurrency(card.prices.usd * priceCut);
+
+    wildcardImagePrimary = card.image_uris.normal;
+
+    //   Replace Img Source
+    var wildcardImageId = "wildcard-image";
+    document.getElementById(wildcardImageId).src = wildcardImagePrimary;
+    wildcardImageElement = document.getElementById(wildcardImageId);
+    wildcardImageElement.src = wildcardImagePrimary;
+
+    //  When card has loaded...Flip and wait accordingly
+    let wildcardStack = document.getElementById("wildcard-image").closest(".both-cards");
+    wildcardImageElement.addEventListener("load", cardImageLoaded(wildcardImageElement, wildcardImagePrimary, wildcardStack));
+
+    //  Insert Price
+    const wildcardElement = document.getElementById("wildcard-price");
+    wildcardElement.innerText = USDollar.format(wildcardPrice);
+
+    //  Insert Roll
+    const wildcardRollElement = document.getElementById("wildcard-roll");
+    wildcardRollElement.innerText = "Roll: " + wildcardRoll.toFixed(0);
+
+    //  Push price to price array
+    myPrices.push(wildcardPrice);
+}
+
+async function foilWildcardPull_EOEPlay() {
+    // Random number between 0 and 100.1
+    foilWildcardRoll = getRandomNumber(0, 100.1);
+
+    // Override roll
+    // foilWildcardRoll = 94.9;
+
+    if (foilWildcardRoll <= 58) {
+        foilWildcardType = "Default frame, Common (Foil)";
+        foilWildcardRarity = "58%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ac+-type%3Abasic";
+    } else if (foilWildcardRoll <= 90) {
+        foilWildcardType = "Default frame, Uncommon (Foil)";
+        foilWildcardRarity = "32%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Au";
+    } else if (foilWildcardRoll <= 96.4) {
+        foilWildcardType = "Default frame, Rare (Foil)";
+        foilWildcardRarity = "6.4%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar";
+    } else if (foilWildcardRoll <= 97.5) {
+        foilWildcardType = "Default frame, Mythic (Foil)";
+        foilWildcardRarity = "1.1%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+CN<262";
+    } else if (foilWildcardRoll <= 98.5) {
+        foilWildcardType = "Stellar Sights land, Rare (Foil)";
+        foilWildcardRarity = "1%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Ar";
+    } else if (foilWildcardRoll <= 99) {
+        foilWildcardType = "Stellar Sights land, Mythic (Foil)";
+        foilWildcardRarity = "< 1%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Am";
+    } else if (foilWildcardRoll <= 99.5) {
+        foilWildcardType = "Borderless Viewport, Triumphant, or Surreal Space, Rare (Foil)";
+        foilWildcardRarity = "< 1%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D316%29";
+    } else {
+        foilWildcardType = "Borderless Viewport, Triumphant, or Surreal Space, Mythic (Foil)";
+        foilWildcardRarity = "< 1%";
+        foilWildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D316%29";
+    }
+
+    let response = await fetch(foilWildcardLink);
+
+    // waits until Scryfall fetch completes...
+    let card = await response.json();
+    foilWildcardName = card.name;
+    window.cardInfo.foilwildcard = [foilWildcardName, foilWildcardType, foilWildcardRarity];
+    foilWildcardPrice = convertCurrency(card.prices.usd * priceCut);
+
+    foilWildcardImagePrimary = card.image_uris.normal;
+
+    //   Replace Img Source
+    var foilWildcardImageId = "foilwildcard-image";
+    document.getElementById(foilWildcardImageId).src = foilWildcardImagePrimary;
+    foilWildcardImageElement = document.getElementById(foilWildcardImageId);
+    foilWildcardImageElement.src = foilWildcardImagePrimary;
+
+    //  When card has loaded...Flip and wait accordingly
+    let foilWildcardStack = document.getElementById("foilwildcard-image").closest(".both-cards");
+    foilWildcardImageElement.addEventListener("load", cardImageLoaded(foilWildcardImageElement, foilWildcardImagePrimary, foilWildcardStack));
+
+    //  Insert Price
+    const foilWildcardElement = document.getElementById("foilwildcard-price");
+    foilWildcardElement.innerText = USDollar.format(foilWildcardPrice);
+
+    //  Insert Roll
+    const foilWildcardRollElement = document.getElementById("foilwildcard-roll");
+    foilWildcardRollElement.innerText = "Roll: " + foilWildcardRoll.toFixed(0);
+
+    //  Push price to price array
+    myPrices.push(foilWildcardPrice);
 }

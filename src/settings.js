@@ -22,17 +22,27 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currencyMode === "CAD") {
             currentPrice.innerText = USDollar.format(boosterValue);
             modalPrice.innerText = USDollar.format(boosterValue);
-            document.cookie = "boosterValue_CAN_" + currentSet + "=" + boosterValue;
+            if (getCookie("currentBoosterType") === "PLAY") {
+                document.cookie = "boosterValue_CAD_" + currentSet + "_PLAY=" + boosterValue;
+            } else {
+                document.cookie = "boosterValue_CAD_" + currentSet + "=" + boosterValue;
+            }
         } else {
             currentPrice.innerText = USDollar.format(boosterValue);
             modalPrice.innerText = USDollar.format(boosterValue);
-            document.cookie = "boosterValue_" + currentSet + "=" + boosterValue;
+            if (getCookie("currentBoosterType") === "PLAY") {
+                console.log("doddle");
+
+                document.cookie = "boosterValue_" + currentSet + "_PLAY=" + boosterValue;
+            } else {
+                document.cookie = "boosterValue_" + currentSet + "=" + boosterValue;
+            }
         }
     }
 
     if (currencyMode === "CAD") {
         // if we have the cookie "boosterprice_CAN_[your set here]"
-        if (getCookie("boosterValue_CAN_" + currentSet)) {
+        if (getCookie("boosterValue_CAD_" + currentSet)) {
             // console.log("wow, we have it (CAD)");
         } else {
             // console.log("no, we do not have it (CAD)");

@@ -1,33 +1,49 @@
 const ghostLinkHalf_FIN = "https://api.scryfall.com/cards/random?q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+";
 const topOutLink_FIN = "https://api.scryfall.com/cards/search?order=usd&q=%28set%3Afin+OR+set%3Afic+OR+set%3Afca%29+unique%3Aprints+USD%3E%3D15";
-const boosterType_FIN = "Collector";
 
 window.setName = "FIN";
-window.FIN = {
-    totalCards: 15,
-};
+
 window.cardInfo = window.cardInfo || {};
 
+function setFIN_Money() {
+    if (getCookie("currentBoosterType") === "PLAY") {
+        //Nothing yet...
+    } else {
+        document.cookie = "currentBoosterType = COLLECTOR";
+        window.FDN = {
+            totalCards: 15,
+        };
+        boosterValue = getCookie("boosterValue_FIN") ? getCookie("boosterValue_FIN") : 100;
+        CAD_boosterValue = getCookie("boosterValue_CAD_FIN") ? getCookie("boosterValue_CAD_FIN") : 160;
+        msrp = 24.99;
+
+        console.log("should be making FIN slots");
+        makeFINSlots();
+
+        document.cookie = "boosterValue_FIN = " + boosterValue;
+        document.cookie = "boosterValue_CAD_FIN = " + CAD_boosterValue;
+    }
+}
+
 function setFIN() {
+    document.cookie = "currentBoosterType = COLLECTOR";
+
     currentSet = "FIN";
-    document.cookie = "currentSet = 'FIN'";
+    document.cookie = "currentSet = FIN";
+    window.boosterType = "COLLECTOR";
 
-    boosterValue = getCookie("boosterValue_FIN") ? getCookie("boosterValue_FIN") : 100;
-    CAN_boosterValue = getCookie("boosterValue_CAN_FIN") ? getCookie("boosterValue_CAN_FIN") : 160;
-    document.cookie = "boosterValue_FIN = " + boosterValue;
-    document.cookie = "boosterValue_CAN_FIN = " + CAN_boosterValue;
-
-    msrp = 37.99;
+    boosterCheck("collector");
 
     priceCutActive = true;
     priceCut = 1;
 
     document.getElementById("set-header").innerText = "FINAL FANTASY";
-    document.getElementById("booster-type").innerText = boosterType_FIN + " Booster";
 
     document.body.style.backgroundImage = "url(img/FIN_bg2_dark.jpg)";
     clearSlots();
-    makeFINSlots();
+
+    setFIN_Money();
+
     clearMoney();
     changeSet();
 }
@@ -174,7 +190,7 @@ async function defaultRarePull_FIN() {
         //  set:fin rarity:r
         defaultRareType = "Default Frame, Rare (Foil)";
         defaultRareRarity = "87.75%";
-        defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar";
+        defaultRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+has%3Afoil";
     } else {
         //  1 Traditional foil default frame Mythic (12.25%)
         //  set:fin rarity:m

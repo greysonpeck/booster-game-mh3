@@ -3,7 +3,7 @@ boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
-currentSet = "FIN";
+currentSet = "EOE";
 cardBack_URL = "img/card_default4.png";
 activeInvestigation = false;
 activeAbout = false;
@@ -63,8 +63,10 @@ function pullBooster() {
         pullMH3();
     } else if (currentSet === "FIN") {
         pullFIN();
-    } else if (currentSet === "EOE") {
+    } else if (currentSet === "EOE" && getCookie("currentBoosterType") === "COLLECTOR") {
         pullEOE();
+    } else if (currentSet === "EOE" && getCookie("currentBoosterType") === "PLAY") {
+        pullEOE_Play();
     } else {
         pullFDN();
     }
@@ -306,7 +308,12 @@ document.addEventListener(
 
         let singleClicked = false;
 
-        let cardsRemaining = setName.totalCards;
+        if (getCookie("currentBoosterType") === "COLLECTOR") {
+            cardsRemaining = setName.totalCards;
+        } else {
+            cardsRemaining = setName.totalCards_PLAY;
+        }
+
         const cardsLoadingNumber = document.getElementById("cards-loading");
         cardsLoadingNumber.innerText = cardsRemaining;
 
@@ -346,19 +353,26 @@ document.addEventListener(
         const toggle = document.getElementById("currency");
 
         if (getCookie("currentSet")) {
-            if (getCookie("currentSet") == "'MH3'") {
+            if (getCookie("currentSet") == "MH3") {
                 setMH3();
-            } else if (getCookie("currentSet") == "'DSK'") {
+            } else if (getCookie("currentSet") == "DSK") {
                 setDSK();
-            } else if (getCookie("currentSet") == "'FIN'") {
+            } else if (getCookie("currentSet") == "FIN") {
                 setFIN();
-            } else if (getCookie("currentSet") == "'EOE'") {
+            } else if (getCookie("currentSet") == "EOE") {
+                console.log("run 1");
                 setEOE();
-            } else {
+            } else if (getCookie("currentSet") == "FDN") {
                 setFDN();
+            } else {
+                console.log("run 2");
+
+                setEOE();
             }
         } else {
-            setFIN();
+            console.log("run 3");
+
+            setEOE();
         }
 
         // Pull the set that's in the cookie
@@ -380,11 +394,9 @@ document.addEventListener(
             currencyMode = "CAD";
             umamiAnalytics("Convert to CAD");
             toggle.classList.add("toggle-cad");
-            boosterValue = CAN_boosterValue;
+            boosterValue = CAD_boosterValue;
             document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
             currentMoneyElement.classList.remove("px-3");
-            console.log("Initializing cad...");
-            console.log("currency mode = " + currencyMode);
         }
 
         function initializeUSD() {
@@ -396,8 +408,7 @@ document.addEventListener(
         // If USD cookie, do nothing, load as normal.
         // If no cookie yet, set cookie
         if (getCookie("currencyMode")) {
-            if (getCookie("currencyMode") == "'CAD'") {
-                console.log("Canadian Loonie gang");
+            if (getCookie("currencyMode") == "CAD") {
                 initializeCAD();
                 toggle.classList.toggle("on");
             } else {
@@ -406,7 +417,7 @@ document.addEventListener(
             }
         } else {
             currencyMode = "USD";
-            document.cookie = "currencyMode = 'USD'";
+            document.cookie = "currencyMode = USD";
             initializeUSD();
         }
 
@@ -424,13 +435,13 @@ document.addEventListener(
             currentMoneyElement.classList.remove("bg-rose-500", "bg-emerald-500", "px-3");
 
             // Initialize to CAD settings if toggled while on USD and vice-versa.
-            if (getCookie("currencyMode") == "'USD'") {
+            if (getCookie("currencyMode") == "USD") {
                 initializeCAD();
-                document.cookie = "currencyMode = 'CAD'";
+                document.cookie = "currencyMode = CAD";
                 window.location.reload();
             } else {
                 initializeUSD();
-                document.cookie = "currencyMode = 'USD'";
+                document.cookie = "currencyMode = USD";
                 document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
                 window.location.reload();
             }
@@ -441,25 +452,73 @@ document.addEventListener(
         toggle.addEventListener("click", () => {
             initializeMoney();
         });
+
+        document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
+
+        function boosterToggle() {
+            clearSlots();
+
+            boosterCheck(window.boosterType);
+
+            if (getCookie("currentBoosterType") === "COLLECTOR") {
+                collectorButton.classList.add("booster-active");
+                playButton.classList.remove("booster-active");
+            } else {
+                playButton.classList.add("booster-active");
+                collectorButton.classList.remove("booster-active");
+                playButton.classList.add("booster-active");
+            }
+
+            if (getCookie("currentBoosterType") === "COLLECTOR") {
+                cardsRemaining = setName.totalCards;
+            } else {
+                cardsRemaining = setName.totalCards_PLAY;
+            }
+
+            setID = getCookie("currentSet");
+            const moneySet = "set" + setID + "_Money";
+            window[moneySet]();
+
+            document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
+
+            cookieSearch =
+                "boosterValue" +
+                (getCookie("currencyMode") === "CAD" ? "_CAD_" : "_") +
+                getCookie("currentSet") +
+                (getCookie("currentBoosterType") === "PLAY" ? "_PLAY" : "");
+
+            console.log(cookieSearch);
+            console.log("bing: " + getCookie(cookieSearch));
+
+            document.getElementById("pricePerBooster").innerText = USDollar.format(getCookie(cookieSearch));
+        }
+
+        // boosterToggle();
+
+        collectorButton.addEventListener("click", () => {
+            console.log("collector");
+            document.cookie = "currentBoosterType = COLLECTOR";
+            boosterToggle();
+        });
+
+        playButton.addEventListener("click", () => {
+            console.log("play");
+            document.cookie = "currentBoosterType = PLAY";
+            boosterToggle();
+        });
     },
     false
 );
 
 function changeSet() {
-    //  Why is this triggering multiple times?
     umamiAnalytics("Select set: " + currentSet);
     boosterTotalValue = 0;
 
     if (currencyMode === "CAD") {
-        boosterValue = CAN_boosterValue;
+        boosterValue = CAD_boosterValue;
     } else {
         // It's USD...
     }
-
-    document.getElementById("msrp").innerText = "MSRP: " + USDollar.format(msrp) + " USD";
-    // Make set selectors buttons
-    const setButtons = document.getElementsByClassName("set-button");
-    document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
 
     // Remove single
     if (!firstLoad) {
@@ -467,27 +526,6 @@ function changeSet() {
     } else if (document.getElementById("single-holder").classList.contains("hidden")) {
         document.getElementById("single-holder").classList.remove("hidden");
     } else {
-    }
-
-    for (button of setButtons) {
-        const buttonSet = "set" + button.id.slice(-3);
-
-        if (currentSet === button.id.slice(-3)) {
-            button.classList.add("bg-white/20");
-            button.classList.add("cursor-pointer");
-            button.addEventListener("click", () => {
-                window[buttonSet]();
-            });
-        } else if (button.id.slice(-3) === "EOE") {
-            // Skip EOE, under construction
-        } else {
-            // Style non-active sets
-            button.classList.remove("bg-white/20");
-            button.classList.add("cursor-pointer");
-            button.addEventListener("click", () => {
-                window[buttonSet]();
-            });
-        }
     }
 
     // Clear Investigate
@@ -507,6 +545,48 @@ function changeSet() {
     investigateButton.classList.add("opacity-0");
 
     activeInvestigation = false;
+
+    // Alert for EOE
+    alertMessage = document.getElementById("alert-message");
+    currentSet === "EOE" ? alertMessage.classList.remove("hidden") : alertMessage.classList.add("hidden");
+
+    // Make set selectors buttons
+    const setButtons = document.getElementsByClassName("set-button");
+
+    for (button of setButtons) {
+        const buttonSet = "set" + button.id.slice(-3);
+
+        if (currentSet === button.id.slice(-3)) {
+            button.classList.add("bg-white/20");
+            button.classList.add("cursor-pointer");
+            button.addEventListener("click", () => {
+                window[buttonSet]();
+            });
+        } else if (button.id.slice(-3) === "XXX") {
+            // Skip EOE, under construction
+        } else {
+            // Style non-active sets
+            button.classList.remove("bg-white/20");
+            button.classList.add("cursor-pointer");
+            button.addEventListener("click", () => {
+                window[buttonSet]();
+            });
+        }
+    }
+
+    playButton = document.getElementById("play-booster");
+    collectorButton = document.getElementById("collector-booster");
+
+    if (getCookie("currentBoosterType") === "COLLECTOR") {
+        collectorButton.classList.add("booster-active");
+        playButton.classList.remove("booster-active");
+    } else {
+        playButton.classList.add("booster-active");
+        collectorButton.classList.remove("booster-active");
+        playButton.classList.add("booster-active");
+    }
+
+    document.getElementById("pricePerBooster").innerText = USDollar.format(boosterValue);
 }
 
 // Card maker
@@ -532,6 +612,15 @@ function clearMoney() {
     initializeMoney();
 }
 
+function boosterCheck(type) {
+    playBoosterButton = document.getElementById("play-booster");
+    if (type === "both") {
+        playBoosterButton.classList.remove("hidden");
+    } else {
+        //
+    }
+}
+
 function clearSlots() {
     const cardSection = document.getElementById("card-section");
     while (cardSection.childElementCount > 0) {
@@ -542,6 +631,18 @@ function clearSlots() {
     document.getElementById("snark").classList.add("hidden");
     document.getElementById("ghost-image").src = cardBack_URL;
     // document.getElementById("foil-holder").style.display = "none";
+
+    if (window.boosterType === "both") {
+        // Do nothing
+    } else if (window.boosterType === "collector") {
+        document.getElementById("play-booster").classList.add("hidden");
+    } else {
+        document.getElementById("play-booster").classList.add("hidden");
+    }
+
+    playButton = document.getElementById("play-booster");
+
+    boosterCheck(window.boosterType);
 }
 
 function makeSlot(id, label, hasFoil, quantity) {
@@ -773,16 +874,13 @@ function setGhostData() {
 
         //  If the card is foil, but the non-foil price exists and is within range..."".
     } else if (ghostCard.foil && ghostCard.prices.usd >= boosterSpendBottom && ghostCard.prices.usd <= boosterSpendTop) {
-        // console.log("The single is regular");
         // ghostFoilHolderElement.classList.remove("foil-gradient");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
-        ghostPrice = convertCurrency(Number(ghostCard.prices.usd)).toFixed(0);
         ghostFoilHolderElement.classList.remove("foil-gradient");
         //  Otherwise, also nothing.
     } else {
-        console.log("The single is super regular and not in range.");
         ghostFoilElement.innerText = "";
         ghostTexturedElement.classList.remove("block");
         ghostTexturedElement.classList.add("hidden");
@@ -921,7 +1019,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 }
 
 const setName = window[window.setName];
-let cardsRemaining = setName.totalCards;
+// let cardsRemaining = setName.totalCards;
 
 const cardImageLoaded = async (cardType, cardImagePrimary, cardStack) => {
     cardsRemaining--;
@@ -948,15 +1046,19 @@ function sumTotals() {
     const cardsLoadingNumber = document.getElementById("cards-loading");
     const runningSum = document.getElementById("running-sum");
 
-    cardsRemaining = setName.totalCards;
     cardsLoadingNumber.innerText = cardsRemaining;
 
-    boosterTotalValue = Number(boosterTotalValue) + Number(boosterValue);
+    boosterTotalValue = Number(boosterTotalValue) + (currencyMode === "CAD" ? Number(CAD_boosterValue) : Number(boosterValue));
     const boostersBoughtElement = document.getElementById("boosters-bought");
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 
     function checkIfFinished() {
-        return myPrices.length >= setName.totalCards;
+        if (getCookie("currentBoosterType") === "COLLECTOR") {
+            totalCards = setName.totalCards;
+        } else {
+            totalCards = setName.totalCards_PLAY;
+        }
+        return myPrices.length >= totalCards;
     }
 
     var timeout = setInterval(function () {
@@ -965,6 +1067,12 @@ function sumTotals() {
         if (checkIfFinished()) {
             clearInterval(timeout);
             isFinished = true;
+
+            if (getCookie("currentBoosterType") === "COLLECTOR") {
+                cardsRemaining = setName.totalCards;
+            } else {
+                cardsRemaining = setName.totalCards_PLAY;
+            }
 
             loadingOverlay.classList.remove("z-10", "loader-blur-effect");
             loadingOverlay.classList.add("-z-10", "opacity-0");
@@ -1031,5 +1139,9 @@ function sumTotals() {
     }, 100);
 
     // Reset "cards remaining" value a moment after the loader fades away
-    cardsLoadingNumber.innerText = setName.totalCards;
+    if (getCookie("currentBoosterType") === "COLLECTOR") {
+        cardsLoadingNumber.innerText = setName.totalCards;
+    } else {
+        cardsLoadingNumber.innerText = setName.totalCards_PLAY;
+    }
 }

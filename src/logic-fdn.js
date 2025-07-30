@@ -1,33 +1,48 @@
 const ghostLinkHalf_FDN = "https://api.scryfall.com/cards/random?q=set%3Afdn+unique%3Aprints+";
 const topOutLink_FDN = "https://api.scryfall.com/cards/search?order=usd&q=set%3Afdn+unique%3Aprints+USD%3E%3D15";
-const boosterType_FDN = "Collector";
 
 window.setName = "FDN";
-window.FDN = {
-    totalCards: 15,
-};
+
 window.cardInfo = window.cardInfo || {};
 
+function setFDN_Money() {
+    if (getCookie("currentBoosterType") === "PLAY") {
+        //Nothing yet...
+    } else {
+        document.cookie = "currentBoosterType = COLLECTOR";
+        window.FDN = {
+            totalCards: 15,
+        };
+        boosterValue = getCookie("boosterValue_FDN") ? getCookie("boosterValue_FDN") : 40;
+        CAD_boosterValue = getCookie("boosterValue_CAD_FDN") ? getCookie("boosterValue_CAD_FDN") : 60;
+        msrp = 24.99;
+
+        makeFDNSlots();
+
+        document.cookie = "boosterValue_FDN = " + boosterValue;
+        document.cookie = "boosterValue_CAD_FDN = " + CAD_boosterValue;
+    }
+}
+
 function setFDN() {
+    document.cookie = "currentBoosterType = COLLECTOR";
+
     currentSet = "FDN";
-    document.cookie = "currentSet = 'FDN'";
+    document.cookie = "currentSet = FDN";
+    window.boosterType = "COLLECTOR";
 
-    boosterValue = getCookie("boosterValue_FDN") ? getCookie("boosterValue_FDN") : 40;
-    CAN_boosterValue = getCookie("boosterValue_CAN_FDN") ? getCookie("boosterValue_CAN_FDN") : 60;
-    document.cookie = "boosterValue_FDN = " + boosterValue;
-    document.cookie = "boosterValue_CAN_FDN = " + CAN_boosterValue;
-
-    msrp = 24.99;
+    boosterCheck("collector");
 
     priceCutActive = true;
     priceCut = 1;
 
     document.getElementById("set-header").innerText = "FOUNDATIONS";
-    document.getElementById("booster-type").innerText = boosterType_FDN + " Booster";
 
     document.body.style.backgroundImage = "url(img/FDN_bg.png)";
     clearSlots();
-    makeFDNSlots();
+
+    setFDN_Money();
+
     clearMoney();
     changeSet();
 }
