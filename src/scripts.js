@@ -1085,8 +1085,12 @@ function sumTotals() {
 
             //  Sum up all prices in array
             myPrices.forEach((num) => {
-                packsTotal += num;
-                thisPack += num;
+                if (num >= 1) {
+                    packsTotal += num;
+                    thisPack += num;
+                } else {
+                    // Ignore bulk
+                }
             });
             runningSum.innerText = USDollar.format(packsTotal);
 

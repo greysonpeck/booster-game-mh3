@@ -343,11 +343,11 @@ async function nfBoosterFunPull_EOE() {
         nfBoosterFunRarity = "5%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
     } else if (nfBoosterFunRoll <= 59) {
-        nfBoosterFunType = "Borderless Viewport Land, Rare";
+        nfBoosterFunType = "Borderless Viewport land, Rare";
         nfBoosterFunRarity = "7%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar++%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
     } else if (nfBoosterFunRoll <= 63) {
-        nfBoosterFunType = "Borderless Viewport Land, Mythic";
+        nfBoosterFunType = "Borderless Viewport land, Mythic";
         nfBoosterFunRarity = "4%";
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
     } else if (nfBoosterFunRoll <= 80) {
@@ -476,7 +476,7 @@ async function landStellarPull_EOE() {
     } else if (landStellarRoll <= 63) {
         landStellarLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Ar+%28CN>%3D46+AND+CN<%3D90%29&unique=cards";
         landStellarType = "Poster Stellar Sights Land, Rare";
-        landStellarRarity = "18";
+        landStellarRarity = "18%";
     } else if (landStellarRoll <= 67) {
         landStellarLink = "https://api.scryfall.com/cards/random?q=set%3Aeos+rarity%3Am+%28CN>%3D46+AND+CN<%3D90%29&unique=cards";
         landStellarType = "Poster Stellar Sights Land, Mythic";
@@ -579,11 +579,11 @@ async function boosterFunPull_EOE() {
         boosterFunRarity = "4%";
     } else if (boosterFunRoll <= 48) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
-        boosterFunType = "Borderless Viewport Land, Rare (Foil)";
+        boosterFunType = "Borderless Viewport land, Rare (Foil)";
         boosterFunRarity = "6%";
     } else if (boosterFunRoll <= 51) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29&unique=cards";
-        boosterFunType = "Borderless Viewport Land, Mythic (Foil)";
+        boosterFunType = "Borderless Viewport land, Mythic (Foil)";
         boosterFunRarity = "3%";
     } else if (boosterFunRoll <= 64) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D287+AND+CN<%3D302%29&unique=cards";
@@ -615,15 +615,15 @@ async function boosterFunPull_EOE() {
         boosterFunRarity = "1%";
     } else if (boosterFunRoll <= 98) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
-        boosterFunType = "Borderless Viewport Land, Rare (Galaxy Foil)";
+        boosterFunType = "Borderless Viewport land, Rare (Galaxy Foil)";
         boosterFunRarity = "2%";
     } else if (boosterFunRoll <= 99) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
-        boosterFunType = "Borderless Viewport Land, Mythic (Galaxy Foil)";
+        boosterFunType = "Borderless Viewport land, Mythic (Galaxy Foil)";
         boosterFunRarity = "1%";
     } else {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D372+AND+CN<%3D381%29&unique=cards";
-        boosterFunType = "Borderless Viewport Land, Mythic (Galaxy Foil)";
+        boosterFunType = "Borderless Viewport land, Mythic (Galaxy Foil)";
         boosterFunRarity = "< 1%";
     }
 
@@ -877,7 +877,7 @@ async function rareMythicPull_EOEPlay() {
         rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D303+AND+CN<%3D316%29";
     } else {
         // set:fdn is:booster rarity:m
-        rareMythicType = "Borderless Viewport Land, Mythic";
+        rareMythicType = "Borderless Viewport land, Mythic";
         rareMythicRarity = "< 1%";
         rareMythicLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29";
     }
@@ -951,7 +951,7 @@ async function wildcardPull_EOEPlay() {
         wildcardRarity = "1%";
         wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D277+AND+CN<%3D286%29";
     } else if (wildcardRoll <= 99.57) {
-        wildcardType = "Borderless Viewport Land, Mythic";
+        wildcardType = "Borderless Viewport land, Mythic";
         wildcardRarity = "< 1%";
         wildcardLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Am+%28CN>%3D277+AND+CN<%3D286%29";
     } else if (wildcardRoll <= 99.79) {
