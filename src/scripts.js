@@ -548,7 +548,7 @@ function changeSet() {
 
     // Alert for EOE
     alertMessage = document.getElementById("alert-message");
-    currentSet === "EOE" ? alertMessage.classList.remove("hidden") : alertMessage.classList.add("hidden");
+    // currentSet === "EOE" ? alertMessage.classList.remove("hidden") : alertMessage.classList.add("hidden");
 
     // Make set selectors buttons
     const setButtons = document.getElementsByClassName("set-button");
