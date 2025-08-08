@@ -855,9 +855,13 @@ function setGhostData() {
             ghostFoilElement.innerText = "mana foil ";
             ghostFoilHolderElement.classList.add("mana-gradient");
             ghostFoilHolderElement.classList.remove("surge-gradient");
+        } else if (ghostCard.promo_types.includes("galaxyfoil") && ghostCard.prices.usd_foil) {
+            ghostFoilElement.innerText = "galaxy foil ";
+            ghostFoilHolderElement.classList.add("galaxy-gradient");
+            ghostFoilHolderElement.classList.remove("surge-gradient");
         } else if (ghostCard.promo_types.includes("fracturefoil") && ghostCard.prices.usd_foil) {
             ghostFoilElement.innerText = "fracture foil ";
-            ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient");
+            ghostFoilHolderElement.classList.remove("surge-gradient", "mana-gradient", "galaxy-gradient");
         } else {
             //has promo types, but not the ones we're looking for....
             ghostFoilElement.innerText = "";
