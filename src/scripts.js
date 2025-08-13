@@ -801,7 +801,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     }
 
     // Put an ad
-    if (cardSection.childElementCount === 4 && currentSet === "FDN") {
+    if (cardSection.childElementCount === 4) {
         // Create the container <ins>
         var adMid = document.createElement("ins");
         adMid.className = "adsbygoogle";
@@ -814,7 +814,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Create Ad Holder
         adHolder = document.createElement("div");
         adHolder.id = "ad-holder-middle";
-        adHolder.classList.add("w-full", "min-h-[90px]");
+        adHolder.classList.add("flex", "justify-center", "w-full", "min-h-[90px]");
         cardSection.appendChild(adHolder);
 
         // Insert the ad into the DOM
