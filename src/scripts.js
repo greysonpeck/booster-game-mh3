@@ -814,7 +814,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Create Ad Holder
         adHolder = document.createElement("div");
         adHolder.id = "ad-holder-middle";
-        adHolder.classList.add("w-full");
+        adHolder.classList.add("w-full", "min-h-[90px]");
         cardSection.appendChild(adHolder);
 
         // Insert the ad into the DOM
@@ -824,7 +824,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Delay rendering to ensure width is calculated
         setTimeout(() => {
             (adsbygoogle = window.adsbygoogle || []).push({});
-        }, 400);
+        }, 50);
     }
 }
 
