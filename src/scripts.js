@@ -819,7 +819,6 @@ function makeSlot(id, label, hasFoil, quantity) {
 
         // Insert the ad into the DOM
         adHolder.insertAdjacentElement("beforeend", ad);
-        console.log(adHolder);
 
         // Tell AdSense to render the ad
         // Delay rendering to ensure width is calculated
