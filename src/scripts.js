@@ -647,10 +647,20 @@ function clearSlots() {
 
 function placeAd() {
     const cardSection = document.getElementById("card-section");
-    cardSection.insertAdjacentHTML(
-        "beforeend",
-        "<div id='testblock' class='flex justify-center'> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>"
-    );
+    // Create the container <ins>
+    var ad = document.createElement("ins");
+    ad.className = "adsbygoogle";
+    ad.style.display = "block";
+    ad.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
+    ad.setAttribute("data-ad-slot", "6762269685"); // your Ad unit slot ID
+    ad.setAttribute("data-ad-format", "auto"); // or 'rectangle', 'horizontal', etc.
+    ad.setAttribute("data-full-width-responsive", "true");
+
+    // Insert the ad into the DOM
+    cardSection.appendChild(ad);
+
+    // Tell AdSense to render the ad
+    (adsbygoogle = window.adsbygoogle || []).push({});
 }
 
 function makeSlot(id, label, hasFoil, quantity) {
