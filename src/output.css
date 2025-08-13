@@ -61,7 +61,6 @@
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-900: oklch(21% 0.034 264.665);
-    --color-zinc-500: oklch(55.2% 0.016 285.938);
     --color-white: #fff;
     --spacing: 0.25rem;
     --text-xs: 0.75rem;
@@ -406,6 +405,9 @@
   }
   .h-lvh {
     height: 100lvh;
+  }
+  .max-h-\[90px\] {
+    max-height: 90px;
   }
   .min-h-\[90px\] {
     min-height: 90px;
@@ -847,6 +849,11 @@
   .sm\:ml-16 {
     @media (width >= 40rem) {
       margin-left: calc(var(--spacing) * 16);
+    }
+  }
+  .sm\:block {
+    @media (width >= 40rem) {
+      display: block;
     }
   }
   .sm\:hidden {
