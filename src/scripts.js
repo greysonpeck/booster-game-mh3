@@ -803,11 +803,11 @@ function makeSlot(id, label, hasFoil, quantity) {
     // Put an ad
     if (cardSection.childElementCount === 4 && currentSet === "FDN") {
         // Create the container <ins>
-        var ad = document.createElement("ins");
-        ad.className = "adsbygoogle";
-        ad.style.display = "display:inline-block;width:970px;height:90px";
-        ad.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
-        ad.setAttribute("data-ad-slot", "3445711329"); // your Ad unit slot ID
+        var adMid = document.createElement("ins");
+        adMid.className = "adsbygoogle";
+        adMid.style.display = "display:inline-block;width:970px;height:90px";
+        adMid.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
+        adMid.setAttribute("data-ad-slot", "3445711329"); // your Ad unit slot ID
 
         // Create Ad Holder
         adHolder = document.createElement("div");
@@ -816,7 +816,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         cardSection.appendChild(adHolder);
 
         // Insert the ad into the DOM
-        adHolder.insertAdjacentElement("beforeend", ad);
+        adHolder.insertAdjacentElement("beforeend", adMid);
 
         // Tell AdSense to render the ad
         // Delay rendering to ensure width is calculated
