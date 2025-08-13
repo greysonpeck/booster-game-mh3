@@ -805,11 +805,9 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Create the container <ins>
         var ad = document.createElement("ins");
         ad.className = "adsbygoogle";
-        ad.style.display = "block";
+        ad.style.display = "display:inline-block;width:970px;height:90px";
         ad.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
-        ad.setAttribute("data-ad-slot", "6762269685"); // your Ad unit slot ID
-        ad.setAttribute("data-ad-format", "auto"); // or 'rectangle', 'horizontal', etc.
-        ad.setAttribute("data-full-width-responsive", "true");
+        ad.setAttribute("data-ad-slot", "3445711329"); // your Ad unit slot ID
 
         // Create Ad Holder
         adHolder = document.createElement("div");
