@@ -645,14 +645,6 @@ function clearSlots() {
     boosterCheck(window.boosterType);
 }
 
-function placeAd() {
-    const cardSection = document.getElementById("card-section");
-    cardSection.insertAdjacentHTML(
-        "beforeend",
-        "<div id='testblock' class='flex justify-center'> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>"
-    );
-}
-
 function makeSlot(id, label, hasFoil, quantity) {
     const cardSection = document.getElementById("card-section");
 
@@ -806,6 +798,34 @@ function makeSlot(id, label, hasFoil, quantity) {
 
         bothCards.append(cardImg);
         bothCards.append(cardBack);
+    }
+
+    // Put an ad
+    if (cardSection.childElementCount === 4 && currentSet === "FDN") {
+        // Create the container <ins>
+        var ad = document.createElement("ins");
+        ad.className = "adsbygoogle";
+        ad.style.display = "block";
+        ad.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
+        ad.setAttribute("data-ad-slot", "6762269685"); // your Ad unit slot ID
+        ad.setAttribute("data-ad-format", "auto"); // or 'rectangle', 'horizontal', etc.
+        ad.setAttribute("data-full-width-responsive", "true");
+
+        // Create Ad Holder
+        adHolder = document.createElement("div");
+        adHolder.id = "ad-holder-middle";
+        adHolder.classList.add("w-full");
+        cardSection.appendChild(adHolder);
+
+        // Insert the ad into the DOM
+        adHolder.insertAdjacentElement("beforeend", ad);
+        console.log(adHolder);
+
+        // Tell AdSense to render the ad
+        // Delay rendering to ensure width is calculated
+        setTimeout(() => {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }, 50);
     }
 }
 
