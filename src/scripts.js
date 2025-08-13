@@ -824,7 +824,7 @@ function makeSlot(id, label, hasFoil, quantity) {
         // Delay rendering to ensure width is calculated
         setTimeout(() => {
             (adsbygoogle = window.adsbygoogle || []).push({});
-        }, 50);
+        }, 400);
     }
 }
 
