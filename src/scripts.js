@@ -801,29 +801,31 @@ function makeSlot(id, label, hasFoil, quantity) {
     }
 
     // Put an ad
-    // if (cardSection.childElementCount === 4 && currentSet === "FDN") {
-    //     // Create the container <ins>
-    //     var adMid = document.createElement("ins");
-    //     adMid.className = "adsbygoogle";
-    //     adMid.style.display = "display:inline-block;width:970px;height:90px";
-    //     adMid.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
-    //     adMid.setAttribute("data-ad-slot", "3445711329"); // your Ad unit slot ID
+    if (cardSection.childElementCount === 4 && currentSet === "FDN") {
+        // Create the container <ins>
+        var adMid = document.createElement("ins");
+        adMid.className = "adsbygoogle";
+        adMid.style.display = "display:block";
+        adMid.setAttribute("data-ad-client", "ca-pub-1084747507972985"); // your AdSense publisher ID
+        adMid.setAttribute("data-ad-slot", "3445711329"); // your Ad unit slot ID
+        adMid.setAttribute("data-ad-format", "auto");
+        adMid.setAttribute("data-ad-full-width-responsive", "true");
 
-    //     // Create Ad Holder
-    //     adHolder = document.createElement("div");
-    //     adHolder.id = "ad-holder-middle";
-    //     adHolder.classList.add("w-full");
-    //     cardSection.appendChild(adHolder);
+        // Create Ad Holder
+        adHolder = document.createElement("div");
+        adHolder.id = "ad-holder-middle";
+        adHolder.classList.add("w-full");
+        cardSection.appendChild(adHolder);
 
-    //     // Insert the ad into the DOM
-    //     adHolder.insertAdjacentElement("beforeend", adMid);
+        // Insert the ad into the DOM
+        adHolder.insertAdjacentElement("beforeend", adMid);
 
-    //     // Tell AdSense to render the ad
-    //     // Delay rendering to ensure width is calculated
-    //     setTimeout(() => {
-    //         (adsbygoogle = window.adsbygoogle || []).push({});
-    //     }, 50);
-    // }
+        // Tell AdSense to render the ad
+        // Delay rendering to ensure width is calculated
+        setTimeout(() => {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }, 50);
+    }
 }
 
 function setGhostData() {
