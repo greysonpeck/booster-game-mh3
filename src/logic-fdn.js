@@ -52,6 +52,7 @@ function makeFDNSlots() {
     makeSlot("raremythic-1", "Foil Rare/Mythic #1", true);
     makeSlot("raremythic-2", "Foil Rare/Mythic #2", true);
     makeSlot("raremythic-nf-1", "Rare/Mythic #1");
+    placeAd();
     makeSlot("raremythic-nf-2", "Rare/Mythic #2");
     makeSlot("land", "Full-Art Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 4);

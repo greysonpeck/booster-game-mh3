@@ -645,6 +645,14 @@ function clearSlots() {
     boosterCheck(window.boosterType);
 }
 
+function placeAd() {
+    const cardSection = document.getElementById("card-section");
+    cardSection.insertAdjacentHTML(
+        "beforeend",
+        "<div id='testblock' class='flex justify-center'> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>"
+    );
+}
+
 function makeSlot(id, label, hasFoil, quantity) {
     const cardSection = document.getElementById("card-section");
 
