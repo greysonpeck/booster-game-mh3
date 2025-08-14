@@ -22,6 +22,8 @@
     <script src="./src/logic-dsk.js?v=1.16"></script>
     <script src="./src/logic-fin.js?v=1.16"></script>
     <script src="./src/logic-eoe.js?v=1.16"></script>
+     <script src="./src/ads.js?v=1.16"></script>
+
 
     <script src="./src/scripts.js?v=1.16"></script>
     <script src="./src/settings.js?v=1.16"></script>
@@ -35,6 +37,58 @@
      crossorigin="anonymous"></script>
   </head>
   <body>
+
+   <!-- Footer ad container -->
+
+    <!-- Consent banner -->
+    <!-- <div id="consent-banner">
+        <span>This site uses cookies for ads. Do you accept?</span>
+        <div>
+            <button id="accept-consent">Accept</button>
+            <button id="decline-consent">Decline</button>
+        </div>
+    </div> -->
+
+    <script>
+        function loadFooterAd() {
+            const adHolder = document.getElementById("ad-holder-footer");
+            adHolder.innerHTML = `
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1084747507972985" crossorigin="anonymous"><\/script>
+                <ins class="adsbygoogle"
+                    style="display:inline-block;width:970px;height:90px"
+                    data-ad-client="ca-pub-1084747507972985"
+                    data-ad-slot="6762269685"
+                    data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});<\/script>
+            `;
+        }
+
+        function setUserConsent(granted) {
+            localStorage.setItem("adConsent", granted ? "granted" : "denied");
+            document.getElementById("consent-banner").style.display = "none";
+            if (granted) loadFooterAd();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const acceptBtn = document.getElementById("accept-consent");
+            const declineBtn = document.getElementById("decline-consent");
+
+            acceptBtn.addEventListener("click", () => setUserConsent(true));
+            declineBtn.addEventListener("click", () => setUserConsent(false));
+
+            const storedConsent = localStorage.getItem("adConsent");
+            if (storedConsent === "granted") {
+                document.getElementById("consent-banner").style.display = "none";
+                loadFooterAd();
+            } else if (storedConsent === "denied") {
+                document.getElementById("consent-banner").style.display = "none";
+            }
+        });
+    </script>
+<!-- End ad stuff -->
+
+
+
     <div id="set-selector" class="flex flex-col hidden">
         <a href="#" id="set-toggle-1"></a>
         <a href="#" id="set-toggle-2"></a>
@@ -218,18 +272,18 @@
         </button>
         </div>
 
-        <div id="ad-holder-top" class="mb-4 m-auto sm:hidden">
+        <!-- <div id="ad-holder-top" class="ad-holder mb-4 m-auto sm:hidden">
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1084747507972985"
      crossorigin="anonymous"></script>
-        <!-- Top -->
         <ins class="adsbygoogle"
             style="display:inline-block;width:320px;height:50px;"
             data-ad-client="ca-pub-1084747507972985"
-            data-ad-slot="8854467595"></ins>
+            data-ad-slot="1234567890"></ins>
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
-        </div>
+        </div> -->
+        
       </div>
 
 
@@ -278,19 +332,8 @@
     </main>
 
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1084747507972985"
-     crossorigin="anonymous"></script>
-<!-- Mid-cards -->
-<ins class="adsbygoogle flex justify-center"
-     style="display:flex"
-     data-ad-client="ca-pub-1084747507972985"
-     data-ad-slot="6762269685"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+ <!-- Footer ad container (hidden until consent) -->
+    <div id="ad-holder-footer" class="ad-holder  flex justify-center w-full ring-2 ring-red-500"></div>
 
     <footer class="mt-8 mb-12 opacity-85">
         <p class="text-xs max-w-[800px] m-auto pb-3 px-6 ">Magic: the Gathering card graphics on this website are copyright Wizards of the Coast, LLC, a subsidiary of Hasbro, Inc. justbuysingles.com is not produced by, endorsed by, supported by, or affiliated with Wizards of the Coast.</p>
