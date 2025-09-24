@@ -53,7 +53,7 @@ function makeFDNSlots() {
     makeSlot("raremythic-2", "Foil Rare/Mythic #2", true);
     makeSlot("raremythic-nf-1", "Rare/Mythic #1");
     makeSlot("raremythic-nf-2", "Rare/Mythic #2");
-    makeSlot("land", "Full-Art Land", true);
+    makeSlot("land", "Full-Art Basic Land", true);
     makeSlot("uncommon", "Foil Uncommons", true, 4);
     makeSlot("common", "Foil Commons", true, 5);
 }
@@ -448,50 +448,3 @@ async function landPull_FDN() {
     //  Push price to price array
     myPrices.push(landPrice);
 }
-
-// function sumTotals_FDN() {
-//     // Add Boosters Bought
-//     boostersBought++;
-//     boosterTotalValue = boostersBought * boosterValue;
-//     const boostersBoughtElement = document.getElementById("boosters-bought");
-//     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
-
-//     function checkIfFinished() {
-//         return myPrices.length >= 15;
-//     }
-
-//     var timeout = setInterval(function () {
-//         const loadingOverlay = document.getElementById("data-loading");
-//         if (checkIfFinished()) {
-//             clearInterval(timeout);
-//             isFinished = true;
-
-//             loadingOverlay.classList.remove("z-10", "loader-blur-effect");
-//             loadingOverlay.classList.add("-z-10", "opacity-0");
-
-//             const commonSumElement = document.getElementById("common-sum");
-//             commonSumElement.innerText = "$" + commonSum.toFixed(2);
-//             commonSum = 0;
-
-//             //  Sum up all prices in array
-//             myPrices.forEach((num) => {
-//                 newTotal += num;
-//             });
-//             newTotal = newTotal - boosterValue;
-//             currentMoneyElement.innerText = "$" + newTotal.toFixed(2);
-//             currentMoneyElement.classList.add("px-3");
-
-//             if (newTotal > 0) {
-//                 currentMoneyElement.classList.remove("bg-rose-500");
-//                 currentMoneyElement.classList.add("bg-emerald-500");
-//             } else {
-//                 currentMoneyElement.classList.remove("bg-emerald-500");
-//                 currentMoneyElement.classList.add("bg-rose-500");
-//             }
-
-//             // Clear array
-//             myPrices = [];
-//             activeCheck = false;
-//         }
-//     }, 100);
-// }

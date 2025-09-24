@@ -1,5 +1,5 @@
-const ghostLinkHalf_EOE = "https://api.scryfall.com/cards/random?q=set%3Aeoe+unique%3Aprints+";
-const topOutLink_EOE = "https://api.scryfall.com/cards/search?order=usd&q=set%3Aeoe+unique%3Aprints+USD%3E%3D15";
+const ghostLinkHalf_EOE = "https://api.scryfall.com/cards/random?q=%28set%3Aeoe+or+set%3Aeos%29+unique%3Aprints+";
+const topOutLink_EOE = "https://api.scryfall.com/cards/search?order=usd&q=%28set%3Aeoe+or+set%3Aeos%29+unique%3Aprints+USD%3E%3D15";
 const boosterType_EOE = "Collector";
 
 window.setName = "EOE";
@@ -173,7 +173,6 @@ async function commonPull_EOE() {
 
         // Set Sum on page, clear value.
         commonSumElement.innerText = "$" + commonSum.toFixed(2);
-        // commonSum = 0;
     }
 }
 
@@ -567,7 +566,7 @@ async function boosterFunPull_EOE() {
     var boosterFunLink = "";
 
     // Override roll
-    // boosterFunRoll = 96;
+    // boosterFunRoll = 99;
 
     if (boosterFunRoll <= 38) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aeoe+rarity%3Ar+%28CN>%3D317+AND+CN<%3D356%29&unique=cards";
@@ -771,7 +770,7 @@ async function uncommonPull_EOEPlay() {
 
 async function basicLandPull_EOEPlay() {
     // Random number between 0 and 100
-    basicLandRoll = getRandomNumber(35, 100);
+    basicLandRoll = getRandomNumber(0, 100);
     var basicLandLink = "";
 
     // Override roll

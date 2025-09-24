@@ -16,12 +16,14 @@ const ghostLinkHalf = {
     FIN: ghostLinkHalf_FIN,
     FDN: ghostLinkHalf_FDN,
     EOE: ghostLinkHalf_EOE,
+    SPM: ghostLinkHalf_SPM,
 };
 
 const topOutLink = {
     FIN: topOutLink_FIN,
     FDN: topOutLink_FDN,
     EOE: topOutLink_EOE,
+    SPM: topOutLink_SPM,
 };
 
 function umamiAnalytics(umamiEvent) {
@@ -67,6 +69,10 @@ function pullBooster() {
         pullEOE();
     } else if (currentSet === "EOE" && getCookie("currentBoosterType") === "PLAY") {
         pullEOE_Play();
+    } else if (currentSet === "SPM" && getCookie("currentBoosterType") === "COLLECTOR") {
+        pullSPM();
+    } else if (currentSet === "SPM" && getCookie("currentBoosterType") === "PLAY") {
+        pullSPM_Play();
     } else {
         pullFDN();
     }
@@ -360,13 +366,12 @@ document.addEventListener(
             } else if (getCookie("currentSet") == "FIN") {
                 setFIN();
             } else if (getCookie("currentSet") == "EOE") {
-                console.log("run 1");
                 setEOE();
+            } else if (getCookie("currentSet") == "SPM") {
+                setSPM();
             } else if (getCookie("currentSet") == "FDN") {
                 setFDN();
             } else {
-                console.log("run 2");
-
                 setEOE();
             }
         } else {
@@ -947,7 +952,7 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
     // Set prices and link
 
     // Add Boosters Bought
-    totalBoosterSpend = boostersBought * boosterValue;
+    totalBoosterSpend = Number(boosterTotalValue);
     boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
     boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
 
@@ -1080,6 +1085,7 @@ function sumTotals() {
     cardsLoadingNumber.innerText = cardsRemaining;
 
     boosterTotalValue = Number(boosterTotalValue) + (currencyMode === "CAD" ? Number(CAD_boosterValue) : Number(boosterValue));
+
     const boostersBoughtElement = document.getElementById("boosters-bought");
     boostersBoughtElement.innerText = boostersBought + (" (" + USDollar.format(boosterTotalValue) + ")");
 

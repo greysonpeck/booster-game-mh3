@@ -126,7 +126,6 @@ async function commonPull_FIN() {
 
     // Set Sum on page, clear value.
     commonSumElement.innerText = "$" + commonSum;
-    // commonSum = 0;
 }
 
 async function uncommonPull_FIN() {
