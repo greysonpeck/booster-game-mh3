@@ -362,19 +362,19 @@ async function nfBoosterFunPull_SPM() {
         // nfBoosterFunRoll = 94.9;
 
         if (nfBoosterFunRoll <= 77.9) {
-            nfBoosterFunType = "Default frame, Rare (Foil)";
+            nfBoosterFunType = "Default frame, Rare";
             nfBoosterFunRarity = "77.9%";
             nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D1+AND+CN<%3D188%29&unique=cards";
         } else if (rareMythicRoll <= 88.9) {
-            nfBoosterFunType = "Default frame, Mythic (Foil)";
+            nfBoosterFunType = "Default frame, Mythic";
             nfBoosterFunRarity = "11%";
             nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D1+AND+CN<%3D188%29&unique=cards";
         } else if (nfBoosterFunRoll <= 96.3) {
-            nfBoosterFunType = "Welcome Deck default frame, Rare (Foil)";
+            nfBoosterFunType = "Welcome Deck default frame, Rare";
             nfBoosterFunRarity = "7.4%";
             nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Ar+CN<21&unique=cards";
         } else {
-            nfBoosterFunType = "Welcome Deck default frame, Mythic (Foil)";
+            nfBoosterFunType = "Welcome Deck default frame, Mythic";
             nfBoosterFunRarity = "3.7%";
             nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Am+CN<21&unique=cards";
         }
