@@ -362,22 +362,42 @@ async function nfBoosterFunPull_SPM() {
         // Override roll
         // nfBoosterFunRoll = 94.9;
 
-        if (nfBoosterFunRoll <= 77.9) {
-            nfBoosterFunType = "Default frame, Rare";
-            nfBoosterFunRarity = "77.9%";
-            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D1+AND+CN<%3D188%29&unique=cards";
-        } else if (rareMythicRoll <= 88.9) {
-            nfBoosterFunType = "Default frame, Mythic";
-            nfBoosterFunRarity = "11%";
-            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D1+AND+CN<%3D188%29&unique=cards";
-        } else if (nfBoosterFunRoll <= 96.3) {
-            nfBoosterFunType = "Welcome Deck default frame, Rare";
-            nfBoosterFunRarity = "7.4%";
-            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Ar+CN<21&unique=cards";
+        if (nfBoosterFunRoll <= 50.8) {
+            nfBoosterFunType = "Extended-art, Rare";
+            nfBoosterFunRarity = "50.8%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D244+AND+CN<%3D283%29&unique=cards";
+        } else if (rareMythicRoll <= 56.2) {
+            nfBoosterFunType = "Extended-art, Mythic";
+            nfBoosterFunRarity = "5.4%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D244+AND+CN<%3D283%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 65.4) {
+            nfBoosterFunType = "Web-slinger, Rare";
+            nfBoosterFunRarity = "9.2%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D208+AND+CN<%3D217%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 66.9) {
+            nfBoosterFunType = "Web-slinger, Mythic";
+            nfBoosterFunRarity = "1.5%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D208+AND+CN<%3D217%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 82.3) {
+            nfBoosterFunType = "Panel, Mythic";
+            nfBoosterFunRarity = "15.4%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D218+AND+CN<%3D231%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 85.4) {
+            nfBoosterFunType = "Panel, Mythic";
+            nfBoosterFunRarity = "3.1%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D218+AND+CN<%3D231%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 90) {
+            nfBoosterFunType = "Scene, Rare";
+            nfBoosterFunRarity = "4.6%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D199+AND+CN<%3D207%29&unique=cards";
+        } else if (nfBoosterFunRoll <= 90.8) {
+            nfBoosterFunType = "Scene, Mythic";
+            nfBoosterFunRarity = "0.8%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D199+AND+CN<%3D207%29&unique=cards";
         } else {
-            nfBoosterFunType = "Welcome Deck default frame, Mythic";
-            nfBoosterFunRarity = "3.7%";
-            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Am+CN<21&unique=cards";
+            nfBoosterFunType = "Scene Box, Rare";
+            nfBoosterFunRarity = "9.2%";
+            nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Ar+%28CN>%3D21+AND+CN<%3D26%29&unique=cards";
         }
 
         let response = await fetch(nfBoosterFunLink);
