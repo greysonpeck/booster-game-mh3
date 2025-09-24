@@ -3,7 +3,7 @@ boostersBought = 0;
 commonSum = 0;
 uncommonSum = 0;
 currencyMode = "";
-currentSet = "EOE";
+currentSet = "SPM";
 cardBack_URL = "img/card_default4.png";
 activeInvestigation = false;
 activeAbout = false;
@@ -372,12 +372,12 @@ document.addEventListener(
             } else if (getCookie("currentSet") == "FDN") {
                 setFDN();
             } else {
-                setEOE();
+                setSPM();
             }
         } else {
             console.log("run 3");
 
-            setEOE();
+            setSPM();
         }
 
         // Pull the set that's in the cookie
