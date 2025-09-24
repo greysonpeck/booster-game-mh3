@@ -477,7 +477,7 @@ async function sourceMaterialPull_SPM() {
 
 async function boosterFunPull_SPM() {
     // Random number between 0 and 100
-    boosterFunRoll = getRandomNumber(0, 99.5);
+    boosterFunRoll = getRandomNumber(0, 100);
     var boosterFunLink = "";
 
     // Override roll
@@ -870,7 +870,11 @@ async function nfWildcardPull_SPMPlay() {
     window.cardInfo.nfwildcard = [nfWildcardName, nfWildcardType, nfWildcardRarity];
     nfWildcardPrice = convertCurrency(card.prices.usd * priceCut);
 
-    nfWildcardImagePrimary = card.image_uris.normal;
+    if (card.layout == "transform" || card.layout == "modal_dfc") {
+        nfWildcardImagePrimary = card.card_faces[0].image_uris.normal;
+    } else {
+        nfWildcardImagePrimary = card.image_uris.normal;
+    }
 
     //   Replace Img Source
     var nfWildcardImageId = "nfwildcard-image";
@@ -892,7 +896,7 @@ async function nfWildcardPull_SPMPlay() {
 
 async function wildcardPull_SPMPlay() {
     // Random number between 0 and 100.1
-    wildcardRoll = getRandomNumber(0, 100.1);
+    wildcardRoll = getRandomNumber(0, 100);
 
     // Override roll
     // wildcardRoll = 94.9;
