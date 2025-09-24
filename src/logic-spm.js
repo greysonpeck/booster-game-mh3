@@ -178,15 +178,15 @@ async function commonPull_SPM() {
 
         //  Push price to price array
         myPrices.push(commonPrice);
-
-        const commonSumElement = document.getElementById("common-sum");
-        commonSumElement.innerText = commonSum;
-
-        // Set Sum on page, clear value.
-        commonSumElement.innerText = "$" + commonSum.toFixed(2);
     }
 
     window.cardInfo.common = ["5 Commons", "Main set (85.8%), Two-color land (7.1%), Welcome deck (7.1%)."];
+
+    const commonSumElement = document.getElementById("common-sum");
+    commonSumElement.innerText = commonSum;
+
+    // Set Sum on page, clear value.
+    commonSumElement.innerText = "$" + commonSum.toFixed(2);
 }
 
 async function uncommonPull_SPM() {
@@ -240,15 +240,16 @@ async function uncommonPull_SPM() {
 
         //  Push price to price array
         myPrices.push(uncommonPrice);
-
-        const uncommonSumElement = document.getElementById("uncommon-sum");
-        uncommonSumElement.innerText = uncommonSum;
-
-        // Set Sum on page, clear value.
-        uncommonSumElement.innerText = "$" + uncommonSum.toFixed(2);
     }
 
     window.cardInfo.uncommon = ["4 Uncommons", "Main set (87.3%), Welcome deck (7.9%), Scene (4.8%)."];
+
+    const uncommonSumElement = document.getElementById("uncommon-sum");
+    uncommonSumElement.innerText = uncommonSum;
+
+    // Set Sum on page, clear value.
+    uncommonSumElement.innerText = "$" + uncommonSum.toFixed(2);
+    uncommonSum = 0;
 }
 
 async function landPull_SPM() {
@@ -615,14 +616,13 @@ async function commonPull_SPMPlay() {
 
         //  Push price to price array
         myPrices.push(commonPrice);
-
-        const commonSumElement = document.getElementById("common-sum");
-        commonSumElement.innerText = commonSum;
-
-        // Set Sum on page, clear value.
-        commonSumElement.innerText = "$" + commonSum.toFixed(2);
-        // commonSum = 0;
     }
+    const commonSumElement = document.getElementById("common-sum");
+    commonSumElement.innerText = commonSum;
+
+    // Set Sum on page, clear value.
+    commonSumElement.innerText = "$" + commonSum.toFixed(2);
+    // commonSum = 0;
 }
 
 async function uncommonPull_SPMPlay() {
