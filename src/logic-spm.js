@@ -532,19 +532,19 @@ async function boosterFunPull_SPM() {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D199AND+CN<%3D207%29&unique=cards";
         boosterFunType = "Scene, Rare (Foil)";
         boosterFunRarity = "4.9%";
-    } else if (boosterFunRoll <= 96.1) {
+    } else if (boosterFunRoll <= 96.5) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D199AND+CN<%3D207%29&unique=cards";
         boosterFunType = "Scene, Mythic (Foil)";
         boosterFunRarity = "< 1%";
-    } else if (boosterFunRoll <= 98.6) {
+    } else if (boosterFunRoll <= 99) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+%28CN>%3D232AND+CN<%3D234%29&unique=cards";
         boosterFunType = "Classic Comic, Mythic (Foil)";
         boosterFunRarity = "2.5%";
-    } else if (boosterFunRoll <= 99.4) {
+    } else if (boosterFunRoll <= 99.8) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D235AND+CN<%3D241%29&unique=cards";
         boosterFunType = "Costume Change, Mythic (Foil)";
         boosterFunRarity = "< 1%%";
-    } else if (boosterFunRoll <= 99.8) {
+    } else if (boosterFunRoll <= 99.975) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+CN=243&unique=cards";
         boosterFunType = "The Soul Stone, Gauntlet Version (Foil)";
         boosterFunRarity = "< 1%";
