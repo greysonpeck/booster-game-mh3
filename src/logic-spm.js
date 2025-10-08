@@ -203,12 +203,11 @@ async function uncommonPull_SPM() {
         // uncommonRoll = 99.1;
 
         if (uncommonRoll <= 87.3) {
-            // Foil full-art land
             uncommonLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Au&unique=cards";
             uncommonType = "Default frame, Uncommon (Foil)";
             uncommonRarity = "87.3%";
         } else if (uncommonRoll <= 95.2) {
-            uncommonLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Am+%28CN>%3D1+AND+CN<%3D198%29&unique=cards";
+            uncommonLink = "https://api.scryfall.com/cards/random?q=set%3Aspe+rarity%3Au+%28CN>%3D1+AND+CN<%3D198%29&unique=cards";
             uncommonType = "Welcome Deck default frame, Uncommon (Foil)";
             uncommonRarity = "7.9%";
         } else {
@@ -547,11 +546,11 @@ async function boosterFunPull_SPM() {
     } else if (boosterFunRoll <= 99.975) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+CN=243&unique=cards";
         boosterFunType = "The Soul Stone, Gauntlet Version (Foil)";
-        boosterFunRarity = "< 1%";
+        boosterFunRarity = "< 1% (roughly estimated at 0.175% here)";
     } else {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+CN=242&unique=cards";
         boosterFunType = "The Soul Stone, Headliner Version (Cosmic Foil)";
-        boosterFunRarity = "< 1%";
+        boosterFunRarity = "*Extremely* rare (roughly estimated at 0.025% here)";
     }
 
     let response = await fetch(boosterFunLink);
