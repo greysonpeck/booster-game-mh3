@@ -443,8 +443,7 @@ function bfRareSingleRoll(allowFoil = true) {
         //  Ignore colorful Chocobos!
         bfRareType = "Booster Fun, Mythic";
         bfRareRarity = "3.8%";
-        bfRareLink =
-            "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Am+unique%3Aart+%28-CN%3D551+AND+-CN%3D551a+AND+-CN%3D551b+AND+-CN%3D551c+AND+-CN%3D551d+AND+-CN%3D551e+AND+-CN%3D551f%29&unique=cards";
+        bfRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+is%3Aboosterfun+rarity%3Ar+unique%3Aart&unique=cards";
     } else if (bfRareRoll <= 45.1) {
         //  set:fin frame:extendedart type:legendary rarity:r unique:art
         bfRareType = "Extended-art Legendary Creature, Rare";
@@ -681,7 +680,7 @@ async function foilOrChocoPull_FIN() {
         //  set:fin rarity:r is:borderless (CN<320 OR CN>373)
         fchocoType = "Borderless, Rare (Foil)";
         fchocoRarity = "31.6%";
-        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+is%3Aborderless+%28CN<320+OR+CN>373%29";
+        chocoRareLink = "https://api.scryfall.com/cards/random?q=set%3Afin+rarity%3Ar+is%3Aborderless+%28CN<320+OR+CN>373%29+CN<565";
     } else if (chocoRareRoll <= 81.6) {
         //  Traditional foil main set borderless Mythic (5.6%, 9 cards)
         //  set:fin rarity:m is:borderless (CN>=375 AND CN<=406)
