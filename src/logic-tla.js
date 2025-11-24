@@ -19,7 +19,6 @@ function setTLA_Money() {
         CAD_boosterValue = getCookie("boosterValue_CAD_TLA_PLAY") ? getCookie("boosterValue_CAD_TLA_PLAY") : 9;
         msrp = 6.99;
 
-        console.log("should be making TLA Play slots");
         makeTLAPlaySlots();
 
         document.cookie = "boosterValue_TLA_PLAY = " + boosterValue;
@@ -53,7 +52,7 @@ function setTLA() {
 
     document.getElementById("set-header").innerText = "AVATAR: THE LAST AIRBENDER";
 
-    document.body.style.backgroundImage = "url(img/tla_bg_dark.png)";
+    document.body.style.backgroundImage = "url(img/TLA_bg_dark.jpg)";
 
     clearSlots();
     setTLA_Money();
