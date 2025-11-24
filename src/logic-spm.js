@@ -16,7 +16,7 @@ function setSPM_Money() {
             totalCards: 14,
         };
         boosterValue = getCookie("boosterValue_SPM_PLAY") ? getCookie("boosterValue_SPM_PLAY") : 6;
-        CAD_boosterValue = getCookie("boosterValue_CAD_SPM_PLAY") ? getCookie("boosterValue_CAD_SPM_PLAY") : 8;
+        CAD_boosterValue = getCookie("boosterValue_CAD_SPM_PLAY") ? getCookie("boosterValue_CAD_SPM_PLAY") : 9;
         msrp = 6.99;
 
         console.log("should be making SPM Play slots");
@@ -29,8 +29,8 @@ function setSPM_Money() {
         window.SPM = {
             totalCards: 15,
         };
-        boosterValue = getCookie("boosterValue_SPM") ? getCookie("boosterValue_SPM") : 60;
-        CAD_boosterValue = getCookie("boosterValue_CAD_SPM") ? getCookie("boosterValue_CAD_SPM") : 100;
+        boosterValue = getCookie("boosterValue_SPM") ? getCookie("boosterValue_SPM") : 36;
+        CAD_boosterValue = getCookie("boosterValue_CAD_SPM") ? getCookie("boosterValue_CAD_SPM") : 60;
         msrp = 37.99;
 
         console.log("should be making SPM Collector slots");
@@ -542,7 +542,7 @@ async function boosterFunPull_SPM() {
     } else if (boosterFunRoll <= 99.8) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Ar+%28CN>%3D235AND+CN<%3D241%29&unique=cards";
         boosterFunType = "Costume Change, Mythic (Foil)";
-        boosterFunRarity = "< 1%%";
+        boosterFunRarity = "< 1%";
     } else if (boosterFunRoll <= 99.975) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3Aspm+rarity%3Am+CN=243&unique=cards";
         boosterFunType = "The Soul Stone, Gauntlet Version (Foil)";
@@ -677,7 +677,7 @@ async function uncommonPull_SPMPlay() {
         myPrices.push(uncommonPrice);
     }
 
-    window.cardInfo.uncommon = ["3 Main-set Uncommons", "3 Uncommon scene cards that can also be found in these slots."];
+    window.cardInfo.uncommon = ["3 Main-set Uncommons", "3 Uncommon scene cards can also be found in these slots."];
 
     const uncommonSumElement = document.getElementById("uncommon-sum");
     uncommonSumElement.innerText = uncommonSum;

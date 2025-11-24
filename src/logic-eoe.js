@@ -29,8 +29,8 @@ function setEOE_Money() {
         window.EOE = {
             totalCards: 15,
         };
-        boosterValue = getCookie("boosterValue_EOE") ? getCookie("boosterValue_EOE") : 40;
-        CAD_boosterValue = getCookie("boosterValue_CAD_EOE") ? getCookie("boosterValue_CAD_EOE") : 55;
+        boosterValue = getCookie("boosterValue_EOE") ? getCookie("boosterValue_EOE") : 38;
+        CAD_boosterValue = getCookie("boosterValue_CAD_EOE") ? getCookie("boosterValue_CAD_EOE") : 60;
         msrp = 24.99;
 
         console.log("should be making EOE Collector slots");

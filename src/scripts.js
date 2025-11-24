@@ -17,6 +17,7 @@ const ghostLinkHalf = {
     FDN: ghostLinkHalf_FDN,
     EOE: ghostLinkHalf_EOE,
     SPM: ghostLinkHalf_SPM,
+    TLA: ghostLinkHalf_TLA,
 };
 
 const topOutLink = {
@@ -24,6 +25,7 @@ const topOutLink = {
     FDN: topOutLink_FDN,
     EOE: topOutLink_EOE,
     SPM: topOutLink_SPM,
+    TLA: topOutLink_TLA,
 };
 
 function umamiAnalytics(umamiEvent) {
@@ -73,6 +75,10 @@ function pullBooster() {
         pullSPM();
     } else if (currentSet === "SPM" && getCookie("currentBoosterType") === "PLAY") {
         pullSPM_Play();
+    } else if (currentSet === "TLA" && getCookie("currentBoosterType") === "COLLECTOR") {
+        pullTLA();
+    } else if (currentSet === "TLA" && getCookie("currentBoosterType") === "PLAY") {
+        pullTLA_Play();
     } else {
         pullFDN();
     }
@@ -139,12 +145,16 @@ function ghostSlide() {
 
     infopopsContent.forEach((content) => {
         let infopopID = content.closest(".card-info").id.replace("-label", "");
+
         if (infopopID === "uncommon-set") {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.["uncommon"][0];
             content.querySelector(".infopop-rarity").textContent = window.cardInfo?.["uncommon"][1];
         } else if (infopopID === "common-set") {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.["common"][0];
             content.querySelector(".infopop-rarity").textContent = window.cardInfo?.["common"][1];
+        } else if (infopopID === "commonsup-set") {
+            content.querySelector(".infopop-name").textContent = window.cardInfo?.["commonsup"][0];
+            content.querySelector(".infopop-rarity").textContent = window.cardInfo?.["commonsup"][1];
         } else {
             content.querySelector(".infopop-name").textContent = window.cardInfo?.[infopopID][0];
             content.querySelector(".infopop-type").textContent = window.cardInfo?.[infopopID][1];
@@ -371,6 +381,8 @@ document.addEventListener(
                 setSPM();
             } else if (getCookie("currentSet") == "FDN") {
                 setFDN();
+            } else if (getCookie("currentSet") == "TLA") {
+                setTLA();
             } else {
                 setSPM();
             }
@@ -615,6 +627,17 @@ function clearMoney() {
     }
 
     initializeMoney();
+
+    // Smaller text slot labels if long
+    document.querySelectorAll(".slot-label").forEach((label) => {
+        const len = label.textContent.trim().length;
+
+        if (len > 19) {
+            label.classList.add("text-sm");
+        } else {
+            label.classList.add("text-base");
+        }
+    });
 }
 
 function boosterCheck(type) {
@@ -662,7 +685,7 @@ function makeSlot(id, label, hasFoil, quantity) {
 
     const cardInfo = document.createElement("div");
     cardInfo.id = id + "-label";
-    cardInfo.classList.add("card-info", "flex", "items-end", "sm:text-base", "text-xs", "pb-1.5");
+    cardInfo.classList.add("card-info", "flex", "items-center", "sm:text-base", "text-xs", "pb-1.5");
     const infoPopWrapper =
         '<div class="infopop-wrapper hidden w-0 justify-center align-center"> <div id="infopop-' +
         id +
@@ -708,7 +731,7 @@ function makeSlot(id, label, hasFoil, quantity) {
     if (quantity) {
         // Quantity stuff
         const cardSet = document.createElement("div");
-        let stackHeightValue = quantity * 40 + 412;
+        let stackHeightValue = quantity * 40 + 324;
         cardSet.id = id + "-set";
         cardSet.classList.add("mb-1", "sm:pt-0", "card-info");
 
@@ -953,13 +976,8 @@ async function ghostDataGrab(ghostLinkHalf, topOutLink) {
 
     // Add Boosters Bought
     totalBoosterSpend = Number(boosterTotalValue);
-    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.15);
-    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.15);
-
-    // boosterSpendTop = 400;
-    // boosterSpendBottom = 401;
-
-    // console.log("Looking for a single between " + boosterSpendBottom + " and " + boosterSpendTop);
+    boosterSpendTop = convertToUSD(totalBoosterSpend + totalBoosterSpend * 0.2);
+    boosterSpendBottom = convertToUSD(totalBoosterSpend - totalBoosterSpend * 0.2);
 
     ghostLinkConstructed = ghostLinkHalf + "%28USD>" + boosterSpendBottom + "+and+USD<" + boosterSpendTop + "%29&unique=cards";
     // console.log("GHOST LINK HALF: " + ghostLinkHalf);
@@ -1129,6 +1147,17 @@ function sumTotals() {
                     // Ignore bulk
                 }
             });
+
+            // Smaller text slot labels if long
+            document.querySelectorAll(".price").forEach((price) => {
+                console.log(price);
+                if (price.innerText === "$0.00") {
+                    price.innerText = "(no data!)";
+                } else {
+                    // fine price
+                }
+            });
+
             runningSum.innerText = USDollar.format(packsTotal);
 
             //  Show pack total
