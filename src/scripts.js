@@ -523,6 +523,15 @@ document.addEventListener(
             document.cookie = "currentBoosterType = PLAY";
             boosterToggle();
         });
+
+        // Responsive button name
+        document.querySelectorAll("#booster-types>button").forEach((label) => {
+            if (window.screen.width <= 960) {
+                label.innerText = label.innerText.replace(" BOOSTER", "");
+            } else {
+                // nothing
+            }
+        });
     },
     false
 );
@@ -1150,7 +1159,6 @@ function sumTotals() {
 
             // Smaller text slot labels if long
             document.querySelectorAll(".price").forEach((price) => {
-                console.log(price);
                 if (price.innerText === "$0.00") {
                     price.innerText = "(no data!)";
                 } else {

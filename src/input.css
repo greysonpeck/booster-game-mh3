@@ -71,6 +71,7 @@ svg {
 }
 
 #set-list {
+    font-family: "Raleway", sans-serif;
     background: rgba(70, 70, 70, 0.85);
     background: linear-gradient(142deg, rgba(90, 83, 101, 0.7) 0%, rgba(44, 31, 47, 0.95) 100%);
 }
@@ -164,6 +165,10 @@ h2,
 #collector-booster,
 #play-booster {
     font-family: "Oswald", sans-serif, Arial;
+}
+
+#more {
+    font-family: "Raleway";
 }
 
 .booster-active {
