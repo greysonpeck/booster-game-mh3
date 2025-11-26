@@ -537,7 +537,7 @@ async function nfBoosterFunPull_TLA() {
     } else if (nfBoosterFunRoll <= 59.95) {
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Ar+%28CN>%3D364+AND+CN<%3D392%29&unique=cards";
         nfBoosterFunType = "Extended-art, Rare";
-        nfBoosterFunRarity = "24.2";
+        nfBoosterFunRarity = "24.2%";
     } else if (nfBoosterFunRoll <= 60.6) {
         nfBoosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Am+%28CN>%3D364+AND+CN<%3D392%29&unique=cards";
         nfBoosterFunType = "Extended-art, Mythic";
@@ -690,7 +690,7 @@ async function boosterFunPull_TLA() {
     } else if (boosterFunRoll <= 54.15) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Ar+%28CN>%3D336+AND+CN<%3D353%29&unique=cards";
         boosterFunType = "Elemental frame, Rare (Foil)";
-        boosterFunRarity = "19.2";
+        boosterFunRarity = "19.2%";
     } else if (boosterFunRoll <= 55.95) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Am+%28CN>%3D336+AND+CN<%3D353%29&unique=cards";
         boosterFunType = "Elemental frame, Mythic (Foil)";
@@ -702,7 +702,7 @@ async function boosterFunPull_TLA() {
     } else if (boosterFunRoll <= 99.45) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Ar+%28CN>%3D364+AND+CN<%3D392%29&unique=cards";
         boosterFunType = "Extended art, Rare (Foil)";
-        boosterFunRarity = "39.9";
+        boosterFunRarity = "39.9%";
     } else if (boosterFunRoll <= 99.9) {
         boosterFunLink = "https://api.scryfall.com/cards/random?q=set%3ATLA+rarity%3Am+%28CN>%3D364+AND+CN<%3D392%29&unique=cards";
         boosterFunType = "Extended-art, Mythic (Foil)";
