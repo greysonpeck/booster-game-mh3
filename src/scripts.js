@@ -384,12 +384,12 @@ document.addEventListener(
             } else if (getCookie("currentSet") == "TLA") {
                 setTLA();
             } else {
-                setSPM();
+                setTLA();
             }
         } else {
             console.log("run 3");
 
-            setSPM();
+            setTLA();
         }
 
         // Pull the set that's in the cookie
